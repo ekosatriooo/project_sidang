@@ -96,11 +96,11 @@ $halaman = "data_sidang";
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>Jam Mulai</th>
-                                        <th>Jam Selesai</th>
+                                        <th>Tanggal</th>
+                                        <th>Jam</th>
                                         <th>Akademik</th>
                                         <th>Jurusan</th>
-                                        <th>Nim</th>
+                                        <th>Mahasiswa</th>
                                         <th>Pembimbing</th>
                                         <th>Penguji</th>
                                         <th>Nama Ruangan</th>
@@ -136,11 +136,12 @@ $halaman = "data_sidang";
                                             $nama_ruangan = $data['nama_ruangan'];
                                             $jam_mulai = $data['jam_mulai'];
                                             $jam_selesai = $data['jam_selesai'];
+                                            $tanggal = $data['tgl'];
                                     ?>
                                             <tr>
                                                 <td><?= $no++; ?></td>
-                                                <td><?= date_format(date_create($jam_mulai), 'H:i'); ?></td>
-                                                <td><?= date_format(date_create($jam_selesai), 'H:i'); ?></td>
+                                                <td><?= date_format(date_create($tanggal), 'l, d F Y') ?></td>
+                                                <td><?= date_format(date_create($jam_mulai), 'H:i'); ?>-<?= date_format(date_create($jam_selesai), 'H:i'); ?></td>
                                                 <td><?= $tahun; ?>-<?= $semester == 'GL' ? 'Ganjil' : 'Genap'; ?> </td>
                                                 <td><?= $jurusan; ?></td>
                                                 <td><?= $nim; ?> - <?= $nama_mahasiswa ?></td>

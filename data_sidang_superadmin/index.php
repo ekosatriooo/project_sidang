@@ -137,10 +137,11 @@ $halaman = "data_sidang";
                                             $jam_mulai = $data['jam_mulai'];
                                             $jam_selesai = $data['jam_selesai'];
                                             $tanggal = $data['tgl'];
+                                            $hari = array("Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu");
                                     ?>
                                             <tr>
                                                 <td><?= $no++; ?></td>
-                                                <td><?= date_format(date_create($tanggal), 'l, d F Y') ?></td>
+                                                <td><?= $hari[date_format(date_create($tanggal), 'w')] . date_format(date_create($tanggal), ', d F Y') ?></td>
                                                 <td><?= date_format(date_create($jam_mulai), 'H:i'); ?>-<?= date_format(date_create($jam_selesai), 'H:i'); ?></td>
                                                 <td><?= $tahun; ?>-<?= $semester == 'GL' ? 'Ganjil' : 'Genap'; ?> </td>
                                                 <td><?= $jurusan; ?></td>
@@ -164,7 +165,7 @@ $halaman = "data_sidang";
                                                         data-jam_selesai="<?= $jam_selesai; ?>"
                                                         data-jenis_sidang="<?= $data['jenis_sidang']; ?>"
                                                         data-status="<?= $data['status']; ?>"
-                                                        data-catatan="<?= $data['catatan']; ?>"
+                                                        data-judul="<?= $data['judul']; ?>"
                                                         >
                                                         <i class="fas fa-edit"></i>
                                                     </button>
@@ -381,8 +382,8 @@ $halaman = "data_sidang";
                         </select>
                         </div>
                         <div class="form-group">
-                            <label for="exampleInputEmail1">Catatan</label>
-                            <input type="text" class="form-control" id="catatan" placeholder="Masukkan Catatan" name="catatan" required>
+                            <label for="exampleInputEmail1">Judul Sidang Mahasiswa</label>
+                            <input type="text" class="form-control" id="judul" placeholder="Masukkan Judul" name="judul" required>
                         </div>
                     </div>
                     <div class="modal-footer justify-content-between">
@@ -575,8 +576,8 @@ $halaman = "data_sidang";
                         </select>
                         </div>
                         <div class="form-group">
-                            <label for="exampleInputEmail1">Catatan</label>
-                            <input type="text" class="form-control" id="catatan" placeholder="Masukkan Catatan" name="catatan" required>
+                            <label for="exampleInputEmail1">Judul Sidang Mahasiswa</label>
+                            <input type="text" class="form-control" id="judul" placeholder="Masukkan Judul" name="judul" required>
                         </div>
                     </div>
                     <div class="modal-footer justify-content-between">
@@ -643,7 +644,7 @@ $halaman = "data_sidang";
             var jam_selesai = $(e.relatedTarget).data('jam_selesai');
             var jenis_sidang = $(e.relatedTarget).data('jenis_sidang');
             var status = $(e.relatedTarget).data('status');
-            var catatan = $(e.relatedTarget).data('catatan');
+            var judul = $(e.relatedTarget).data('judul');
 
 
             var modal = $(e.currentTarget);
@@ -661,7 +662,7 @@ $halaman = "data_sidang";
             modal.find('input[name="jam_selesai"]').val(jam_selesai);
             modal.find('select[name="sidang"]').val(jenis_sidang);
             modal.find('select[name="status"]').val(status);
-            modal.find('input[name="catatan"]').val(catatan);
+            modal.find('input[name="judul"]').val(judul);
         });
     </script>
 </body>

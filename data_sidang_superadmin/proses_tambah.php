@@ -15,7 +15,7 @@ if(isset($_POST['btn-tambah'])) {
     $jam_selesai = trim(mysqli_real_escape_string($db, $_POST['jam_selesai']));
     $jenis_sidang = trim(mysqli_real_escape_string($db, $_POST['sidang']));
     $status = trim(mysqli_real_escape_string($db, $_POST['status']));
-    $catatan = trim(mysqli_real_escape_string($db, $_POST['catatan']));
+    $judul = trim(mysqli_real_escape_string($db, $_POST['judul']));
 
     $query_cek = mysqli_query($db, "SELECT * FROM tbl_sidang WHERE kode_akd = '$kode_akd' AND kode_jurusan = '$kode_jurusan' AND kode_ruangan = '$kode_ruangan' AND nim = '$mahasiswa' AND jenis_sidang = '$jenis_sidang' AND tgl = '$tanggal' AND nik_pembimbing_1 = '$pembimbing1' AND nik_pembimbing_2 = '$pembimbing2' AND nik_penguji_1 = '$penguji1' AND nik_penguji_2 = '$penguji2' AND jam_mulai = '$jam_mulai' AND jam_selesai = '$jam_selesai' AND status = '$status'") or die (mysqli_error($db));
     $rv = mysqli_num_rows($query_cek);
@@ -23,7 +23,7 @@ if(isset($_POST['btn-tambah'])) {
         echo '<script>alert ("Data sidang sudah terdaftar")</script>';
         echo '<script>window.location.href="index.php"</script>';
         } else {
-            $query_simpan = mysqli_query($db, "INSERT INTO tbl_sidang VALUES (null , '$kode_akd', '$kode_jurusan', '$kode_ruangan', '$mahasiswa', '$jenis_sidang', '$tanggal', '$pembimbing1', '$pembimbing2', '$penguji1', '$penguji2', '$jam_mulai', '$jam_selesai', '$status', '$catatan') ") or die(mysqli_error($db));
+            $query_simpan = mysqli_query($db, "INSERT INTO tbl_sidang VALUES (null , '$kode_akd', '$kode_jurusan', '$kode_ruangan', '$mahasiswa', '$jenis_sidang', '$tanggal', '$pembimbing1', '$pembimbing2', '$penguji1', '$penguji2', '$jam_mulai', '$jam_selesai', '$status', '$judul') ") or die(mysqli_error($db));
             echo '<script>alert ("Tambah data sidang berhasil")</script>';
             echo '<script>window.location.href="index.php"</script>';
     }

@@ -59,7 +59,7 @@ require_once '../database/koneksi.php';
                 }
               } else {
                 echo '<script>alert ("Pin yang anda masukkan salah")</script>';
-                echo '<script>window.location.href="../../pkl"</script>';
+                echo '<script>window.location.href="../../sidang"</script>';
               }
             }
             ?>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Sep 24, 2026 at 08:56 AM
+-- Generation Time: Sep 24, 2026 at 12:52 PM
 -- Server version: 8.0.30
 -- PHP Version: 8.2.33
 
@@ -64,8 +64,12 @@ CREATE TABLE `tbl_dosen` (
 --
 
 INSERT INTO `tbl_dosen` (`nik`, `nama`, `kontak`, `email`, `kelamin`, `img`) VALUES
-('00001', 'Seva, S.Kom', '087708506949', 'imron@gmail.com', 'L', NULL),
-('00002', 'Imron', '0890182901', 'lariadav@gmail.com', 'L', NULL);
+('000001', 'Fathulloh, S.T., M.Kom.', '088888888888', 'fathulloh@gmail.com', 'L', NULL),
+('000002', 'Nurul Mega Saraswati, M.Kom.', '011111111111', 'Nurul@gmail.com', 'P', NULL),
+('000003', 'Khurotul Aeni, M.Kom.', '022222222222', 'Aeni@gmail.com', 'P', NULL),
+('000004', 'Asep Saeful Millah, M.Kom.', '099999999999', 'Asep@gmail.com', 'L', NULL),
+('000005', 'Achmad Syauqi, M.Kom.', '033333333333', 'Syauqi@gmail.com', 'L', NULL),
+('000006', 'Sorikhi, M.Kom.', '077777777777', 'Sorkh@gmail.com', 'L', NULL);
 
 -- --------------------------------------------------------
 
@@ -135,8 +139,12 @@ INSERT INTO `tbl_pengguna` (`id`, `username`, `sandi`, `peran`, `nama`, `pin`) V
 (15, 'eko', '3ee5e4d76f2098635fbe5b24be222ae44f8d776c', 'S', 'Eko Satrio', '111111'),
 (32, 'imron', '75cb554f0634180b077af036e0fae56b3935ff91', 'M', 'imron', '12345'),
 (34, 'admin', 'd033e22ae348aeb5660fc2140aec35850c4da997', 'S', 'admin1', '12345'),
-(35, '00001', '9d97a5892b0bf1b1af208b53e6c9f35986a0b123', 'D', 'Seva, S.Kom', '12345'),
-(36, '00002', '69a957ab57545037ce9a492ad0bd89c1d7e2220d', 'D', 'Imron', '12345');
+(37, '000001', '0a620481ca00b00de7eedb407a68b9163dcabae3', 'D', 'Fathulloh, S.T., M.Kom.', '12345'),
+(38, '000002', '86dfb043360b0e9ef7767e6ea7ad09fb7fb81537', 'D', 'Nurul Mega Saraswati, M.Kom.', '12345'),
+(39, '000003', '35510de8e4e64d24b00e396a76e868231570ac78', 'D', 'Khurotul Aeni, M.Kom.', '12345'),
+(40, '000004', '8a15ca25c36d74bcc7c4ad77f284e0a2551d0344', 'D', 'Asep Saeful Millah, M.Kom.', '12345'),
+(41, '000005', '786de586e258db51207eb1649d456b4a6d978df9', 'D', 'Achmad Syauqi, M.Kom.', '12345'),
+(42, '000006', 'ca0d5b58fa949c5d2434696d5a67b2b6e59a8c49', 'D', 'Sorikhi, M.Kom.', '12345');
 
 -- --------------------------------------------------------
 
@@ -189,7 +197,7 @@ CREATE TABLE `tbl_sidang` (
 
 INSERT INTO `tbl_sidang` (`id`, `kode_akd`, `kode_jurusan`, `kode_ruangan`, `nim`, `jenis_sidang`, `tgl`, `nik_pembimbing_1`, `nik_pembimbing_2`, `nik_penguji_1`, `nik_penguji_2`, `jam_mulai`, `jam_selesai`, `status`, `judul`) VALUES
 (1, 'AKD-002', 'J-INF', 'A001', '42423012', 'PKL', '2026-09-24', '00001', NULL, '00002', NULL, '16:00:00', '17:08:41', 'dijadwalkan', NULL),
-(2, 'AKD-002', 'J-INF', 'A001', '42423047', 'Sempro', '2026-09-24', '00001', '00002', '00001', '00002', '09:53:00', '14:00:00', 'berlangsung', 'bagus');
+(2, 'AKD-002', 'J-INF', 'A001', '42423047', 'Sempro', '2026-09-24', '000001', '000002', '000006', '000005', '09:53:00', '14:00:00', 'berlangsung', 'Deteksi Hoax Menggunakan KNN');
 
 --
 -- Indexes for dumped tables
@@ -239,7 +247,7 @@ ALTER TABLE `tbl_sidang`
 -- AUTO_INCREMENT for table `tbl_pengguna`
 --
 ALTER TABLE `tbl_pengguna`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 
 --
 -- AUTO_INCREMENT for table `tbl_sidang`

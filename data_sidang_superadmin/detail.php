@@ -1,6 +1,6 @@
 <?php
 require_once '../database/koneksi.php';
-$halaman = "data_kelas_matkul";
+$halaman = "data_sidang";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -102,6 +102,17 @@ $halaman = "data_kelas_matkul";
                                 $semester = $data_sidang['semester'];
                                 $nama_ruangan = $data_sidang['nama_ruangan'];
                                 $jurusan = $data_sidang['nama_jurusan'];
+                                $nim = $data_sidang['nim'];
+                                $nama_mahasiswa = $data_sidang['nama_mhs'];
+                                $nik_dosen_pembimbing1 = $data_sidang['nik_pm1'];
+                                $nama_dosen_pembimbing1 = $data_sidang['nama_pm1'];
+                                $nik_dosen_pembimbing2 = $data_sidang['nik_pm2'];
+                                $nama_dosen_pembimbing2 = $data_sidang['nama_pm2'];
+                                $nik_dosen_penguji1 = $data_sidang['nik_pg1'];
+                                $nama_dosen_penguji1 = $data_sidang['nama_pg1'];
+                                $nik_dosen_penguji2 = $data_sidang['nik_pg2'];
+                                $nama_dosen_penguji2 = $data_sidang['nama_pg2'];
+                                $judul_sidang = $data_sidang['judul'];
                                 $jam_mulai = $data_sidang['jam_mulai'];
                                 $jam_selesai = $data_sidang['jam_selesai'];
                                 $tanggal = $data_sidang['tgl'];
@@ -125,6 +136,16 @@ $halaman = "data_kelas_matkul";
                                         <td>:</td>
                                         <td class="font-weight-bold"><?= $jurusan; ?></td>
                                     </tr>
+                                    <tr>
+                                        <td>Nama Mahasiswa</td>
+                                        <td>:</td>
+                                        <td class="font-weight-bold"><?= $nama_mahasiswa; ?>-<?= $nim ?></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Judul</td>
+                                        <td>:</td>
+                                        <td class="font-weight-bold"><?= $judul_sidang; ?></td>
+                                    </tr>
                                 </table>
                                     </div>
                                 <div class="col-md-6">
@@ -140,9 +161,24 @@ $halaman = "data_kelas_matkul";
                                             <td class="font-weight-bold"><?= date_format(date_create($jam_mulai), 'H:i'); ?>-<?= date_format(date_create($jam_selesai), 'H:i'); ?></td>
                                         </tr>
                                         <tr>
-                                            <td>Dosen</td>
+                                            <td>Dosen Pembimbing 1</td>
                                             <td>:</td>
-                                            <td class="font-weight-bold"><?= $nama_dosen; ?> - <?= $nik; ?></td>
+                                            <td class="font-weight-bold"><?= $nama_dosen_pembimbing1; ?> - <?= $nik_dosen_pembimbing1; ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Dosen Pembimbing 2</td>
+                                            <td>:</td>
+                                            <td class="font-weight-bold"><?= $nama_dosen_pembimbing2; ?> - <?= $nik_dosen_pembimbing2; ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Dosen Penguji 1</td>
+                                            <td>:</td>
+                                            <td class="font-weight-bold"><?= $nama_dosen_penguji1; ?> - <?= $nik_dosen_penguji1; ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Dosen Penguji 2</td>
+                                            <td>:</td>
+                                            <td class="font-weight-bold"><?= $nama_dosen_penguji2; ?> - <?= $nik_dosen_penguji2; ?></td>
                                         </tr>
                                     </table>
                                 </div>
@@ -155,44 +191,6 @@ $halaman = "data_kelas_matkul";
                             <button type="button" class="btn btn-sm btn-success mb-3" data-toggle="modal" data-target="#modal-tambah">
                                 <i class="fas fa-plus"></i>Tambah Data
                             </button>
-                            <button type="button" class="btn btn-sm btn-primary mb-3" data-toggle="modal" data-target="#modal-import">
-                                <i class="fas fa-file-excel"></i>Import Data
-                            </button>
-                            <table id="example1" class="table table-bordered table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>No</th>
-                                        <th>Nama</th>
-                                        <th>Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php
-                                    $cek_query = mysqli_query($db, "SELECT p.id AS id_peserta, p.id_kelas, p.nim, m.nim, m.nama, km.id FROM tbl_peserta p LEFT JOIN tbl_mahasiswa m ON p.nim = m.nim LEFT JOIN tbl_kelas_matkul km ON p.id_kelas = km.id WHERE p.id_kelas = '$id'") or die(mysqli_error($db));
-                                    $rv = mysqli_num_rows($cek_query);
-                                    $no = 1;
-                                    if ($rv > 0) {
-                                        while ($data = mysqli_fetch_array($cek_query)) {
-                                            $id_peserta = $data['id_peserta'];
-                                            $nama = $data['nama'];
-                                            $nim = $data['nim'];
-                                    ?>
-                                            <tr>
-                                                <td><?= $no++; ?></td>
-                                                <td><?= $nim; ?>-<?= $nama ?> </td>
-                                                <td>
-                                                    <center>
-                                                        <a href="hapus_peserta.php?id_peserta=<?= $id_peserta ?>&id_kelas=<?= $id ?>" class="btn btn-sm btn-danger" onclick="return confirm('Apakah kamu yakin menghapus data ini?')"><i class="fas fa-trash"></i></a>
-                                                    </center>
-                                                </td>
-                                            </tr>
-                                    <?php
-
-                                        }
-                                    }
-                                    ?>
-                                </tbody>
-                            </table>
                         </div>
                         <!-- /.card-body -->
                     </div>

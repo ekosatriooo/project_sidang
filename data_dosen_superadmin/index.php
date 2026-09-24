@@ -92,8 +92,6 @@ $halaman = "data_dosen";
               <button type="button" class="btn btn-sm btn-primary mb-3" data-toggle="modal" data-target="#modal-import">
                 <i class="fas fa-file-excel"></i>Import Data
               </button>
-              <a href="export_excel.php" class="btn btn-sm btn-primary mb-3" target="_blank"><i class="fas fa-file-excel"></i>Export Excel</a>
-              <a href="export_pdf.php" class="btn btn-sm btn-danger mb-3" target="_blank"><i class="fas fa-file-pdf"></i>Export Pdf</a>
               <table id="example1" class="table table-bordered table-striped">
                 <thead>
                   <tr>

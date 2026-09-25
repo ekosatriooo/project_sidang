@@ -34,8 +34,7 @@ $halaman = "data_sidang";
                 <li class="nav-item dropdown">
                     <a class="nav-link" data-toggle="dropdown" href="#">
                         Hallo, <?= $_SESSION['nama']; ?> <i class="far fa-user"></i>
-                        <span class="badge badg
-          e-warning navbar-badge">15</span>
+                        <span class="badge badge-warning navbar-badge"></span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                         <div class="dropdown-divider"></div>
@@ -78,15 +77,15 @@ $halaman = "data_sidang";
 
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">Detail Kelas Matkul</h3>
+                            <h3 class="card-title">Detail Jadwal Sidang</h3>
                         </div>
                         <div class="card border-0 shadow-none bg-transparent">
                             <div class="card-body">
                                 <?php
                                 $id_sidang = $_GET['id_sidang'];
                                 $cek_query_detail = mysqli_query($db, "SELECT s.*, a.tahun, a.semester, j.nama_jurusan, 
-                                d1.nik AS nik_pm1, d1.nama AS nama_pm1, d2.nik AS nik_pm2, d2.nama AS nama_pm2,
-                                d3.nik AS nik_pg1, d3.nama AS nama_pg1, d4.nik AS nik_pg2, d4.nama AS nama_pg2,
+                                d1.nama AS nama_pm1, d2.nama AS nama_pm2,
+                                d3.nama AS nama_pg1, d4.nama AS nama_pg2,
                                 m.nim, m.nama AS nama_mhs, r.nama_ruangan, r.kode_ruangan 
                                 FROM tbl_sidang s 
                                 LEFT JOIN tbl_akademik a ON s.kode_akd = a.kode_akd 
@@ -104,13 +103,13 @@ $halaman = "data_sidang";
                                 $jurusan = $data_sidang['nama_jurusan'];
                                 $nim = $data_sidang['nim'];
                                 $nama_mahasiswa = $data_sidang['nama_mhs'];
-                                $nik_dosen_pembimbing1 = $data_sidang['nik_pm1'];
+                                $nik_dosen_pembimbing1 = $data_sidang['nik_pembimbing_1'];
                                 $nama_dosen_pembimbing1 = $data_sidang['nama_pm1'];
-                                $nik_dosen_pembimbing2 = $data_sidang['nik_pm2'];
+                                $nik_dosen_pembimbing2 = $data_sidang['nik_pembimbing_2'];
                                 $nama_dosen_pembimbing2 = $data_sidang['nama_pm2'];
-                                $nik_dosen_penguji1 = $data_sidang['nik_pg1'];
+                                $nik_dosen_penguji1 = $data_sidang['nik_penguji_1'];
                                 $nama_dosen_penguji1 = $data_sidang['nama_pg1'];
-                                $nik_dosen_penguji2 = $data_sidang['nik_pg2'];
+                                $nik_dosen_penguji2 = $data_sidang['nik_penguji_2'];
                                 $nama_dosen_penguji2 = $data_sidang['nama_pg2'];
                                 $judul_sidang = $data_sidang['judul'];
                                 $jam_mulai = $data_sidang['jam_mulai'];
@@ -216,93 +215,6 @@ $halaman = "data_sidang";
             </div>
         </footer>
     </div>
-
-    <div class="modal fade" id="modal-tambah">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Tambah Data Mahasiswa</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <form action="proses_tambah_peserta.php" method="post">
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <input type="hidden" name="id_kelas" value="<?= $id ?>">
-                            <label>Mahasiswa</label>
-                            <select class="form-control" name="nim" required>
-                                <option value="">-- Pilih Mahasiswa --</option>
-                                <?php
-                                $query_mhs = mysqli_query($db, "SELECT nim, nama FROM tbl_mahasiswa");
-                                $rv = mysqli_num_rows($query_mhs);
-                                if ($rv > 0) {
-                                    while($data_mhs = mysqli_fetch_array($query_mhs)) {
-                                        ?>
-                                        <option value="<?= $data_mhs['nim'] ?>"><?= $data_mhs['nim'] ?> - <?= $data_mhs['nama'] ?></option>
-                                        <?php
-                                    }
-                                }
-                                ?>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="modal-footer justify-content-between">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary" name="btn-tambah-peserta">Simpan</button>
-                    </div>
-                </form>
-            </div>
-            <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-    </div>
-    <!-- /.modal -->
-
-
-    <div class="modal fade" id="modal-import">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">Import Data Peserta</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <form action="proses_import_peserta.php" method="post" enctype="multipart/form-data">
-          <div class="modal-body">
-            <div class="row">
-                <div class="col-6">
-                    <center>
-                        <label>Download Template :</label>
-                        <a href="template/template_peserta.xls" class="btn btn-info btn-sm">Download</a>
-                    </center>
-                </div>
-                <div class="col-6">
-                    <center>
-                        <label>Download Data Mahasiswa :</label>
-                        <a href="../data_mahasiswa_superadmin/export_excel.php" class="btn btn-info btn-sm">Download</a>
-                    </center>
-                </div>
-            </div>
-            <div class="form-group">
-                <input type="hidden" value="<?= $id ?>" name="id_kelas">
-              <label for="exampleInputEmail1">Upload File</label>
-              <input type="file" class="form-control" id="nama" placeholder="Masukkan Nama" name="file_peserta" required>
-            </div>
-          </div>
-          <div class="modal-footer justify-content-between">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary" name="btn-import">Simpan</button>
-          </div>
-        </form>
-      </div>
-      <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-  </div>
-  <!-- /.modal -->
-
 
     <?php
     include '../script.php';

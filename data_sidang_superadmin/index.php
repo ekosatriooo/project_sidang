@@ -109,8 +109,8 @@ $halaman = "data_sidang";
                                 </thead>
                                 <tbody>
                                     <?php
-                                    $cek_query = mysqli_query($db, "SELECT s.*, a.tahun, a.semester, j.nama_jurusan, 
-                                    d1.nik AS nik_pm1, d1.nama AS nama_pm1, d2.nik AS nik_pg1, d2.nama AS nama_pg1,
+                                    $cek_query = mysqli_query($db, "SELECT s.*, a.tahun, a.semester, j.nama_jurusan,
+                                    d1.nama AS nama_pm1, d2.nama AS nama_pg1,
                                     m.nim, m.nama AS nama_mhs, r.nama_ruangan, r.kode_ruangan 
                                     FROM tbl_sidang s 
                                     LEFT JOIN tbl_akademik a ON s.kode_akd = a.kode_akd 
@@ -126,8 +126,8 @@ $halaman = "data_sidang";
                                             $id_sidang = $data['id'];
                                             $nim = $data['nim'];
                                             $nama_mahasiswa = $data['nama_mhs'];
-                                            $nik_dosen_pembimbing = $data['nik_pm1']; 
-                                            $nik_dosen_penguji = $data['nik_pg1']; 
+                                            $nik_dosen_pembimbing = $data['nik_pembimbing_1']; 
+                                            $nik_dosen_penguji = $data['nik_penguji_1']; 
                                             $nama_dosen_pembimbing = $data['nama_pm1'];
                                             $nama_dosen_penguji = $data['nama_pg1'];
                                             $jurusan = $data['nama_jurusan'];
@@ -171,6 +171,7 @@ $halaman = "data_sidang";
                                                     </button>
                                                     <a href="hapus.php?id_sidang=<?= $id_sidang; ?>" class="btn btn-sm btn-danger" onclick="return confirm('Apakah kamu yakin menghapus data ini?')"><i class="fas fa-trash"></i></a>
                                                     <a href="detail.php?id_sidang=<?= $id_sidang; ?>" class="btn btn-sm btn-primary"><i class="fas fa-eye"></i></a>
+                                                    <a href="presensi.php?id_sidang=<?= $id_sidang ?>" class="btn btn-sm btn-info"><i class="fas fa-qrcode"></i></a>
                                                 </td>
                                             </tr>
                                     <?php

@@ -14,8 +14,8 @@ if(isset($_POST['btn-tambah'])) {
     $jam_mulai = trim(mysqli_real_escape_string($db, $_POST['jam_mulai']));
     $jam_selesai = trim(mysqli_real_escape_string($db, $_POST['jam_selesai']));
     $jenis_sidang = trim(mysqli_real_escape_string($db, $_POST['sidang']));
-    $status = trim(mysqli_real_escape_string($db, $_POST['status']));
     $judul = trim(mysqli_real_escape_string($db, $_POST['judul']));
+    $status = "Dijadwalkan";
 
     $query_cek = mysqli_query($db, "SELECT * FROM tbl_sidang WHERE kode_akd = '$kode_akd' AND kode_jurusan = '$kode_jurusan' AND kode_ruangan = '$kode_ruangan' AND nim = '$mahasiswa' AND jenis_sidang = '$jenis_sidang' AND tgl = '$tanggal' AND nik_pembimbing_1 = '$pembimbing1' AND nik_pembimbing_2 = '$pembimbing2' AND nik_penguji_1 = '$penguji1' AND nik_penguji_2 = '$penguji2' AND jam_mulai = '$jam_mulai' AND jam_selesai = '$jam_selesai' AND status = '$status'") or die (mysqli_error($db));
     $rv = mysqli_num_rows($query_cek);

@@ -34,8 +34,7 @@ $halaman = "data_sidang";
                 <li class="nav-item dropdown">
                     <a class="nav-link" data-toggle="dropdown" href="#">
                         Hallo, <?= $_SESSION['nama']; ?> <i class="far fa-user"></i>
-                        <span class="badge badg
-          e-warning navbar-badge">15</span>
+                        <span class="badge badge-warning navbar-badge"></span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                         <div class="dropdown-divider"></div>
@@ -85,8 +84,8 @@ $halaman = "data_sidang";
                                 <?php
                                 $id_sidang = $_GET['id_sidang'];
                                 $cek_query_detail = mysqli_query($db, "SELECT s.*, a.tahun, a.semester, j.nama_jurusan, 
-                                d1.nik AS nik_pm1, d1.nama AS nama_pm1, d2.nik AS nik_pm2, d2.nama AS nama_pm2,
-                                d3.nik AS nik_pg1, d3.nama AS nama_pg1, d4.nik AS nik_pg2, d4.nama AS nama_pg2,
+                                d1.nama AS nama_pm1, d2.nama AS nama_pm2,
+                                d3.nama AS nama_pg1, d4.nama AS nama_pg2,
                                 m.nim, m.nama AS nama_mhs, m.kelamin AS kelamin_mhs, m.img AS img_mhs, r.nama_ruangan, r.kode_ruangan 
                                 FROM tbl_sidang s 
                                 LEFT JOIN tbl_akademik a ON s.kode_akd = a.kode_akd 
@@ -104,13 +103,13 @@ $halaman = "data_sidang";
                                 $jurusan = $data_sidang['nama_jurusan'];
                                 $nim = $data_sidang['nim'];
                                 $nama_mahasiswa = $data_sidang['nama_mhs'];
-                                $nik_dosen_pembimbing1 = $data_sidang['nik_pm1'];
+                                $nik_dosen_pembimbing1 = $data_sidang['nik_pembimbing_1'];
                                 $nama_dosen_pembimbing1 = $data_sidang['nama_pm1'];
-                                $nik_dosen_pembimbing2 = $data_sidang['nik_pm2'];
+                                $nik_dosen_pembimbing2 = $data_sidang['nik_pembimbing_2'];
                                 $nama_dosen_pembimbing2 = $data_sidang['nama_pm2'];
-                                $nik_dosen_penguji1 = $data_sidang['nik_pg1'];
+                                $nik_dosen_penguji1 = $data_sidang['nik_penguji_1'];
                                 $nama_dosen_penguji1 = $data_sidang['nama_pg1'];
-                                $nik_dosen_penguji2 = $data_sidang['nik_pg2'];
+                                $nik_dosen_penguji2 = $data_sidang['nik_penguji_2'];
                                 $nama_dosen_penguji2 = $data_sidang['nama_pg2'];
                                 $judul_sidang = $data_sidang['judul'];
                                 $jam_mulai = $data_sidang['jam_mulai'];
@@ -170,7 +169,7 @@ $halaman = "data_sidang";
                                                 <td class="font-weight-bold"><?= $nim; ?></td>
                                             </tr>
                                             <tr>
-                                                <td>Nama Ruangan</td>
+                                                <td>Ruangan</td>
                                                 <td>:</td>
                                                 <td class="font-weight-bold"><?= $nama_ruangan; ?></td>
                                             </tr>
@@ -188,11 +187,6 @@ $halaman = "data_sidang";
                                                 <td width="30%">Dosen Penguji 2</td>
                                                 <td width="5%">:</td>
                                                 <td class="font-weight-bold"><?= $nik_dosen_pembimbing2; ?> - <?= $nama_dosen_pembimbing2; ?></td>
-                                            </tr>
-                                            <tr>
-                                                <td width="30%">Judul Sidang</td>
-                                                <td width="5%">:</td>
-                                                <td class="font-weight-bold"><?= $judul_sidang; ?></td>
                                             </tr>
                                             <tr>
                                                 <td width="30%">Tanggal</td>
@@ -217,17 +211,20 @@ $halaman = "data_sidang";
                                         ?>
                                         <img src="<?= $alamat_tujuan ?>"  alt="QR Code Pertemuan" style="width:200px">
                                         <?php 
-                                        if ($status_pertemuan == '1') {
+                                        if ($status_sidang == '1') {
                                             ?>
                                             <p id="waktu"></p> 
                                             <?php 
                                         }
                                         ?>
                                     </div>
-                                </div> <!-- AKHIR DARI ROW -->
+                                </div>
+                            </div>
+                        </div>
                         <!-- /.card-header -->
                         <div class="card-body">
                             <a href="index.php" class="btn btn-sm btn-danger mb-3">Kembali</a>
+                            <a href=""></a>
                             <div id="tabel_presensi"></div>
                         </div>
                         <!-- /.card-body -->
@@ -272,9 +269,7 @@ $halaman = "data_sidang";
               <select class="form-control" name="kehadiran" required>
                 <option value="">-- Pilih Status Kehadiran --</option>
                 <option value="hadir">Hadir</option>
-                <option value="izin">Izin</option>
-                <option value="sakit">Sakit</option>
-                <option value="alfa">Alfa</option>
+                <option value="tidak_hadir">Tidak Hadir</option>
               </select>
             </div>
           </div>
@@ -320,14 +315,13 @@ var x = setInterval(function() {
   if (distance < 0) {
     clearInterval(x);
     
-    window.location.href="tutup.php?id=<?= $id_pertemuan; ?>";
   }
 }, 1000);
 </script>
 
 <script>
     function refresh_kehadiran() {
-        $('#tabel_presensi').load('tabel_presensi.php?id_kelas=<?= $id_kelas ?>&id_pertemuan=<?= $id_pertemuan ?>');
+        $('#tabel_presensi').load('tabel_presensi.php?id_sidang=<?= $id_sidang ?>');
         setTimeout(refresh_kehadiran, 5000);
     }
 

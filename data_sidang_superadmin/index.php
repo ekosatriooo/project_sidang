@@ -374,15 +374,6 @@ $halaman = "data_sidang";
                         </select>
                         </div>
                         <div class="form-group">
-                        <label>Status</label>
-                        <select class="form-control" name="status" required>
-                            <option value="">-- Pilih Status --</option>
-                            <option value="dijadwalkan">Dijadwalkan</option>
-                            <option value="berlangsung">Berlangsung</option>
-                            <option value="selesai">Selesai</option>
-                        </select>
-                        </div>
-                        <div class="form-group">
                             <label for="exampleInputEmail1">Judul Sidang Mahasiswa</label>
                             <input type="text" class="form-control" id="judul" placeholder="Masukkan Judul" name="judul" required>
                         </div>

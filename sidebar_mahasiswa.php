@@ -13,9 +13,17 @@
     </li>
     <li class="nav-item">
       <a href="../presensi_mahasiswa" class="nav-link <?php if ($halaman=='presensi'){echo 'active';}?>">
-        <i class="nav-icon fas fa-home"></i>
+        <i class="nav-icon fas fa-qrcode"></i>
         <p>
           Presensi
+        </p>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a href="../data_sidang_mahasiswa" class="nav-link <?php if ($halaman=='sidang'){echo 'active';}?>">
+        <i class="nav-icon fas fa-gavel"></i>
+        <p>
+          Jadwal Sidang
         </p>
       </a>
     </li>

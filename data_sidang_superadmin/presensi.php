@@ -77,7 +77,7 @@ $halaman = "data_sidang";
 
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">Presensi Matkul</h3>
+                            <h3 class="card-title">Presensi Sidang</h3>
                         </div>
                         <div class="card border-0 shadow-none bg-transparent">
                             <div class="card-body">
@@ -224,7 +224,9 @@ $halaman = "data_sidang";
                         <!-- /.card-header -->
                         <div class="card-body">
                             <a href="index.php" class="btn btn-sm btn-danger mb-3">Kembali</a>
-                            <a href=""></a>
+                            <button type="button" class="btn btn-sm btn-success mb-3" data-toggle="modal" data-target="#modal-tambah">
+                                <i class="fas fa-plus"></i>Tambah Peserta
+                            </button>
                             <div id="tabel_presensi"></div>
                         </div>
                         <!-- /.card-body -->
@@ -251,6 +253,48 @@ $halaman = "data_sidang";
             </div>
         </footer>
     </div>
+
+    <div class="modal fade" id="modal-tambah">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Tambah Peserta</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="proses_tambah_peserta.php" method="post">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <input type="hidden" name="id_sidang" value="<?= $id_sidang ?>">
+                            <label>Mahasiswa</label>
+                            <select class="form-control" name="nim" required>
+                                <option value="">-- Pilih Mahasiswa --</option>
+                                <?php
+                                $query_mhs = mysqli_query($db, "SELECT nim, nama FROM tbl_mahasiswa");
+                                $rv = mysqli_num_rows($query_mhs);
+                                if ($rv > 0) {
+                                    while($data_mhs = mysqli_fetch_array($query_mhs)) {
+                                        ?>
+                                        <option value="<?= $data_mhs['nim'] ?>"><?= $data_mhs['nim'] ?> - <?= $data_mhs['nama'] ?></option>
+                                        <?php
+                                    }
+                                }
+                                ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary" name="btn-tambah-peserta">Simpan</button>
+                    </div>
+                </form>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
 
     <div class="modal fade" id="modal-edit">
     <div class="modal-dialog">

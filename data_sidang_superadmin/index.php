@@ -103,7 +103,7 @@ $halaman = "data_sidang";
                                         <th>Mahasiswa</th>
                                         <th>Pembimbing</th>
                                         <th>Penguji</th>
-                                        <th>Nama Ruangan</th>
+                                        <th>Ruang</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>

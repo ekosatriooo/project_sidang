@@ -4,7 +4,7 @@ $peran = $_SESSION['peran'];
 if ($peran != 'M') {
   echo '<script>window.location.href="../logout.php"</script>';
 }else {
-$halaman = "ganti_password";
+$halaman = "presensi";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -14,9 +14,18 @@ $halaman = "ganti_password";
   <title>AdminLTE 3 | Dashboard 3</title>
 
 <?php
-include '../library.php';
-?>
+include '../library.php'; 
+ ?>
 </head>
+<!--
+`body` tag options:
+
+  Apply one or more of the following classes to to the body tag
+  to get the desired effect
+
+  * sidebar-collapse
+  * sidebar-mini
+-->
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
   <!-- Navbar -->
@@ -36,7 +45,8 @@ include '../library.php';
       <li class="nav-item dropdown">
         <a class="nav-link" data-toggle="dropdown" href="#">
           Hallo, <?= $_SESSION['nama']; ?> <i class="far fa-user"></i>
-          <span class="badge badge-warning navbar-badge"></span>
+          <span class="badge badg
+          e-warning navbar-badge">15</span>
         </a>
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
           <div class="dropdown-divider"></div>
@@ -66,6 +76,7 @@ include '../library.php';
     <!-- Sidebar -->
     <div class="sidebar">
 
+
       <?php
       include '../sidebar_mahasiswa.php';
       ?>
@@ -77,48 +88,21 @@ include '../library.php';
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
-     <div class="card-header">
-        <h3 class="card-title">Ganti Password</h3>
-    </div>
+   
+    <!-- /.content-header -->
+
     <!-- Main content -->
     <div class="content">
-        <div class="card card-primary">
-              <div class="card-header">
-                <h3 class="card-title">Ganti Password</h3>
-              </div>
-              <!-- /.card-header -->
-              <!-- form start -->
-              <form action="proses_gantipw.php" method="post">
-                <div class="card-body">
-                    <?php
-                    $username = $_SESSION['user'];
-                    $nama = $_SESSION['nama'];
-                     ?>
-                  <div class="form-group">
-                    <label for="exampleInputEmail1">Username</label>
-                    <input type="text" value="<?= $username ?>" class="form-control" id="username" placeholder="Masukkan Nama" name="username" readonly>
-                  </div>
-                  <div class="form-group">
-                    <label for="exampleInputEmail1">Nama</label>
-                    <input type="text" value="<?= $nama ?>" class="form-control" id="nama" placeholder="Nama" name="nama" readonly>
-                  </div>
-                  <div class="form-group">
-                    <label for="exampleInputEmail1">Password Baru</label>
-                    <input type="password" class="form-control" id="kontak" placeholder="Masukkan Password Baru" name="pwbaru" required>
-                  </div>
-                  <div class="form-group">
-                    <label for="exampleInputEmail1">Konfirmasi Password Baru</label>
-                    <input type="password" class="form-control" id="email" placeholder="Konfirmasi Password Baru" name="cpassword" required>
-                  </div>
-                </div>
-                <!-- /.card-body -->
-
-                <div class="card-footer">
-                  <button type="submit" class="btn btn-primary" name="btn-ganti">Simpan</button>
-                </div>
-              </form>
-            </div>
       <div class="container-fluid">
+        <div class="card">
+            <div class="card-header">
+            </div>
+            <div class="card-body">
+                <div class="col-6">
+                    <div id="reader" width="200px"></div>
+                </div>
+            </div>
+        </div>
       </div>
       <!-- /.container-fluid -->
     </div>
@@ -147,7 +131,29 @@ include '../library.php';
 
 <?php
 include '../script.php'; 
-?>
+ ?>
+
+<script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>;
+<script>
+    function onScanSuccess(decodedText, decodedResult) {
+  // handle the scanned code as you like, for example:
+//   console.log(`Code matched = ${decodedText}`, decodedResult);
+window.location.href="proses_presensi.php?id_pertemuan="+decodedText
+}
+
+function onScanFailure(error) {
+  // handle scan failure, usually better to ignore and keep scanning.
+  // for example:
+//   console.warn(`Code scan error = ${error}`);
+}
+
+let html5QrcodeScanner = new Html5QrcodeScanner(
+  "reader",
+  { fps: 10, qrbox: {width: 250, height: 250} },
+  /* verbose= */ false);
+html5QrcodeScanner.render(onScanSuccess, onScanFailure);
+</script>
+
 </body>
 </html>
 <?php

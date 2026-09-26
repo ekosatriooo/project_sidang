@@ -126,7 +126,7 @@ $halaman = "data_sidang";
                                         <td class="font-weight-bold"><?= $tahun; ?>-<?= $semester == 'GL' ? 'Ganjil' : 'Genap'; ?></td>
                                     </tr>
                                     <tr>
-                                        <td>Nama Ruangan</td>
+                                        <td>Ruang</td>
                                         <td>:</td>
                                         <td class="font-weight-bold"><?= $nama_ruangan; ?></td>
                                     </tr>

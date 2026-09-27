@@ -139,7 +139,7 @@ $halaman = "sidang";
                                                 <td><?= $nik_dosen_penguji; ?> - <?= $nama_dosen_penguji ?></td>
                                                 <td><?= $nama_ruangan; ?></td>
                                                 <td>
-                                                    <a href="presensi.php?id_sidang=<?= $id_sidang ?>" class="btn btn-sm btn-primary">
+                                                    <a href="proses_ikuti_sidang.php?id_sidang=<?= $id_sidang ?>" class="btn btn-sm btn-primary">
                                                         <i class="fas fa-sign-in-alt mr-1"></i> Ikuti Sidang
                                                     </a>
                                                 </td>

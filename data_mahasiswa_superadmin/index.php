@@ -1,5 +1,9 @@
 <?php
 require_once '../database/koneksi.php';
+$peran = $_SESSION['peran'];
+if ($peran != 'S') {
+  echo '<script>window.location.href="../logout.php"</script>';
+}else {
 $halaman = "data_mahasiswa";
 ?>
 <!DOCTYPE html>
@@ -34,8 +38,7 @@ $halaman = "data_mahasiswa";
         <li class="nav-item dropdown">
           <a class="nav-link" data-toggle="dropdown" href="#">
             Hallo, <?= $_SESSION['nama']; ?> <i class="far fa-user"></i>
-            <span class="badge badg
-          e-warning navbar-badge">15</span>
+            <span class="badge badge-warning navbar-badge"></span>
           </a>
           <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
             <div class="dropdown-divider"></div>
@@ -86,11 +89,11 @@ $halaman = "data_mahasiswa";
             </div>
             <!-- /.card-header -->
             <div class="card-body">
-              <a href="tambah.php" class="btn btn-sm btn-primary mb-3">Tambah Data</a>
-              <button type="button" class="btn btn-sm btn-success mb-3" data-toggle="modal" data-target="#modal-tambah">
+              <a href="tambah.php" class="btn btn-sm btn-primary"><i class="fas fa-plus"></i>Tambah Data</a>
+              <button type="button" class="btn btn-sm btn-success" data-toggle="modal" data-target="#modal-tambah">
                 <i class="fas fa-plus"></i>Tambah Data
               </button>
-              <button type="button" class="btn btn-sm btn-primary mb-3" data-toggle="modal" data-target="#modal-import">
+              <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-import">
                 <i class="fas fa-file-excel"></i>Import Data
               </button>
               <table id="example1" class="table table-bordered table-striped">
@@ -376,5 +379,7 @@ $halaman = "data_mahasiswa";
   })
 </script>
 </body>
-
 </html>
+<?php
+} 
+?>;

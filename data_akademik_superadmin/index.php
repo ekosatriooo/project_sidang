@@ -1,5 +1,9 @@
 <?php
 require_once '../database/koneksi.php';
+$peran = $_SESSION['peran'];
+if ($peran != 'S') {
+  echo '<script>window.location.href="../logout.php"</script>';
+}else {
 $halaman = "data_akademik";
 ?>
 <!DOCTYPE html>
@@ -32,8 +36,7 @@ include '../library.php';
       <li class="nav-item dropdown">
         <a class="nav-link" data-toggle="dropdown" href="#">
           Hallo, <?= $_SESSION['nama']; ?> <i class="far fa-user"></i>
-          <span class="badge badg
-          e-warning navbar-badge">15</span>
+          <span class="badge badge-warning navbar-badge"></span>
         </a>
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
           <div class="dropdown-divider"></div>
@@ -83,7 +86,7 @@ include '../library.php';
               </div>
               <!-- /.card-header -->
               <div class="card-body">
-                <button type="button" class="btn btn-sm btn-success mb-3" data-toggle="modal" data-target="#modal-tambah">
+                <button type="button" class="btn btn-sm btn-success" data-toggle="modal" data-target="#modal-tambah">
                 <i class="fas fa-plus"></i>Tambah Data
               </button>
                 <table id="example1" class="table table-bordered table-striped">
@@ -305,3 +308,6 @@ include '../script.php';
 </script>
 </body>
 </html>
+<?php
+} 
+?>;

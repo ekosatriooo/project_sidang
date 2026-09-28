@@ -115,4 +115,4 @@ include '../script.php';
 </html>
 <?php
 } 
-?>;
+?>

@@ -1,5 +1,9 @@
 <?php
 require_once '../database/koneksi.php';
+$peran = $_SESSION['peran'];
+if ($peran != 'S') {
+  echo '<script>window.location.href="../logout.php"</script>';
+}else {
 $halaman = "data_dosen";
 ?>
 <!DOCTYPE html>
@@ -86,10 +90,10 @@ $halaman = "data_dosen";
             </div>
             <!-- /.card-header -->
             <div class="card-body">
-              <button type="button" class="btn btn-sm btn-success mb-3" data-toggle="modal" data-target="#modal-tambah">
+              <button type="button" class="btn btn-sm btn-success" data-toggle="modal" data-target="#modal-tambah">
                 <i class="fas fa-plus"></i>Tambah Data
               </button>
-              <button type="button" class="btn btn-sm btn-primary mb-3" data-toggle="modal" data-target="#modal-import">
+              <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-import">
                 <i class="fas fa-file-excel"></i>Import Data
               </button>
               <table id="example1" class="table table-bordered table-striped">
@@ -374,5 +378,7 @@ $halaman = "data_dosen";
   })
 </script>
 </body>
-
 </html>
+<?php
+} 
+?>;

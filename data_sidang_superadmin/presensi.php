@@ -1,5 +1,9 @@
 <?php
 require_once '../database/koneksi.php';
+$peran = $_SESSION['peran'];
+if ($peran != 'S') {
+  echo '<script>window.location.href="../logout.php"</script>';
+}else {
 $halaman = "data_sidang";
 ?>
 <!DOCTYPE html>
@@ -373,5 +377,7 @@ var x = setInterval(function() {
 </script>
 
 </body>
-
 </html>
+<?php
+} 
+?>

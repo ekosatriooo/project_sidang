@@ -48,10 +48,7 @@ require_once '../database/koneksi.php';
                         <span class="badge badge-<?= $warna ?>"><?= $status_kehadiran == 'hadir' ? 'Hadir' : 'Tidak Hadir' ?></span>
                     </td>
                     <td>
-                        <button type="button" class="btn btn-sm btn-success" data-toggle="modal" data-target="#modal-edit"
-                            data-id_presensi="<?= $id_presensi; ?>">
-                            <i class="fas fa-edit"></i>
-                        </button>
+                        <a href="hapus_peserta.php?peserta=<?= $nim ?>&id_sidang=<?= $id_sidang ?>" class="btn btn-sm btn-danger" onclick="return confirm('Apakah kamu yakin menghapus data ini?')"><i class="fas fa-trash"></i></a>
                     </td>
                 </tr>
         <?php

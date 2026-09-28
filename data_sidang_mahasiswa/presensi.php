@@ -106,7 +106,7 @@ $halaman = "sidang";
                                 <div class="col-md-9">
                                     <table class="table table-borderless table-sm m-0">
                                         <tr><td width="20%">Judul</td><td width="3%">:</td><td class="font-weight-bold"><?= $judul_sidang ?></td></tr>
-                                        <tr><td>Mahasiswa Penyaji</td><td>:</td><td class="font-weight-bold text-primary"><?= $nama_mahasiswa; ?> (<?= $nim; ?>)</td></tr>
+                                        <tr><td>Mahasiswa</td><td>:</td><td class="font-weight-bold text-primary"><?= $nama_mahasiswa; ?> (<?= $nim; ?>)</td></tr>
                                         <tr><td>Ruangan</td><td>:</td><td class="font-weight-bold"><?= $nama_ruangan; ?></td></tr>
                                         <tr><td>Jurusan</td><td>:</td><td class="font-weight-bold"><?= $jurusan; ?></td></tr>
                                         <tr><td>Tanggal</td><td>:</td><td class="font-weight-bold"><?= $hari[date_format(date_create($tanggal), 'w')] . date_format(date_create($tanggal), ', d F Y') ?></td></tr>
@@ -115,8 +115,6 @@ $halaman = "sidang";
                             </div>
 
                             <a href="index.php" class="btn btn-sm btn-danger mb-3"><i class="fas fa-arrow-left mr-1"></i> Keluar Room</a>
-                            
-                            <!-- Area Load Tabel AJAX -->
                             <div id="tabel_presensi">
                                 <div class="text-center py-4 text-muted"><i class="fas fa-circle-notch fa-spin fa-2x"></i><br>Memuat daftar peserta...</div>
                             </div>

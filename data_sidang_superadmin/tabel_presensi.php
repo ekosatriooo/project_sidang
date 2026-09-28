@@ -20,18 +20,17 @@ require_once '../database/koneksi.php';
         if ($rv > 0) {
             $no = 1;
             while ($data_peserta = mysqli_fetch_array($query_peserta)) {
-                $nim = $data_peserta['nim'];
+            $nim = $data_peserta['nim'];
 
-                $query_mhs = mysqli_query($db, "SELECT nama FROM tbl_mahasiswa WHERE nim = '$nim'");
-                $data_mhs = mysqli_fetch_array($query_mhs);
-                $nama_mhs = $data_mhs['nama'];
+            $query_mhs = mysqli_query($db, "SELECT nama FROM tbl_mahasiswa WHERE nim = '$nim'");
+            $data_mhs = mysqli_fetch_array($query_mhs);
+            $nama_mhs = $data_mhs['nama'];
 
-                $query_presensi = mysqli_query($db, "SELECT * FROM tbl_presensi WHERE id_sidang = '$id_sidang' AND nim = '$nim'");
+            $query_presensi = mysqli_query($db, "SELECT * FROM tbl_presensi WHERE id_sidang = '$id_sidang' AND nim = '$nim'");
 
-                $data_presensi = mysqli_fetch_array($query_presensi);
-                $id_presensi = $data_presensi['id'];
-                $status_kehadiran = $data_presensi['status_kehadiran'];
-
+            $data_presensi = mysqli_fetch_array($query_presensi);
+            $id_presensi = $data_presensi['id'];
+            $status_kehadiran = $data_presensi['status_kehadiran'];
         ?>
                 <tr>
                     <td><?= $no++ ?></td>

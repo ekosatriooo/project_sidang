@@ -133,7 +133,7 @@ include '../library.php';
 include '../script.php'; 
  ?>
 
-<script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>;
+<script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
 <script>
     function onScanSuccess(decodedText, decodedResult) {
   // handle the scanned code as you like, for example:
@@ -158,4 +158,4 @@ html5QrcodeScanner.render(onScanSuccess, onScanFailure);
 </html>
 <?php
 } 
-?>;
+?>

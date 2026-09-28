@@ -4,7 +4,7 @@ $peran = $_SESSION['peran'];
 if ($peran != 'S') {
   echo '<script>window.location.href="../logout.php"</script>';
 }else {
-$halaman = "data_pengguna";
+$halaman = "data_mahasiswa";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -36,8 +36,7 @@ include '../library.php';
       <li class="nav-item dropdown">
         <a class="nav-link" data-toggle="dropdown" href="#">
           Hallo, <?= $_SESSION['nama']; ?> <i class="far fa-user"></i>
-          <span class="badge badg
-          e-warning navbar-badge">15</span>
+          <span class="badge badge-warning navbar-badge"></span>
         </a>
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
           <div class="dropdown-divider"></div>
@@ -54,7 +53,7 @@ include '../library.php';
   <!-- /.navbar -->
 
   <!-- Main Sidebar Container -->
-  <aside class="main-sidebar sidebar-dark-primary elevation-4">
+  <aside class="main-sidebar sidebar-dark-maroon elevation-4">
     <!-- Brand Logo -->
     <a href="index3.html" class="brand-link">
       <span class="brand-text font-weight-light">Sistem Manajemen</span>
@@ -74,7 +73,7 @@ include '../library.php';
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
-     <div class="card-header">
+     <div class="card-header bg-navy">
         <h3 class="card-title">Edit Data Mahasiswa</h3>
     </div>
     <!-- Main content -->
@@ -166,4 +165,4 @@ include '../script.php';
 </html>
 <?php
 } 
-?>;
+?>

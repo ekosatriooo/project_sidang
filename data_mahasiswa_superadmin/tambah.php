@@ -54,7 +54,7 @@ include '../library.php';
   <!-- /.navbar -->
 
   <!-- Main Sidebar Container -->
-  <aside class="main-sidebar sidebar-dark-primary elevation-4">
+  <aside class="main-sidebar sidebar-dark-maroon elevation-4">
     <!-- Brand Logo -->
     <a href="index3.html" class="brand-link">
       <span class="brand-text font-weight-light">Sistem Manajemen</span>
@@ -74,7 +74,7 @@ include '../library.php';
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
-     <div class="card-header">
+     <div class="card-header bg-navy">
         <h3 class="card-title">Tambah Data Mahasiswa</h3>
     </div>
     <!-- Main content -->
@@ -153,4 +153,4 @@ include '../script.php';
 </html>
 <?php
 } 
-?>;
+?>

@@ -57,7 +57,7 @@ $halaman = "sidang";
                 <div class="container-fluid pt-3">
                     <div class="card">
                         <div class="card-header bg-info">
-                            <h3 class="card-title text-white"><i class="fas fa-users mr-2"></i> Room Sidang Berlangsung</h3>
+                            <h3 class="card-title text-white"><i class="fas fa-users mr-2"></i> Room Sidang </h3>
                         </div>
                         <div class="card-body">
                             <?php
@@ -106,7 +106,7 @@ $halaman = "sidang";
                                 <div class="col-md-9">
                                     <table class="table table-borderless table-sm m-0">
                                         <tr><td width="20%">Judul</td><td width="3%">:</td><td class="font-weight-bold"><?= $judul_sidang ?></td></tr>
-                                        <tr><td>Mahasiswa</td><td>:</td><td class="font-weight-bold text-primary"><?= $nama_mahasiswa; ?> (<?= $nim; ?>)</td></tr>
+                                        <tr><td>Mahasiswa</td><td>:</td><td class="font-weight-bold"><?= $nama_mahasiswa; ?> (<?= $nim; ?>)</td></tr>
                                         <tr><td>Ruangan</td><td>:</td><td class="font-weight-bold"><?= $nama_ruangan; ?></td></tr>
                                         <tr><td>Jurusan</td><td>:</td><td class="font-weight-bold"><?= $jurusan; ?></td></tr>
                                         <tr><td>Tanggal</td><td>:</td><td class="font-weight-bold"><?= $hari[date_format(date_create($tanggal), 'w')] . date_format(date_create($tanggal), ', d F Y') ?></td></tr>

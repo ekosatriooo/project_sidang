@@ -59,7 +59,7 @@ $halaman = "data_jurusan";
   </div>
 
     <!-- Main Sidebar Container -->
-    <aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <aside class="main-sidebar sidebar-dark-maroon elevation-4">
       <!-- Brand Logo -->
       <a href="index3.html" class="brand-link">
         <span class="brand-text font-weight-light">Sistem Manajemen</span>
@@ -83,7 +83,7 @@ $halaman = "data_jurusan";
       <div class="content">
         <div class="container-fluid">
           <div class="card">
-            <div class="card-header">
+            <div class="card-header bg-navy">
               <h3 class="card-title">Data Jurusan</h3>
             </div>
             <!-- /.card-header -->
@@ -91,7 +91,7 @@ $halaman = "data_jurusan";
               <button type="button" class="btn btn-sm btn-success" data-toggle="modal" data-target="#modal-tambah">
                 <i class="fas fa-plus"></i>Tambah Data
               </button>
-              <button type="button" class="btn btn-sm btn-primary mb-3" data-toggle="modal" data-target="#modal-import">
+              <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#modal-import">
                 <i class="fas fa-file-excel"></i>Import Data
               </button>
               <table id="example1" class="table table-bordered table-striped">
@@ -268,4 +268,4 @@ $halaman = "data_jurusan";
 </html>
 <?php
 } 
-?>;
+?>

@@ -64,7 +64,7 @@ if ($peran != 'M') {
         <!-- Main Sidebar Container -->
         <aside class="main-sidebar sidebar-dark-maroon elevation-4">
             <!-- Brand Logo -->
-            <a href="index3.html" class="brand-link">
+            <a href="index.php" class="brand-link">
                 <span class="brand-text font-weight-light">Sistem Manajemen</span>
             </a>
 
@@ -85,7 +85,7 @@ if ($peran != 'M') {
             <!-- Main content -->
             <div class="content">
                 <div class="container-fluid">
-                    <div class="card">
+                    <div class="card mt-3">
                         <div class="card-header bg-navy">
                             <h3 class="card-title">Riwayat Menonton</h3>
                             <div class="card-tools">
@@ -95,8 +95,8 @@ if ($peran != 'M') {
                             </div>
                         </div>
                         <!-- /.card-header -->
-                        
                         <div class="card-body">
+                            <a href="export_pdf.php" class="btn btn-sm btn-danger mb-3"><i class="fas fa-file-pdf mr-1"></i>Export Pdf</a>
                             <table id="example1" class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
@@ -104,7 +104,7 @@ if ($peran != 'M') {
                                         <th>Tanggal</th>
                                         <th>Jam</th>
                                         <th>Jenis Sidang</th>
-                                        <th>Mahasiswa</th>
+                                        <th>Mahasiswa Penyaji</th>
                                         <th>Judul</th>
                                         <th>Ruang</th>
                                         <th>Status</th>
@@ -112,16 +112,8 @@ if ($peran != 'M') {
                                 </thead>
                                 <tbody>
                                     <?php
-                                    $cek_query = mysqli_query($db, "SELECT p.status_kehadiran, 
-                                        s.tgl, s.jam_mulai, s.jam_selesai, s.jenis_sidang, s.judul, 
-                                        m.nim AS nim_penyaji, m.nama AS nama_penyaji, 
-                                        r.nama_ruangan 
-                                        FROM tbl_presensi p
-                                        JOIN tbl_sidang s ON p.id_sidang = s.id
-                                        JOIN tbl_mahasiswa m ON s.nim = m.nim
-                                        JOIN tbl_ruangan r ON s.kode_ruangan = r.kode_ruangan
-                                        WHERE p.nim = '$user' AND p.nim != s.nim
-                                        ORDER BY s.tgl DESC") or die(mysqli_error($db));
+                                    $cek_query = mysqli_query($db, "SELECT * FROM tbl_presensi WHERE nim = '$user' ORDER BY tgl DESC") or die(mysqli_error($db));
+                                    
                                     $rv = mysqli_num_rows($cek_query);
                                     $no = 1;
                                     $hari = array("Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu");
@@ -140,9 +132,9 @@ if ($peran != 'M') {
                                             <tr>
                                                 <td><?= $no++; ?></td>
                                                 <td><?= $hari[date_format(date_create($tanggal), 'w')] . date_format(date_create($tanggal), ', d F Y') ?></td>
-                                                <td><?= date_format(date_create($data['jam_mulai']), 'H:i'); ?>-<?= date_format(date_create($data['jam_selesai']), 'H:i'); ?></td>
+                                                <td><?= date_format(date_create($data['jam_mulai']), 'H:i'); ?> - <?= date_format(date_create($data['jam_selesai']), 'H:i'); ?></td>
                                                 <td><?= $data['jenis_sidang']; ?></td>
-                                                <td><?= $data['nim_penyaji']; ?> - <?= $data['nama_penyaji']; ?></td>
+                                                <td><?= $data['nama']; ?></td>
                                                 <td><?= $data['judul']; ?></td>
                                                 <td><?= $data['nama_ruangan']; ?></td>
                                                 <td><?= $badge; ?></td>
@@ -171,10 +163,10 @@ if ($peran != 'M') {
 
         <!-- Main Footer -->
         <footer class="main-footer">
-            <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong>
+            <strong>Copyright &copy; 2026 <a href="#">Sistem Informasi Akademik</a>.</strong>
             All rights reserved.
             <div class="float-right d-none d-sm-inline-block">
-                <b>Version</b> 3.2.0
+                <b>Version</b> 1.0.0
             </div>
         </footer>
     </div>

@@ -308,7 +308,7 @@ $halaman = "data_sidang";
                         </div>
                         <div class="form-group">
                             <label>Dosen Pembimbing 2</label>
-                            <select class="form-control" name="pembimbing2" required>
+                            <select class="form-control" name="pembimbing2">
                                 <option value="">-- Pilih Dosen Pembimbing 2--</option>
                                 <?php
                                 $query_pembimbing2 = mysqli_query($db, "SELECT nik, nama FROM tbl_dosen")or die(mysqli_error($db));
@@ -342,7 +342,7 @@ $halaman = "data_sidang";
                         </div>
                         <div class="form-group">
                             <label>Dosen Penguji 2</label>
-                            <select class="form-control" name="penguji2" required>
+                            <select class="form-control" name="penguji2">
                                 <option value="">-- Pilih Dosen Penguji 2--</option>
                                 <?php
                                 $query_penguji2 = mysqli_query($db, "SELECT nik, nama FROM tbl_dosen")or die(mysqli_error($db));

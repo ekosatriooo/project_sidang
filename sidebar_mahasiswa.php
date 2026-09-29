@@ -28,6 +28,14 @@
       </a>
     </li>
     <li class="nav-item">
+      <a href="../riwayat_menonton" class="nav-link <?php if ($halaman=='riwayat_nonton'){echo 'active';}?>">
+        <i class="nav-icon fas fa-video"></i>
+        <p>
+          Riwayat Menonton
+        </p>
+      </a>
+    </li>
+    <li class="nav-item">
       <a href="../ganti_password_mahasiswa" class="nav-link <?php if ($halaman=='ganti_password'){echo 'active';}?>">
         <i class="nav-icon fas fa-lock"></i>
         <p>

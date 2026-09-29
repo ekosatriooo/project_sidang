@@ -2,9 +2,14 @@
 require_once '../database/koneksi.php';
 $peran = $_SESSION['peran'];
 if ($peran != 'M') {
-  echo '<script>window.location.href="../logout.php"</script>';
-}else {
-$halaman = "sidang";
+    echo '<script>window.location.href="../logout.php"</script>';
+    exit;
+} else {
+    $halaman = "riwayat_nonton"; 
+    $user = $_SESSION['user'];
+    $query_jumlah = mysqli_query($db, "SELECT COUNT(id) AS total_hadir FROM tbl_presensi WHERE nim = '$user' AND status_kehadiran = 'hadir'") or die(mysqli_error($db));
+    $data_jumlah = mysqli_fetch_assoc($query_jumlah);
+    $total_hadir = $data_jumlah['total_hadir'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -12,7 +17,7 @@ $halaman = "sidang";
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>AdminLTE 3 | Dashboard 3</title>
+    <title>Sistem Manajemen | Riwayat Menonton</title>
 
     <?php
     include '../library.php';
@@ -32,13 +37,10 @@ $halaman = "sidang";
 
             <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">
-                <!-- Navbar Search -->
-
                 <!-- Notifications Dropdown Menu -->
                 <li class="nav-item dropdown">
                     <a class="nav-link" data-toggle="dropdown" href="#">
                         Hallo, <?= $_SESSION['nama']; ?> <i class="far fa-user"></i>
-                        <span class="badge badge-warning navbar-badge"></span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                         <div class="dropdown-divider"></div>
@@ -49,13 +51,14 @@ $halaman = "sidang";
                         <a href="../logout.php" class="dropdown-item">
                             <i class="fas fa-sign-out-alt mr-2"></i> Keluar Sistem
                         </a>
-                        </div>
+                    </div>
                 </li>
             </ul>
         </nav>
         <!-- /.navbar -->
+        
         <div class="preloader flex-column justify-content-center align-items-center">
-          <img class="animation__shake" src="../asset_adminlte/dist/img/LogoUniv.png" alt="LogoUniv" height="70" width="70">
+            <img class="animation__shake" src="../asset_adminlte/dist/img/LogoUniv.png" alt="LogoUniv" height="70" width="70">
         </div>
 
         <!-- Main Sidebar Container -->
@@ -67,28 +70,32 @@ $halaman = "sidang";
 
             <!-- Sidebar -->
             <div class="sidebar">
-
                 <?php
                 include '../sidebar_mahasiswa.php';
                 ?>
-                <!-- /.sidebar-menu -->
             </div>
             <!-- /.sidebar -->
         </aside>
 
-        
-
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
             <!-- Content Header (Page header) -->
+            <!-- /.content-header -->
+
             <!-- Main content -->
             <div class="content">
                 <div class="container-fluid">
                     <div class="card">
                         <div class="card-header bg-navy">
-                            <h3 class="card-title">Jadwal Sidang</h3>
+                            <h3 class="card-title">Riwayat Menonton</h3>
+                            <div class="card-tools">
+                                <span class="badge badge-success" style="font-size: 14px;">
+                                    <i class="fas fa-check-circle mr-1"></i> Total Menonton: <?= $total_hadir; ?> Kali
+                                </span>
+                            </div>
                         </div>
                         <!-- /.card-header -->
+                        
                         <div class="card-body">
                             <table id="example1" class="table table-bordered table-striped">
                                 <thead>
@@ -96,69 +103,50 @@ $halaman = "sidang";
                                         <th>No</th>
                                         <th>Tanggal</th>
                                         <th>Jam</th>
-                                        <th>Jurusan</th>
+                                        <th>Jenis Sidang</th>
                                         <th>Mahasiswa</th>
-                                        <th>Pembimbing</th>
-                                        <th>Penguji</th>
+                                        <th>Judul</th>
                                         <th>Ruang</th>
-                                        <th>Aksi</th>
+                                        <th>Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php
-                                    $cek_query = mysqli_query($db, "SELECT s.*, j.nama_jurusan,
-                                    d1.nama AS nama_pm1, d2.nama AS nama_pg1,
-                                    m.nim, m.nama AS nama_mhs, r.nama_ruangan, r.kode_ruangan 
-                                    FROM tbl_sidang s 
-                                    LEFT JOIN tbl_jurusan j ON s.kode_jurusan = j.kode_jurusan 
-                                    LEFT JOIN tbl_dosen d1 ON s.nik_pembimbing_1 = d1.nik
-                                    LEFT JOIN tbl_dosen d2 ON s.nik_penguji_1 = d2.nik
-                                    LEFT JOIN tbl_mahasiswa m ON s.nim = m.nim 
-                                    LEFT JOIN tbl_ruangan r ON s.kode_ruangan = r.kode_ruangan") or die(mysqli_error($db));
+                                    $cek_query = mysqli_query($db, "SELECT p.status_kehadiran, 
+                                        s.tgl, s.jam_mulai, s.jam_selesai, s.jenis_sidang, s.judul, 
+                                        m.nim AS nim_penyaji, m.nama AS nama_penyaji, 
+                                        r.nama_ruangan 
+                                        FROM tbl_presensi p
+                                        JOIN tbl_sidang s ON p.id_sidang = s.id
+                                        JOIN tbl_mahasiswa m ON s.nim = m.nim
+                                        JOIN tbl_ruangan r ON s.kode_ruangan = r.kode_ruangan
+                                        WHERE p.nim = '$user' AND p.nim != s.nim
+                                        ORDER BY s.tgl DESC") or die(mysqli_error($db));
                                     $rv = mysqli_num_rows($cek_query);
                                     $no = 1;
+                                    $hari = array("Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu");
+                                    
                                     if ($rv > 0) {
                                         while ($data = mysqli_fetch_array($cek_query)) {
-                                            $id_sidang = $data['id'];
-                                            $nim = $data['nim'];
-                                            $nama_mahasiswa = $data['nama_mhs'];
-                                            $nik_dosen_pembimbing = $data['nik_pembimbing_1']; 
-                                            $nik_dosen_penguji = $data['nik_penguji_1']; 
-                                            $nama_dosen_pembimbing = $data['nama_pm1'];
-                                            $nama_dosen_penguji = $data['nama_pg1'];
-                                            $jurusan = $data['nama_jurusan'];
-                                            $nama_ruangan = $data['nama_ruangan'];
-                                            $jam_mulai = $data['jam_mulai'];
-                                            $jam_selesai = $data['jam_selesai'];
                                             $tanggal = $data['tgl'];
-                                            $hari = array("Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu");
+                                            if ($data['status_kehadiran'] == 'hadir') {
+                                                $badge = '<span class="badge badge-success">Hadir</span>';
+                                            } elseif ($data['status_kehadiran'] == 'tidak_hadir') {
+                                                $badge = '<span class="badge badge-danger">Tidak Hadir</span>';
+                                            } else {
+                                                $badge = '<span class="badge badge-warning">Menunggu</span>';
+                                            }
                                     ?>
                                             <tr>
                                                 <td><?= $no++; ?></td>
                                                 <td><?= $hari[date_format(date_create($tanggal), 'w')] . date_format(date_create($tanggal), ', d F Y') ?></td>
-                                                <td><?= date_format(date_create($jam_mulai), 'H:i'); ?>-<?= date_format(date_create($jam_selesai), 'H:i'); ?></td>
-                                                <td><?= $jurusan; ?></td>
-                                                <td><?= $nim; ?> - <?= $nama_mahasiswa ?></td>
-                                                <td><?= $nik_dosen_pembimbing; ?> - <?= $nama_dosen_pembimbing ?></td>
-                                                <td><?= $nik_dosen_penguji; ?> - <?= $nama_dosen_penguji ?></td>
-                                                <td><?= $nama_ruangan; ?></td>
-                                                <td>
-                                                <?php
-                                                $user = $_SESSION['user']; 
-                                                if ($user == $nim) { 
-                                                ?>
-                                                    <span class="badge badge-success"><i class="fas fa-user-check"></i> Ini Sidang Anda</span>
-                                                <?php 
-                                                } else { 
-                                                ?>
-                                                    <a href="proses_ikuti_sidang.php?id_sidang=<?= $id_sidang ?>" class="btn btn-sm btn-primary">
-                                                        <i class="fas fa-sign-in-alt mr-1"></i> Ikuti Sidang
-                                                    </a>
-                                                <?php 
-                                                } 
-                                                ?>
-                                            </td>
-                                        </tr>
+                                                <td><?= date_format(date_create($data['jam_mulai']), 'H:i'); ?>-<?= date_format(date_create($data['jam_selesai']), 'H:i'); ?></td>
+                                                <td><?= $data['jenis_sidang']; ?></td>
+                                                <td><?= $data['nim_penyaji']; ?> - <?= $data['nama_penyaji']; ?></td>
+                                                <td><?= $data['judul']; ?></td>
+                                                <td><?= $data['nama_ruangan']; ?></td>
+                                                <td><?= $badge; ?></td>
+                                            </tr>
                                     <?php
                                         }
                                     }

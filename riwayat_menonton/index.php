@@ -104,7 +104,7 @@ if ($peran != 'M') {
                                         <th>Tanggal</th>
                                         <th>Jam</th>
                                         <th>Jenis Sidang</th>
-                                        <th>Mahasiswa Penyaji</th>
+                                        <th>Mahasiswa</th>
                                         <th>Judul</th>
                                         <th>Ruang</th>
                                         <th>Status</th>

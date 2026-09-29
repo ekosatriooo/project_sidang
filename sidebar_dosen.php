@@ -12,10 +12,10 @@
       </a>
     </li>
     <li class="nav-item">
-      <a href="../data_kelas_matkul_dosen" class="nav-link <?php if ($halaman=='data_kelas_matkul'){echo 'active';}?>">
+      <a href="../data_sidang_dosen" class="nav-link <?php if ($halaman=='sidang_dosen'){echo 'active';}?>">
         <i class="nav-icon fas fa-chalkboard-teacher"></i>
         <p>
-          Data Kelas Matkul
+          Jadwal Sidang
         </p>
       </a>
     </li>

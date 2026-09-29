@@ -45,8 +45,7 @@ include '../library.php';
       <li class="nav-item dropdown">
         <a class="nav-link" data-toggle="dropdown" href="#">
           Hallo, <?= $_SESSION['nama']; ?> <i class="far fa-user"></i>
-          <span class="badge badg
-          e-warning navbar-badge">15</span>
+          <span class="badge badge-warning navbar-badge"></span>
         </a>
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
           <div class="dropdown-divider"></div>
@@ -138,7 +137,7 @@ include '../script.php';
     function onScanSuccess(decodedText, decodedResult) {
   // handle the scanned code as you like, for example:
 //   console.log(`Code matched = ${decodedText}`, decodedResult);
-window.location.href="proses_presensi.php?id_pertemuan="+decodedText
+window.location.href="proses_presensi.php?id_sidang="+decodedText
 }
 
 function onScanFailure(error) {

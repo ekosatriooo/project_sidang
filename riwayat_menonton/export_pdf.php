@@ -66,14 +66,14 @@ $pdf->SetFont('Times', 'B', 10);
 $pdf->Cell(10, 6, 'No', 1, 0, 'C');
 $pdf->Cell(30, 6, 'Tanggal', 1, 0, 'C');
 $pdf->Cell(20, 6, 'Jam', 1, 0, 'C');
-$pdf->Cell(60, 6, 'Mahasiswa', 1, 0, 'C');
+$pdf->Cell(60, 6, 'Mahasiswa Penyaji', 1, 0, 'C');
 $pdf->Cell(25, 6, 'Jenis Sidang', 1, 0, 'C');
 $pdf->Cell(20, 6, 'Ruang', 1, 0, 'C');
 $pdf->Cell(25, 6, 'Status', 1, 1, 'C');
 
 $pdf->SetFont('Times', '', 10);
 
-$cek_query = mysqli_query($db, "SELECT * FROM tbl_presensi WHERE nim = '$user' ORDER BY tgl ASC") or die(mysqli_error($db));
+$cek_query = mysqli_query($db, "SELECT * FROM tbl_presensi WHERE nim = '$user' AND status_kehadiran = 'hadir' ORDER BY tgl ASC") or die(mysqli_error($db));
 
 $rv = mysqli_num_rows($cek_query);
 $no = 1;
@@ -96,7 +96,7 @@ if ($rv > 0) {
         $pdf->Cell(25, 6, $status, 1, 1, 'C'); 
     }
 } else {
-    $pdf->Cell(190, 6, 'Belum ada riwayat kehadiran.', 1, 1, 'C');
+    $pdf->Cell(190, 6, 'Belum ada riwayat kehadiran yang disahkan.', 1, 1, 'C');
 }
 
 $pdf->Output('I', 'Riwayat_Kehadiran_'.$user.'.pdf');

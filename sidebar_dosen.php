@@ -13,7 +13,7 @@
     </li>
     <li class="nav-item">
       <a href="../data_sidang_dosen" class="nav-link <?php if ($halaman=='sidang_dosen'){echo 'active';}?>">
-        <i class="nav-icon fas fa-chalkboard-teacher"></i>
+        <i class="nav-icon fas fa-gavel"></i>
         <p>
           Jadwal Sidang
         </p>

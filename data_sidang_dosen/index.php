@@ -38,8 +38,7 @@ $halaman = "sidang_dosen";
                 <li class="nav-item dropdown">
                     <a class="nav-link" data-toggle="dropdown" href="#">
                         Hallo, <?= $_SESSION['nama']; ?> <i class="far fa-user"></i>
-                        <span class="badge badg
-          e-warning navbar-badge">15</span>
+                        <span class="badge badge-warning navbar-badge"></span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                         <div class="dropdown-divider"></div>
@@ -85,7 +84,7 @@ $halaman = "sidang_dosen";
                 <div class="container-fluid">
                     <div class="card">
                         <div class="card-header">
-                            <h3 class="card-title">Data Kelas Matkul</h3>
+                            <h3 class="card-title">Data Jadwal Sidang</h3>
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
@@ -163,8 +162,8 @@ $halaman = "sidang_dosen";
                                                 <td><?= $nik_penguji ?> - <?= $nama_penguji ?></td>
                                                 <td><?= $nama_ruangan ?></td>
                                                 <td>
-                                                    <a href="detail.php?id=<?= $id_kelas; ?>" class="btn btn-sm btn-warning"><i class="fas fa-eye"></i></a>
-                                                    <a href="pertemuan.php?id=<?= $id_kelas ?>" class="btn btn-sm btn-primary"><i class="fas fa-qrcode"></i></a>
+                                                    <a href="detail.php?id_sidang=<?= $id_sidang; ?>" class="btn btn-sm btn-warning"><i class="fas fa-eye"></i></a>
+                                                    <a href="presensi.php?id_sidang=<?= $id_sidang ?>" class="btn btn-sm btn-primary"><i class="fas fa-qrcode"></i></a>
                                                 </td>
                                             </tr>
                                     <?php

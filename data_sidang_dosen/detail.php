@@ -1,6 +1,10 @@
 <?php
 require_once '../database/koneksi.php';
-$halaman = "data_kelas_matkul";
+$peran = $_SESSION['peran'];
+if ($peran != 'D') {
+  echo '<script>window.location.href="../logout.php"</script>';
+}else {
+$halaman = "sidang_dosen";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -34,8 +38,7 @@ $halaman = "data_kelas_matkul";
                 <li class="nav-item dropdown">
                     <a class="nav-link" data-toggle="dropdown" href="#">
                         Hallo, <?= $_SESSION['nama']; ?> <i class="far fa-user"></i>
-                        <span class="badge badg
-          e-warning navbar-badge">15</span>
+                        <span class="badge badge-warning navbar-badge"></span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                         <div class="dropdown-divider"></div>
@@ -52,7 +55,7 @@ $halaman = "data_kelas_matkul";
         <!-- /.navbar -->
 
         <!-- Main Sidebar Container -->
-        <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <aside class="main-sidebar sidebar-dark-maroon elevation-4">
             <!-- Brand Logo -->
             <a href="index3.html" class="brand-link">
                 <span class="brand-text font-weight-light">Sistem Manajemen</span>
@@ -77,23 +80,46 @@ $halaman = "data_kelas_matkul";
                 <div class="container-fluid">
 
                     <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">Detail Kelas Matkul</h3>
+                        <div class="card-header bg-navy">
+                            <h3 class="card-title">Detail Jadwal Sidang</h3>
                         </div>
                         <div class="card border-0 shadow-none bg-transparent">
                             <div class="card-body">
                                 <?php
-                                $id = $_GET['id'];
-                                $cek_query_detail = mysqli_query($db, "SELECT km.id, km.kode_akd, km.kode_jurusan, km.nik, km.kode_matkul, km.nama_kelas, a.tahun, a.semester, j.nama_jurusan, m.nama_matkul, d.nik, d.nama FROM tbl_kelas_matkul km LEFT JOIN tbl_akademik a ON km.kode_akd = a.kode_akd LEFT JOIN tbl_jurusan j ON km.kode_jurusan = j.kode_jurusan LEFT JOIN tbl_matkul m ON km.kode_matkul = m.kode_matkul LEFT JOIN tbl_dosen d ON km.nik = d.nik WHERE km.id = '$id'") or die(mysqli_error($db));
-                                $data_kelas = mysqli_fetch_array($cek_query_detail);
-                                $matkul = $data_kelas['nama_matkul'];
-                                $kode_makul = $data_kelas['kode_matkul'];
-                                $nik = $data_kelas['nik'];
-                                $nama_dosen = $data_kelas['nama'];
-                                $jurusan = $data_kelas['nama_jurusan'];
-                                $tahun = $data_kelas['tahun'];
-                                $semester = $data_kelas['semester'];
-                                $nama_kelas = $data_kelas['nama_kelas'];
+                                $id_sidang = $_GET['id_sidang'];
+                                $cek_query_detail = mysqli_query($db, "SELECT s.*, a.tahun, a.semester, j.nama_jurusan, 
+                                d1.nama AS nama_pm1, d2.nama AS nama_pm2,
+                                d3.nama AS nama_pg1, d4.nama AS nama_pg2,
+                                m.nim, m.nama AS nama_mhs, r.nama_ruangan, r.kode_ruangan 
+                                FROM tbl_sidang s 
+                                LEFT JOIN tbl_akademik a ON s.kode_akd = a.kode_akd 
+                                LEFT JOIN tbl_jurusan j ON s.kode_jurusan = j.kode_jurusan 
+                                LEFT JOIN tbl_dosen d1 ON s.nik_pembimbing_1 = d1.nik
+                                LEFT JOIN tbl_dosen d2 ON s.nik_pembimbing_2 = d2.nik
+                                LEFT JOIN tbl_dosen d3 ON s.nik_penguji_1 = d3.nik
+                                LEFT JOIN tbl_dosen d4 ON s.nik_penguji_2 = d4.nik
+                                LEFT JOIN tbl_mahasiswa m ON s.nim = m.nim 
+                                LEFT JOIN tbl_ruangan r ON s.kode_ruangan = r.kode_ruangan WHERE id = '$id_sidang'") or die(mysqli_error($db));
+                                $data_sidang = mysqli_fetch_array($cek_query_detail);
+                                $tahun = $data_sidang['tahun'];
+                                $semester = $data_sidang['semester'];
+                                $nama_ruangan = $data_sidang['nama_ruangan'];
+                                $jurusan = $data_sidang['nama_jurusan'];
+                                $nim = $data_sidang['nim'];
+                                $nama_mahasiswa = $data_sidang['nama_mhs'];
+                                $nik_dosen_pembimbing1 = $data_sidang['nik_pembimbing_1'];
+                                $nama_dosen_pembimbing1 = $data_sidang['nama_pm1'];
+                                $nik_dosen_pembimbing2 = $data_sidang['nik_pembimbing_2'];
+                                $nama_dosen_pembimbing2 = $data_sidang['nama_pm2'];
+                                $nik_dosen_penguji1 = $data_sidang['nik_penguji_1'];
+                                $nama_dosen_penguji1 = $data_sidang['nama_pg1'];
+                                $nik_dosen_penguji2 = $data_sidang['nik_penguji_2'];
+                                $nama_dosen_penguji2 = $data_sidang['nama_pg2'];
+                                $judul_sidang = $data_sidang['judul'];
+                                $jam_mulai = $data_sidang['jam_mulai'];
+                                $jam_selesai = $data_sidang['jam_selesai'];
+                                $tanggal = $data_sidang['tgl'];
+                                $hari = array("Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu");
                                 ?>
                                 <div class="row"> 
                                     <div class="col-md-6">
@@ -104,28 +130,58 @@ $halaman = "data_kelas_matkul";
                                         <td class="font-weight-bold"><?= $tahun; ?>-<?= $semester == 'GL' ? 'Ganjil' : 'Genap'; ?></td>
                                     </tr>
                                     <tr>
-                                        <td>Nama Kelas</td>
+                                        <td>Ruang</td>
                                         <td>:</td>
-                                        <td class="font-weight-bold"><?= $nama_kelas; ?></td>
+                                        <td class="font-weight-bold"><?= $nama_ruangan; ?></td>
                                     </tr>
                                     <tr>
                                         <td>Jurusan</td>
                                         <td>:</td>
                                         <td class="font-weight-bold"><?= $jurusan; ?></td>
                                     </tr>
+                                    <tr>
+                                        <td>Nama Mahasiswa</td>
+                                        <td>:</td>
+                                        <td class="font-weight-bold"><?= $nama_mahasiswa; ?>-<?= $nim ?></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Judul</td>
+                                        <td>:</td>
+                                        <td class="font-weight-bold"><?= $judul_sidang; ?></td>
+                                    </tr>
                                 </table>
                                     </div>
                                 <div class="col-md-6">
                                     <table class="table table-borderless table-sm m-0">
                                         <tr>
-                                            <td width="30%">Mata Kuliah</td>
+                                            <td width="30%">Tanggal</td>
                                             <td width="5%">:</td>
-                                            <td class="font-weight-bold"><?= $matkul; ?> - <?= $kode_makul; ?></td>
+                                            <td class="font-weight-bold"><?= $hari[date_format(date_create($tanggal), 'w')] . date_format(date_create($tanggal), ', d F Y') ?></td>
                                         </tr>
                                         <tr>
-                                            <td>Dosen</td>
+                                            <td width="30%">Jam</td>
+                                            <td width="5%">:</td>
+                                            <td class="font-weight-bold"><?= date_format(date_create($jam_mulai), 'H:i'); ?>-<?= date_format(date_create($jam_selesai), 'H:i'); ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Dosen Pembimbing 1</td>
                                             <td>:</td>
-                                            <td class="font-weight-bold"><?= $nama_dosen; ?> - <?= $nik; ?></td>
+                                            <td class="font-weight-bold"><?= $nama_dosen_pembimbing1; ?> - <?= $nik_dosen_pembimbing1; ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Dosen Pembimbing 2</td>
+                                            <td>:</td>
+                                            <td class="font-weight-bold"><?= $nama_dosen_pembimbing2; ?> - <?= $nik_dosen_pembimbing2; ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Dosen Penguji 1</td>
+                                            <td>:</td>
+                                            <td class="font-weight-bold"><?= $nama_dosen_penguji1; ?> - <?= $nik_dosen_penguji1; ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td>Dosen Penguji 2</td>
+                                            <td>:</td>
+                                            <td class="font-weight-bold"><?= $nama_dosen_penguji2; ?> - <?= $nik_dosen_penguji2; ?></td>
                                         </tr>
                                     </table>
                                 </div>
@@ -134,48 +190,7 @@ $halaman = "data_kelas_matkul";
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
-                            <a href="index.php" class="btn btn-sm btn-danger mb-3">Kembali</a>
-                            <button type="button" class="btn btn-sm btn-success mb-3" data-toggle="modal" data-target="#modal-tambah">
-                                <i class="fas fa-plus"></i>Tambah Data
-                            </button>
-                            <button type="button" class="btn btn-sm btn-primary mb-3" data-toggle="modal" data-target="#modal-import">
-                                <i class="fas fa-file-excel"></i>Import Data
-                            </button>
-                            <table id="example1" class="table table-bordered table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>No</th>
-                                        <th>Nama</th>
-                                        <th>Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php
-                                    $cek_query = mysqli_query($db, "SELECT p.id AS id_peserta, p.id_kelas, p.nim, m.nim, m.nama, km.id FROM tbl_peserta p LEFT JOIN tbl_mahasiswa m ON p.nim = m.nim LEFT JOIN tbl_kelas_matkul km ON p.id_kelas = km.id WHERE p.id_kelas = '$id'") or die(mysqli_error($db));
-                                    $rv = mysqli_num_rows($cek_query);
-                                    $no = 1;
-                                    if ($rv > 0) {
-                                        while ($data = mysqli_fetch_array($cek_query)) {
-                                            $id_peserta = $data['id_peserta'];
-                                            $nama = $data['nama'];
-                                            $nim = $data['nim'];
-                                    ?>
-                                            <tr>
-                                                <td><?= $no++; ?></td>
-                                                <td><?= $nim; ?>-<?= $nama ?> </td>
-                                                <td>
-                                                    <center>
-                                                        <a href="hapus_peserta.php?id_peserta=<?= $id_peserta ?>&id_kelas=<?= $id ?>" class="btn btn-sm btn-danger" onclick="return confirm('Apakah kamu yakin menghapus data ini?')"><i class="fas fa-trash"></i></a>
-                                                    </center>
-                                                </td>
-                                            </tr>
-                                    <?php
-
-                                        }
-                                    }
-                                    ?>
-                                </tbody>
-                            </table>
+                            <a href="index.php" class="btn btn-sm btn-danger mb-3"><i class="fas fa-arrow-left"></i>Kembali</a>
                         </div>
                         <!-- /.card-body -->
                     </div>
@@ -202,97 +217,12 @@ $halaman = "data_kelas_matkul";
         </footer>
     </div>
 
-    <div class="modal fade" id="modal-tambah">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Tambah Data Mahasiswa</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <form action="proses_tambah_peserta.php" method="post">
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <input type="hidden" name="id_kelas" value="<?= $id ?>">
-                            <label>Mahasiswa</label>
-                            <select class="form-control" name="nim" required>
-                                <option value="">-- Pilih Mahasiswa --</option>
-                                <?php
-                                $query_mhs = mysqli_query($db, "SELECT nim, nama FROM tbl_mahasiswa");
-                                $rv = mysqli_num_rows($query_mhs);
-                                if ($rv > 0) {
-                                    while($data_mhs = mysqli_fetch_array($query_mhs)) {
-                                        ?>
-                                        <option value="<?= $data_mhs['nim'] ?>"><?= $data_mhs['nim'] ?> - <?= $data_mhs['nama'] ?></option>
-                                        <?php
-                                    }
-                                }
-                                ?>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="modal-footer justify-content-between">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary" name="btn-tambah-peserta">Simpan</button>
-                    </div>
-                </form>
-            </div>
-            <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-    </div>
-    <!-- /.modal -->
-
-
-    <div class="modal fade" id="modal-import">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">Import Data Peserta</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <form action="proses_import_peserta.php" method="post" enctype="multipart/form-data">
-          <div class="modal-body">
-            <div class="row">
-                <div class="col-6">
-                    <center>
-                        <label>Download Template :</label>
-                        <a href="template/template_peserta.xls" class="btn btn-info btn-sm">Download</a>
-                    </center>
-                </div>
-                <div class="col-6">
-                    <center>
-                        <label>Download Data Mahasiswa :</label>
-                        <a href="../data_mahasiswa_superadmin/export_excel.php" class="btn btn-info btn-sm">Download</a>
-                    </center>
-                </div>
-            </div>
-            <div class="form-group">
-                <input type="hidden" value="<?= $id ?>" name="id_kelas">
-              <label for="exampleInputEmail1">Upload File</label>
-              <input type="file" class="form-control" id="nama" placeholder="Masukkan Nama" name="file_peserta" required>
-            </div>
-          </div>
-          <div class="modal-footer justify-content-between">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary" name="btn-import">Simpan</button>
-          </div>
-        </form>
-      </div>
-      <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-  </div>
-  <!-- /.modal -->
-
-
     <?php
     include '../script.php';
     ?>
 
 </body>
-
 </html>
+<?php
+} 
+?>

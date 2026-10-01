@@ -1,6 +1,10 @@
 <?php
 require_once '../database/koneksi.php';
-$halaman = "data_kelas_matkul";
+$peran = $_SESSION['peran'];
+if ($peran != 'D') {
+  echo '<script>window.location.href="../logout.php"</script>';
+}else {
+$halaman = "sidang_dosen";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -34,8 +38,7 @@ $halaman = "data_kelas_matkul";
                 <li class="nav-item dropdown">
                     <a class="nav-link" data-toggle="dropdown" href="#">
                         Hallo, <?= $_SESSION['nama']; ?> <i class="far fa-user"></i>
-                        <span class="badge badg
-          e-warning navbar-badge">15</span>
+                        <span class="badge badge-warning navbar-badge"></span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                         <div class="dropdown-divider"></div>
@@ -52,7 +55,7 @@ $halaman = "data_kelas_matkul";
         <!-- /.navbar -->
 
         <!-- Main Sidebar Container -->
-        <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <aside class="main-sidebar sidebar-dark-maroon elevation-4">
             <!-- Brand Logo -->
             <a href="index3.html" class="brand-link">
                 <span class="brand-text font-weight-light">Sistem Manajemen</span>
@@ -77,75 +80,102 @@ $halaman = "data_kelas_matkul";
                 <div class="container-fluid">
 
                     <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">Presensi Matkul</h3>
+                        <div class="card-header bg-navy">
+                            <h3 class="card-title">Presensi Sidang</h3>
                         </div>
                         <div class="card border-0 shadow-none bg-transparent">
                             <div class="card-body">
                                 <?php
-                                $id_pertemuan = $_GET['id'];
-                                $query_pertemuan = mysqli_query($db, "SELECT * FROM tbl_pertemuan WHERE id = '$id_pertemuan'")or die(mysqli_error($db));
-                                $data_pertemuan = mysqli_fetch_array($query_pertemuan);
-                                $id_kelas = $data_pertemuan['id_kelas'];
-                                $judul_pertemuan = $data_pertemuan['judul_pertemuan'];
-                                $tanggal = $data_pertemuan['tanggal'];
-                                $tanggal_baru = date_create($tanggal);
-                                $status_pertemuan = $data_pertemuan['status_pertemuan'];
-                                $cek_query_detail = mysqli_query($db, "SELECT km.id, km.kode_akd, km.kode_jurusan, km.nik, km.kode_matkul, km.nama_kelas, a.tahun, a.semester, j.nama_jurusan, m.nama_matkul, d.nik, d.nama, d.img, d.kelamin FROM tbl_kelas_matkul km LEFT JOIN tbl_akademik a ON km.kode_akd = a.kode_akd LEFT JOIN tbl_jurusan j ON km.kode_jurusan = j.kode_jurusan LEFT JOIN tbl_matkul m ON km.kode_matkul = m.kode_matkul LEFT JOIN tbl_dosen d ON km.nik = d.nik WHERE km.id = '$id_kelas'") or die(mysqli_error($db));
-                                $data_kelas = mysqli_fetch_array($cek_query_detail);
-                                $matkul = $data_kelas['nama_matkul'];
-                                $kode_makul = $data_kelas['kode_matkul'];
-                                $nik = $data_kelas['nik'];
-                                $nama_dosen = $data_kelas['nama'];
-                                $jurusan = $data_kelas['nama_jurusan'];
-                                $tahun = $data_kelas['tahun'];
-                                $semester = $data_kelas['semester'];
-                                $nama_kelas = $data_kelas['nama_kelas'];
-                                $img = $data_kelas['img'];
-                                $kelamin= $data_kelas['kelamin']
+                                $id_sidang = $_GET['id_sidang'];
+                                $cek_query_detail = mysqli_query($db, "SELECT s.*, a.tahun, a.semester, j.nama_jurusan, 
+                                d1.nama AS nama_pm1, d2.nama AS nama_pm2,
+                                d3.nama AS nama_pg1, d4.nama AS nama_pg2,
+                                m.nim, m.nama AS nama_mhs, m.kelamin AS kelamin_mhs, m.img AS img_mhs, r.nama_ruangan, r.kode_ruangan 
+                                FROM tbl_sidang s 
+                                LEFT JOIN tbl_akademik a ON s.kode_akd = a.kode_akd 
+                                LEFT JOIN tbl_jurusan j ON s.kode_jurusan = j.kode_jurusan 
+                                LEFT JOIN tbl_dosen d1 ON s.nik_pembimbing_1 = d1.nik
+                                LEFT JOIN tbl_dosen d2 ON s.nik_pembimbing_2 = d2.nik
+                                LEFT JOIN tbl_dosen d3 ON s.nik_penguji_1 = d3.nik
+                                LEFT JOIN tbl_dosen d4 ON s.nik_penguji_2 = d4.nik
+                                LEFT JOIN tbl_mahasiswa m ON s.nim = m.nim 
+                                LEFT JOIN tbl_ruangan r ON s.kode_ruangan = r.kode_ruangan WHERE id = '$id_sidang'") or die(mysqli_error($db));
+                                $data_sidang = mysqli_fetch_array($cek_query_detail);
+                                $tahun = $data_sidang['tahun'];
+                                $semester = $data_sidang['semester'];
+                                $nama_ruangan = $data_sidang['nama_ruangan'];
+                                $jurusan = $data_sidang['nama_jurusan'];
+                                $nim = $data_sidang['nim'];
+                                $nama_mahasiswa = $data_sidang['nama_mhs'];
+                                $nik_dosen_pembimbing1 = $data_sidang['nik_pembimbing_1'];
+                                $nama_dosen_pembimbing1 = $data_sidang['nama_pm1'];
+                                $nik_dosen_pembimbing2 = $data_sidang['nik_pembimbing_2'];
+                                $nama_dosen_pembimbing2 = $data_sidang['nama_pm2'];
+                                $nik_dosen_penguji1 = $data_sidang['nik_penguji_1'];
+                                $nama_dosen_penguji1 = $data_sidang['nama_pg1'];
+                                $nik_dosen_penguji2 = $data_sidang['nik_penguji_2'];
+                                $nama_dosen_penguji2 = $data_sidang['nama_pg2'];
+                                $judul_sidang = $data_sidang['judul'];
+                                $jam_mulai = $data_sidang['jam_mulai'];
+                                $jam_selesai = $data_sidang['jam_selesai'];
+                                $tanggal = $data_sidang['tgl'];
+                                $hari = array("Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu");
+                                $kelamin = $data_sidang['kelamin_mhs'];
+                                $img = $data_sidang['img_mhs'];
+                                $status_sidang = $data_sidang['status'];
                                 ?>
                                 <div class="row"> 
                                     <div class="col-md-4 text-center mb-4">
                                         <?php
                                         if ($kelamin == 'L') {
                                         ?>
-                                            <img src="<?= ($img != null) ? $img : '../asset_adminlte/img/dsn-lk.jpg' ?>"  alt="foto mhs laki-laki" style="width:200px">
+                                            <img src="<?= ($img != null) ? $img : '../asset_adminlte/img/mhs-lk.jpg' ?>"  alt="foto mhs laki-laki" style="width:200px">
                                         <?php
-                                        }else {
+                                        } else {
                                         ?>
-                                            <img src="<?= ($img != null) ? $img : '../asset_adminlte/img/dsn-perempuan.jpg' ?>" alt="foto mhs perempuan" style="width:200px">
+                                            <img src="<?= ($img != null) ? $img : '../asset_adminlte/img/mhs-perempuan.jpg' ?>" alt="foto mhs perempuan" style="width:200px">
                                         <?php
                                         }
                                         ?>
-                                        <div class="mt-3 mx-auto" style="width: 200px;">
-                                            <?php if ($status_pertemuan == '0') { ?>
-                                                <a href="buka.php?id=<?= $id_pertemuan; ?>" class="btn btn-sm btn-success btn-block" onclick="return confirm('Yakin ingin membuka absen?')">
-                                                    <i class="fas fa-door-open"></i> Buka Absen
+                                        
+                                        <div class="mt-3">
+                                            <?php if ($status_sidang == 'dijadwalkan') { ?>
+                                                <a href="ubah_status_sidang.php?id_sidang=<?= $id_sidang ?>&status_baru=berlangsung" class="btn btn-sm btn-secondary" onclick="return confirm('Apakah Anda yakin ingin memulai sidang ini?')">
+                                                    Dijadwalkan
                                                 </a>
+                                            <?php } elseif ($status_sidang == 'berlangsung') { ?>
+                                                <a href="ubah_status_sidang.php?id_sidang=<?= $id_sidang ?>&status_baru=selesai" class="btn btn-sm btn-warning" onclick="return confirm('Apakah sidang sudah selesai?')">
+                                                    Berlangsung
+                                                </a>
+                                            <?php } elseif ($status_sidang == 'selesai') { ?>
+                                                <span class="badge badge-success p-2" style="font-size: 14px;"><i class="fas fa-check-circle mr-1"></i> Sidang Selesai</span>
                                             <?php } else { ?>
-                                                <a href="tutup.php?id=<?= $id_pertemuan; ?>" class="btn btn-sm btn-warning btn-block" onclick="return confirm('Yakin ingin menutup absen?')">
-                                                    <i class="fas fa-door-closed"></i> Tutup Absen
-                                                </a>
+                                                <span class="badge badge-light p-2">Belum Diset</span>
                                             <?php } ?>
-                                        </div>
                                     </div>
+                                </div>
                                     
                                     <div class="col-12 col-md-4 mb-4 ">
                                         <table class="table table-borderless table-sm m-0">
                                             <tr>
-                                                <td width="30%">Akademik</td>
+                                                <td width="30%">Judul</td>
                                                 <td width="5%">:</td>
-                                                <td class="font-weight-bold"><?= $tahun; ?>-<?= $semester == 'GL' ? 'Ganjil' : 'Genap'; ?></td>
+                                                <td class="font-weight-bold"><?= $judul_sidang ?></td>
                                             </tr>
                                             <tr>
-                                                <td>Dosen</td>
+                                                <td>Mahasiswa</td>
                                                 <td>:</td>
-                                                <td class="font-weight-bold"><?= $nama_dosen; ?> - <?= $nik; ?></td>
+                                                <td class="font-weight-bold"><?= $nama_mahasiswa; ?></td>
                                             </tr>
                                             <tr>
-                                                <td>Nama Kelas</td>
+                                                <td>NIM</td>
                                                 <td>:</td>
-                                                <td class="font-weight-bold"><?= $nama_kelas; ?></td>
+                                                <td class="font-weight-bold"><?= $nim; ?></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Ruangan</td>
+                                                <td>:</td>
+                                                <td class="font-weight-bold"><?= $nama_ruangan; ?></td>
                                             </tr>
                                             <tr>
                                                 <td>Jurusan</td>
@@ -153,19 +183,19 @@ $halaman = "data_kelas_matkul";
                                                 <td class="font-weight-bold"><?= $jurusan; ?></td>
                                             </tr>
                                             <tr>
-                                                <td width="30%">Mata Kuliah</td>
+                                                <td width="30%">Dosen Penguji 1</td>
                                                 <td width="5%">:</td>
-                                                <td class="font-weight-bold"><?= $matkul; ?> - <?= $kode_makul; ?></td>
+                                                <td class="font-weight-bold"><?= $nik_dosen_pembimbing1; ?> - <?= $nama_dosen_pembimbing1; ?></td>
                                             </tr>
                                             <tr>
-                                                <td width="30%">Judul Materi</td>
+                                                <td width="30%">Dosen Penguji 2</td>
                                                 <td width="5%">:</td>
-                                                <td class="font-weight-bold"><?= $judul_pertemuan; ?></td>
+                                                <td class="font-weight-bold"><?= $nik_dosen_pembimbing2; ?> - <?= $nama_dosen_pembimbing2; ?></td>
                                             </tr>
                                             <tr>
                                                 <td width="30%">Tanggal</td>
                                                 <td width="5%">:</td>
-                                                <td class="font-weight-bold"><?= date_format($tanggal_baru,  "l, d F Y") ?></td>
+                                                <td class="font-weight-bold"><?= $hari[date_format(date_create($tanggal), 'w')] . date_format(date_create($tanggal), ', d F Y') ?></td>
                                             </tr>
                                         </table>
                                     </div>
@@ -174,10 +204,8 @@ $halaman = "data_kelas_matkul";
                                         <?php
                                         include('../asset_adminlte/phpqrcode/qrlib.php');
                                         // how to save PNG codes to server
-                                        $isi_qr = $id_pertemuan;
+                                        $isi_qr = $id_sidang;
                                         
-                                        // we need to generate filename somehow, 
-                                        // with md5 or with database ID used to obtains $codeContents...
                                         $fileName = 'file-qr-'.($isi_qr).'.png';
                                         
                                         $alamat_tujuan = 'qr/'.$fileName;
@@ -187,17 +215,22 @@ $halaman = "data_kelas_matkul";
                                         ?>
                                         <img src="<?= $alamat_tujuan ?>"  alt="QR Code Pertemuan" style="width:200px">
                                         <?php 
-                                        if ($status_pertemuan == '1') {
+                                        if ($status_sidang == '1') {
                                             ?>
                                             <p id="waktu"></p> 
                                             <?php 
                                         }
                                         ?>
                                     </div>
-                                </div> <!-- AKHIR DARI ROW -->
+                                </div>
+                            </div>
+                        </div>
                         <!-- /.card-header -->
                         <div class="card-body">
-                            <a href="pertemuan.php?id=<?= $id_kelas; ?>" class="btn btn-sm btn-danger mb-3">Kembali</a>
+                            <a href="index.php" class="btn btn-sm btn-danger mb-3">Kembali</a>
+                            <button type="button" class="btn btn-sm btn-success mb-3" data-toggle="modal" data-target="#modal-tambah">
+                                <i class="fas fa-plus"></i>Tambah Peserta
+                            </button>
                             <div id="tabel_presensi"></div>
                         </div>
                         <!-- /.card-body -->
@@ -225,6 +258,48 @@ $halaman = "data_kelas_matkul";
         </footer>
     </div>
 
+    <div class="modal fade" id="modal-tambah">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Tambah Peserta</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form action="proses_tambah_peserta.php" method="post">
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <input type="hidden" name="id_sidang" value="<?= $id_sidang ?>">
+                            <label>Mahasiswa</label>
+                            <select class="form-control" name="nim" required>
+                                <option value="">-- Pilih Mahasiswa --</option>
+                                <?php
+                                $query_mhs = mysqli_query($db, "SELECT nim, nama FROM tbl_mahasiswa");
+                                $rv = mysqli_num_rows($query_mhs);
+                                if ($rv > 0) {
+                                    while($data_mhs = mysqli_fetch_array($query_mhs)) {
+                                        ?>
+                                        <option value="<?= $data_mhs['nim'] ?>"><?= $data_mhs['nim'] ?> - <?= $data_mhs['nama'] ?></option>
+                                        <?php
+                                    }
+                                }
+                                ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer justify-content-between">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary" name="btn-tambah-peserta">Simpan</button>
+                    </div>
+                </form>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
     <div class="modal fade" id="modal-edit">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -242,9 +317,7 @@ $halaman = "data_kelas_matkul";
               <select class="form-control" name="kehadiran" required>
                 <option value="">-- Pilih Status Kehadiran --</option>
                 <option value="hadir">Hadir</option>
-                <option value="izin">Izin</option>
-                <option value="sakit">Sakit</option>
-                <option value="alfa">Alfa</option>
+                <option value="tidak_hadir">Tidak Hadir</option>
               </select>
             </div>
           </div>
@@ -274,37 +347,29 @@ $halaman = "data_kelas_matkul";
 </script>
 
 <script>
-// Set the date we're counting down to
 var countDownDate = new Date().getTime()+(60*1*1000);
 
-// Update the count down every 1 second
 var x = setInterval(function() {
 
-  // Get today's date and time
   var now = new Date().getTime();
 
-  // Find the distance between now and the count down date
   var distance = countDownDate - now;
 
-  // Time calculations for days, hours, minutes and seconds
   var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
   var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-  // Display the result in the element with id="demo"
   document.getElementById("waktu").innerHTML = minutes + "m " + seconds + "s ";
 
-  // If the count down is finished, write some text
   if (distance < 0) {
     clearInterval(x);
-    // document.getElementById("waktu").innerHTML = "Presensi Ditutup";
-    window.location.href="tutup.php?id=<?= $id_pertemuan; ?>";
+    
   }
 }, 1000);
 </script>
 
 <script>
     function refresh_kehadiran() {
-        $('#tabel_presensi').load('tabel_presensi.php?id_kelas=<?= $id_kelas ?>&id_pertemuan=<?= $id_pertemuan ?>');
+        $('#tabel_presensi').load('tabel_presensi.php?id_sidang=<?= $id_sidang ?>');
         setTimeout(refresh_kehadiran, 5000);
     }
 
@@ -312,5 +377,7 @@ var x = setInterval(function() {
 </script>
 
 </body>
-
 </html>
+<?php
+} 
+?>

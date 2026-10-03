@@ -36,8 +36,7 @@ include '../library.php';
       <li class="nav-item dropdown">
         <a class="nav-link" data-toggle="dropdown" href="#">
           Hallo, <?= $_SESSION['nama']; ?> <i class="far fa-user"></i>
-          <span class="badge badg
-          e-warning navbar-badge">15</span>
+          <span class="badge badge-warning navbar-badge">15</span>
         </a>
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
           <div class="dropdown-divider"></div>
@@ -58,7 +57,7 @@ include '../library.php';
   </div>
 
   <!-- Main Sidebar Container -->
-  <aside class="main-sidebar sidebar-dark-primary elevation-4">
+  <aside class="main-sidebar sidebar-dark-maroon elevation-4">
     <!-- Brand Logo -->
     <a href="index3.html" class="brand-link">
       <span class="brand-text font-weight-light">Sistem Manajemen</span>
@@ -83,7 +82,7 @@ include '../library.php';
     </div>
     <!-- Main content -->
     <div class="content">
-        <div class="card card-primary">
+        <div class="card card-teal">
               <div class="card-header">
                 <h3 class="card-title">Ganti Password</h3>
               </div>

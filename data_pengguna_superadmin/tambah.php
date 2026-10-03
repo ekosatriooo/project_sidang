@@ -73,12 +73,12 @@ include '../library.php';
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
-     <div class="card-header bg-navy">
+     <div class="card-header">
         <h3 class="card-title">Tambah Data Pengguna</h3>
     </div>
     <!-- Main content -->
     <div class="content">
-        <div class="card card-primary">
+        <div class="card card-teal">
               <div class="card-header">
                 <h3 class="card-title">Tambah Data Pengguna</h3>
               </div>

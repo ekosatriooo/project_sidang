@@ -83,7 +83,7 @@ include '../library.php';
     <!-- Main content -->
     <div class="content">
         <div class="card card-primary">
-              <div class="card-header bg-navy">
+              <div class="card-header bg-teal">
                 <h3 class="card-title">Ganti Password</h3>
               </div>
               <!-- /.card-header -->

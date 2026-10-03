@@ -74,7 +74,7 @@ include '../library.php';
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
-     <div class="card-header bg-navy">
+     <div class="card-header bg-teal">
         <h3 class="card-title">Tambah Data Mahasiswa</h3>
     </div>
     <!-- Main content -->

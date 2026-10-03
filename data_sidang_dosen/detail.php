@@ -80,7 +80,7 @@ $halaman = "sidang_dosen";
                 <div class="container-fluid">
 
                     <div class="card">
-                        <div class="card-header bg-navy">
+                        <div class="card-header bg-teal">
                             <h3 class="card-title">Detail Jadwal Sidang</h3>
                         </div>
                         <div class="card border-0 shadow-none bg-transparent">

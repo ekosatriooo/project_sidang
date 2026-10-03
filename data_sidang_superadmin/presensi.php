@@ -80,7 +80,7 @@ $halaman = "data_sidang";
                 <div class="container-fluid">
 
                     <div class="card">
-                        <div class="card-header bg-navy">
+                        <div class="card-header bg-teal">
                             <h3 class="card-title">Presensi Sidang</h3>
                         </div>
                         <div class="card border-0 shadow-none bg-transparent">
@@ -201,26 +201,14 @@ $halaman = "data_sidang";
                                     </div>
 
                                     <div class="col-12 col-md-4 text-center mb-4">
-                                        <?php
-                                        include('../asset_adminlte/phpqrcode/qrlib.php');
-                                        // how to save PNG codes to server
-                                        $isi_qr = $id_sidang;
+                                        <h6 class="font-weight-bold">Scan Kehadiran</h6>
+                                        <div id="wadah_qr">
+                                            <span class="text-muted"><i class="fas fa-spinner fa-spin"></i> Memuat QR Code...</span>
+                                        </div>
                                         
-                                        $fileName = 'file-qr-'.($isi_qr).'.png';
-                                        
-                                        $alamat_tujuan = 'qr/'.$fileName;
-                                        
-                                        // generating
-                                        QRcode::png($isi_qr, $alamat_tujuan);
-                                        ?>
-                                        <img src="<?= $alamat_tujuan ?>"  alt="QR Code Pertemuan" style="width:200px">
-                                        <?php 
-                                        if ($status_sidang == '1') {
-                                            ?>
-                                            <p id="waktu"></p> 
-                                            <?php 
-                                        }
-                                        ?>
+                                        <?php if ($status_sidang == 'berlangsung' || $status_sidang == '1') { ?>
+                                            <p id="waktu" class="mt-2 font-weight-bold"></p> 
+                                        <?php } ?>
                                     </div>
                                 </div>
                             </div>
@@ -300,51 +288,10 @@ $halaman = "data_sidang";
     </div>
     <!-- /.modal -->
 
-    <div class="modal fade" id="modal-edit">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">Edit Data Kehadiran</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <form action="proses_edit_presensi.php" method="post">
-          <div class="modal-body">
-            <input type="hidden" name="id_presensi" hidden>
-            <div class="form-group">
-              <label>Status Kehadiran</label>
-              <select class="form-control" name="kehadiran" required>
-                <option value="">-- Pilih Status Kehadiran --</option>
-                <option value="hadir">Hadir</option>
-                <option value="tidak_hadir">Tidak Hadir</option>
-              </select>
-            </div>
-          </div>
-          <div class="modal-footer justify-content-between">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary" name="btn-edit">Simpan</button>
-          </div>
-        </form>
-      </div>
-      <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-  </div>
-  <!-- /.modal -->
-
 
     <?php
     include '../script.php';
     ?>
-
-    <script>
-  $('#modal-edit').on('show.bs.modal', function(e){
-  var id_presensi = $(e.relatedTarget).data('id_presensi');
-
-  $(e.currentTarget).find('input[name="id_presensi"]').val(id_presensi);
-  })
-</script>
 
 <script>
 var countDownDate = new Date().getTime()+(60*1*1000);
@@ -374,6 +321,20 @@ var x = setInterval(function() {
     }
 
     refresh_kehadiran();
+</script>
+
+<script>
+    function refresh_qr() {
+
+        var status = "<?= $status_sidang ?>";
+        if (status === 'berlangsung' || status === '1') {
+            $('#wadah_qr').load('load_qr.php?id_sidang=<?= $id_sidang ?>');
+        }
+    }
+
+    refresh_qr();
+
+    setInterval(refresh_qr, 300000); 
 </script>
 
 </body>

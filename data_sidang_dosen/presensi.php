@@ -227,10 +227,7 @@ $halaman = "sidang_dosen";
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
-                            <a href="index.php" class="btn btn-sm btn-danger mb-3">Kembali</a>
-                            <button type="button" class="btn btn-sm btn-success mb-3" data-toggle="modal" data-target="#modal-tambah">
-                                <i class="fas fa-plus"></i>Tambah Peserta
-                            </button>
+                            <a href="index.php" class="btn btn-sm btn-danger mb-3 fas"><i class="fas fa-arrow-left"></i>Kembali</a>
                             <div id="tabel_presensi"></div>
                         </div>
                         <!-- /.card-body -->

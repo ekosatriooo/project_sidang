@@ -8,7 +8,6 @@ require_once '../database/koneksi.php';
             <th>No</th>
             <th>Mahasiswa</th>
             <th>Status</th>
-            <th>Aksi</th>
         </tr>
     </thead>
     <tbody>
@@ -44,9 +43,6 @@ require_once '../database/koneksi.php';
                         }
                         ?>
                         <span class="badge badge-<?= $warna ?>"><?= $status_kehadiran == 'hadir' ? 'Hadir' : 'Tidak Hadir' ?></span>
-                    </td>
-                    <td>
-                        <a href="hapus_peserta.php?peserta=<?= $nim ?>&id_sidang=<?= $id_sidang ?>" class="btn btn-sm btn-danger" onclick="return confirm('Apakah kamu yakin menghapus data ini?')"><i class="fas fa-trash"></i></a>
                     </td>
                 </tr>
         <?php

@@ -24,6 +24,5 @@ if (isset($_GET['id_sidang'])) {
     QRcode::png($isi_qr, $alamat_tujuan);
 
     echo '<img src="'.$alamat_tujuan.'?v='.time().'" alt="QR Code" style="width:200px" class="img-thumbnail">';
-    echo '<br><small class="text-danger mt-2 font-weight-bold"><i>*QR Code mereset otomatis 5 menit sekali</i></small>';
 }
 ?>

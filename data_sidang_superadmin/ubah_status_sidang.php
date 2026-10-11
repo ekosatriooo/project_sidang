@@ -10,7 +10,6 @@ if (isset($_GET['id_sidang']) && isset($_GET['status_baru'])) {
 
     if ($query_update) {
         echo '<script>alert("Status sidang berhasil diperbarui menjadi: ' . strtoupper($status_baru) . '");</script>';
-        
         echo '<script>window.location.href="presensi.php?id_sidang=' . $id_sidang . '";</script>';
     } else {
         echo '<script>alert("Gagal mengubah status sidang!");</script>';

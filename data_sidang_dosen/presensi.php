@@ -80,7 +80,7 @@ $halaman = "sidang_dosen";
                 <div class="container-fluid">
 
                     <div class="card">
-                        <div class="card-header bg-navy">
+                        <div class="card-header bg-teal">
                             <h3 class="card-title">Presensi Sidang</h3>
                         </div>
                         <div class="card border-0 shadow-none bg-transparent">
@@ -201,26 +201,14 @@ $halaman = "sidang_dosen";
                                     </div>
 
                                     <div class="col-12 col-md-4 text-center mb-4">
-                                        <?php
-                                        include('../asset_adminlte/phpqrcode/qrlib.php');
-                                        // how to save PNG codes to server
-                                        $isi_qr = $id_sidang;
+                                        <h6 class="font-weight-bold">Scan Kehadiran</h6>
+                                        <div id="wadah_qr">
+                                            <span class="text-muted"><i class="fas fa-spinner fa-spin"></i> Memuat QR Code...</span>
+                                        </div>
                                         
-                                        $fileName = 'file-qr-'.($isi_qr).'.png';
-                                        
-                                        $alamat_tujuan = 'qr/'.$fileName;
-                                        
-                                        // generating
-                                        QRcode::png($isi_qr, $alamat_tujuan);
-                                        ?>
-                                        <img src="<?= $alamat_tujuan ?>"  alt="QR Code Pertemuan" style="width:200px">
-                                        <?php 
-                                        if ($status_sidang == '1') {
-                                            ?>
-                                            <p id="waktu"></p> 
-                                            <?php 
-                                        }
-                                        ?>
+                                        <?php if ($status_sidang == 'berlangsung' || $status_sidang == '1') { ?>
+                                            <p id="waktu" class="mt-2 font-weight-bold"></p> 
+                                        <?php } ?>
                                     </div>
                                 </div>
                             </div>
@@ -255,95 +243,11 @@ $halaman = "sidang_dosen";
         </footer>
     </div>
 
-    <div class="modal fade" id="modal-tambah">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Tambah Peserta</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <form action="proses_tambah_peserta.php" method="post">
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <input type="hidden" name="id_sidang" value="<?= $id_sidang ?>">
-                            <label>Mahasiswa</label>
-                            <select class="form-control" name="nim" required>
-                                <option value="">-- Pilih Mahasiswa --</option>
-                                <?php
-                                $query_mhs = mysqli_query($db, "SELECT nim, nama FROM tbl_mahasiswa");
-                                $rv = mysqli_num_rows($query_mhs);
-                                if ($rv > 0) {
-                                    while($data_mhs = mysqli_fetch_array($query_mhs)) {
-                                        ?>
-                                        <option value="<?= $data_mhs['nim'] ?>"><?= $data_mhs['nim'] ?> - <?= $data_mhs['nama'] ?></option>
-                                        <?php
-                                    }
-                                }
-                                ?>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="modal-footer justify-content-between">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary" name="btn-tambah-peserta">Simpan</button>
-                    </div>
-                </form>
-            </div>
-            <!-- /.modal-content -->
-        </div>
-        <!-- /.modal-dialog -->
-    </div>
-    <!-- /.modal -->
-
-    <div class="modal fade" id="modal-edit">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">Edit Data Kehadiran</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <form action="proses_edit_presensi.php" method="post">
-          <div class="modal-body">
-            <input type="hidden" name="id_presensi" hidden>
-            <div class="form-group">
-              <label>Status Kehadiran</label>
-              <select class="form-control" name="kehadiran" required>
-                <option value="">-- Pilih Status Kehadiran --</option>
-                <option value="hadir">Hadir</option>
-                <option value="tidak_hadir">Tidak Hadir</option>
-              </select>
-            </div>
-          </div>
-          <div class="modal-footer justify-content-between">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary" name="btn-edit">Simpan</button>
-          </div>
-        </form>
-      </div>
-      <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-  </div>
-  <!-- /.modal -->
-
-
     <?php
     include '../script.php';
     ?>
 
     <script>
-  $('#modal-edit').on('show.bs.modal', function(e){
-  var id_presensi = $(e.relatedTarget).data('id_presensi');
-
-  $(e.currentTarget).find('input[name="id_presensi"]').val(id_presensi);
-  })
-</script>
-
-<script>
 var countDownDate = new Date().getTime()+(60*1*1000);
 
 var x = setInterval(function() {
@@ -365,11 +269,43 @@ var x = setInterval(function() {
 </script>
 
 <script>
+    function load_qr_baru() {
+        var status = "<?= $status_sidang ?>";
+        if (status === 'berlangsung') {
+            $('#wadah_qr').load('load_qr.php?id_sidang=<?= $id_sidang ?>');
+        }
+    }
+
+    load_qr_baru();
+
+    var waktu_satu_menit = 60 * 1000;
+    var countDownDate = new Date().getTime() + waktu_satu_menit;
+
+    setInterval(function() {
+        var now = new Date().getTime();
+        var distance = countDownDate - now;
+
+        if (distance <= 0) {
+            countDownDate = new Date().getTime() + waktu_satu_menit;
+            distance = countDownDate - now;
+            
+            load_qr_baru();
+        }
+
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        document.getElementById("waktu").innerHTML = minutes + "m " + seconds + "s ";
+        
+    }, 1000);
+</script>
+
+<script>
     function refresh_kehadiran() {
         $('#tabel_presensi').load('tabel_presensi.php?id_sidang=<?= $id_sidang ?>');
         setTimeout(refresh_kehadiran, 5000);
     }
-
+    
     refresh_kehadiran();
 </script>
 

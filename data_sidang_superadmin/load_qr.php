@@ -6,7 +6,7 @@ include('../asset_adminlte/phpqrcode/qrlib.php');
 if (isset($_GET['id_sidang'])) {
     $id_sidang = mysqli_real_escape_string($db, $_GET['id_sidang']);
     
-    $token_waktu = floor(time() / 300); 
+    $token_waktu = floor(time() / 60);
     
     $isi_qr = $id_sidang . "-" . $token_waktu; 
 

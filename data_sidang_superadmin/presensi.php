@@ -206,7 +206,7 @@ $halaman = "data_sidang";
                                             <span class="text-muted"><i class="fas fa-spinner fa-spin"></i> Memuat QR Code...</span>
                                         </div>
                                         
-                                        <?php if ($status_sidang == 'berlangsung' || $status_sidang == '1') { ?>
+                                        <?php if ($status_sidang == 'berlangsung') { ?>
                                             <p id="waktu" class="mt-2 font-weight-bold"></p> 
                                         <?php } ?>
                                     </div>
@@ -294,24 +294,35 @@ $halaman = "data_sidang";
     ?>
 
 <script>
-var countDownDate = new Date().getTime()+(60*1*1000);
+    function load_qr_baru() {
+        var status = "<?= $status_sidang ?>";
+        if (status === 'berlangsung') {
+            $('#wadah_qr').load('load_qr.php?id_sidang=<?= $id_sidang ?>');
+        }
+    }
 
-var x = setInterval(function() {
+    load_qr_baru();
 
-  var now = new Date().getTime();
+    var waktu_satu_menit = 60 * 1000;
+    var countDownDate = new Date().getTime() + waktu_satu_menit;
 
-  var distance = countDownDate - now;
+    setInterval(function() {
+        var now = new Date().getTime();
+        var distance = countDownDate - now;
 
-  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-  var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        if (distance <= 0) {
+            countDownDate = new Date().getTime() + waktu_satu_menit;
+            distance = countDownDate - now;
+            
+            load_qr_baru();
+        }
 
-  document.getElementById("waktu").innerHTML = minutes + "m " + seconds + "s ";
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-  if (distance < 0) {
-    clearInterval(x);
-    
-  }
-}, 1000);
+        document.getElementById("waktu").innerHTML = minutes + "m " + seconds + "s ";
+        
+    }, 1000);
 </script>
 
 <script>
@@ -319,22 +330,8 @@ var x = setInterval(function() {
         $('#tabel_presensi').load('tabel_presensi.php?id_sidang=<?= $id_sidang ?>');
         setTimeout(refresh_kehadiran, 5000);
     }
-
+    
     refresh_kehadiran();
-</script>
-
-<script>
-    function refresh_qr() {
-
-        var status = "<?= $status_sidang ?>";
-        if (status === 'berlangsung' || status === '1') {
-            $('#wadah_qr').load('load_qr.php?id_sidang=<?= $id_sidang ?>');
-        }
-    }
-
-    refresh_qr();
-
-    setInterval(refresh_qr, 300000); 
 </script>
 
 </body>

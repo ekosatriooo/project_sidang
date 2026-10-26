@@ -36,7 +36,7 @@ require_once '../database/koneksi.php';
             <form action="" method="post">
               <div class="form-group first">
                 <label for="username">Pin</label>
-                <input type="text" class="form-control" placeholder="Masukkan pin anda" id="username" name="pin" required>
+                <input type="password" class="form-control" placeholder="Masukkan pin anda" id="username" name="pin" required>
               </div>
 
               <input type="submit" value="Log In" class="btn btn-block btn-primary" name="btn-2fa">

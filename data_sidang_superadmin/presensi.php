@@ -263,16 +263,28 @@ $halaman = "data_sidang";
                             <select class="form-control" name="nim" required>
                                 <option value="">-- Pilih Mahasiswa --</option>
                                 <?php
-                                $query_mhs = mysqli_query($db, "SELECT nim, nama FROM tbl_mahasiswa");
-                                $rv = mysqli_num_rows($query_mhs);
-                                if ($rv > 0) {
-                                    while($data_mhs = mysqli_fetch_array($query_mhs)) {
-                                        ?>
-                                        <option value="<?= $data_mhs['nim'] ?>"><?= $data_mhs['nim'] ?> - <?= $data_mhs['nama'] ?></option>
-                                        <?php
-                                    }
+                            $query_mhs = mysqli_query($db, "
+                            SELECT nim, nama 
+                            FROM tbl_mahasiswa 
+                            WHERE nim != '$nim' 
+                            AND nim NOT IN (
+                                SELECT nim FROM tbl_presensi WHERE id_sidang = '$id_sidang'
+                            )
+                        ");
+
+                            $rv = mysqli_num_rows($query_mhs);
+                            if ($rv > 0) {
+                                while($data_mhs = mysqli_fetch_array($query_mhs)) {
+                                    ?>
+                                    <option value="<?= $data_mhs['nim'] ?>"><?= $data_mhs['nim'] ?> - <?= $data_mhs['nama'] ?></option>
+                                    <?php
                                 }
+                            } else {
                                 ?>
+                                <option value="" disabled>Semua mahasiswa sudah terdaftar / Tidak ada data</option>
+                                <?php
+                            }
+                            ?>
                             </select>
                         </div>
                     </div>

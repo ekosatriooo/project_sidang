@@ -62,23 +62,17 @@ $halaman = "sidang";
                         <div class="card-body">
                             <?php
                             $id_sidang = $_GET['id_sidang'];
-                            $cek_query_detail = mysqli_query($db, "SELECT s.*, a.tahun, a.semester, j.nama_jurusan, 
-                            d1.nama AS nama_pm1, d2.nama AS nama_pm2,
-                            d3.nama AS nama_pg1, d4.nama AS nama_pg2,
+                            $cek_query_detail = mysqli_query($db, "SELECT s.*,
+                            dp.nama AS nama_pembimbing, dg.nama AS nama_penguji,
                             m.nim, m.nama AS nama_mhs, m.kelamin AS kelamin_mhs, m.img AS img_mhs, r.nama_ruangan 
-                            FROM tbl_sidang s 
-                            LEFT JOIN tbl_akademik a ON s.kode_akd = a.kode_akd 
-                            LEFT JOIN tbl_jurusan j ON s.kode_jurusan = j.kode_jurusan 
-                            LEFT JOIN tbl_dosen d1 ON s.nik_pembimbing_1 = d1.nik
-                            LEFT JOIN tbl_dosen d2 ON s.nik_pembimbing_2 = d2.nik
-                            LEFT JOIN tbl_dosen d3 ON s.nik_penguji_1 = d3.nik
-                            LEFT JOIN tbl_dosen d4 ON s.nik_penguji_2 = d4.nik
+                            FROM tbl_sidang s  
+                            LEFT JOIN tbl_dosen dp ON s.nik_pembimbing = dp.nik
+                            LEFT JOIN tbl_dosen dg ON s.nik_penguji = dg.nik
                             LEFT JOIN tbl_mahasiswa m ON s.nim = m.nim 
                             LEFT JOIN tbl_ruangan r ON s.kode_ruangan = r.kode_ruangan WHERE id = '$id_sidang'") or die(mysqli_error($db));
                             
                             $data_sidang = mysqli_fetch_array($cek_query_detail);
                             $nama_ruangan = $data_sidang['nama_ruangan'];
-                            $jurusan = $data_sidang['nama_jurusan'];
                             $nim = $data_sidang['nim'];
                             $nama_mahasiswa = $data_sidang['nama_mhs'];
                             $judul_sidang = $data_sidang['judul'];
@@ -108,7 +102,6 @@ $halaman = "sidang";
                                         <tr><td width="20%">Judul</td><td width="3%">:</td><td class="font-weight-bold"><?= $judul_sidang ?></td></tr>
                                         <tr><td>Mahasiswa</td><td>:</td><td class="font-weight-bold"><?= $nama_mahasiswa; ?> (<?= $nim; ?>)</td></tr>
                                         <tr><td>Ruangan</td><td>:</td><td class="font-weight-bold"><?= $nama_ruangan; ?></td></tr>
-                                        <tr><td>Jurusan</td><td>:</td><td class="font-weight-bold"><?= $jurusan; ?></td></tr>
                                         <tr><td>Tanggal</td><td>:</td><td class="font-weight-bold"><?= $hari[date_format(date_create($tanggal), 'w')] . date_format(date_create($tanggal), ', d F Y') ?></td></tr>
                                     </table>
                                 </div>

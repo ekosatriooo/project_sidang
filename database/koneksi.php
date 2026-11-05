@@ -2,7 +2,7 @@
 date_default_timezone_set('Asia/Jakarta');
 session_start();
 
-$db = mysqli_connect('localhost','root','','sidang'); 
+$db = mysqli_connect('localhost','root','','test_sidang'); 
 
 if (!$db) 
 {

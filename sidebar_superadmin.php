@@ -52,14 +52,6 @@
       </a>
     </li>
     <li class="nav-item">
-      <a href="../data_jurusan_superadmin" class="nav-link <?php if ($halaman=='data_jurusan'){echo 'active';}?>">
-        <i class="nav-icon fas fa-landmark"></i>
-        <p>
-          Jurusan
-        </p>
-      </a>
-    </li>
-    <li class="nav-item">
       <a href="../data_sidang_superadmin" class="nav-link <?php if ($halaman=='data_sidang'){echo 'active';}?>">
         <i class="nav-icon fas fa-gavel"></i>
         <p>

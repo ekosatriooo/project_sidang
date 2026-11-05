@@ -102,8 +102,6 @@ $halaman = "data_sidang";
                                         <th>No</th>
                                         <th>Tanggal</th>
                                         <th>Jam</th>
-                                        <th>Akademik</th>
-                                        <th>Jurusan</th>
                                         <th>Mahasiswa</th>
                                         <th>Pembimbing</th>
                                         <th>Penguji</th>
@@ -113,14 +111,12 @@ $halaman = "data_sidang";
                                 </thead>
                                 <tbody>
                                     <?php
-                                    $cek_query = mysqli_query($db, "SELECT s.*, a.tahun, a.semester, j.nama_jurusan,
-                                    d1.nama AS nama_pm1, d2.nama AS nama_pg1,
+                                    $cek_query = mysqli_query($db, "SELECT s.*,
+                                    dp.nama AS nama_pembimbing, dg.nama AS nama_penguji,
                                     m.nim, m.nama AS nama_mhs, r.nama_ruangan, r.kode_ruangan 
                                     FROM tbl_sidang s 
-                                    LEFT JOIN tbl_akademik a ON s.kode_akd = a.kode_akd 
-                                    LEFT JOIN tbl_jurusan j ON s.kode_jurusan = j.kode_jurusan 
-                                    LEFT JOIN tbl_dosen d1 ON s.nik_pembimbing_1 = d1.nik
-                                    LEFT JOIN tbl_dosen d2 ON s.nik_penguji_1 = d2.nik
+                                    LEFT JOIN tbl_dosen dp ON s.nik_pembimbing = dp.nik
+                                    LEFT JOIN tbl_dosen dg ON s.nik_penguji = dg.nik
                                     LEFT JOIN tbl_mahasiswa m ON s.nim = m.nim 
                                     LEFT JOIN tbl_ruangan r ON s.kode_ruangan = r.kode_ruangan") or die(mysqli_error($db));
                                     $rv = mysqli_num_rows($cek_query);
@@ -130,13 +126,10 @@ $halaman = "data_sidang";
                                             $id_sidang = $data['id'];
                                             $nim = $data['nim'];
                                             $nama_mahasiswa = $data['nama_mhs'];
-                                            $nik_dosen_pembimbing = $data['nik_pembimbing_1']; 
-                                            $nik_dosen_penguji = $data['nik_penguji_1']; 
-                                            $nama_dosen_pembimbing = $data['nama_pm1'];
-                                            $nama_dosen_penguji = $data['nama_pg1'];
-                                            $jurusan = $data['nama_jurusan'];
-                                            $tahun = $data['tahun'];
-                                            $semester = $data['semester'];
+                                            $nik_dosen_pembimbing = $data['nik_pembimbing']; 
+                                            $nik_dosen_penguji = $data['nik_penguji']; 
+                                            $nama_dosen_pembimbing = $data['nama_pembimbing'];
+                                            $nama_dosen_penguji = $data['nama_penguji'];
                                             $nama_ruangan = $data['nama_ruangan'];
                                             $jam_mulai = $data['jam_mulai'];
                                             $jam_selesai = $data['jam_selesai'];
@@ -147,8 +140,6 @@ $halaman = "data_sidang";
                                                 <td><?= $no++; ?></td>
                                                 <td><?= $hari[date_format(date_create($tanggal), 'w')] . date_format(date_create($tanggal), ', d F Y') ?></td>
                                                 <td><?= date_format(date_create($jam_mulai), 'H:i'); ?>-<?= date_format(date_create($jam_selesai), 'H:i'); ?></td>
-                                                <td><?= $tahun; ?>-<?= $semester == 'GL' ? 'Ganjil' : 'Genap'; ?> </td>
-                                                <td><?= $jurusan; ?></td>
                                                 <td><?= $nim; ?> - <?= $nama_mahasiswa ?></td>
                                                 <td><?= $nik_dosen_pembimbing; ?> - <?= $nama_dosen_pembimbing ?></td>
                                                 <td><?= $nik_dosen_penguji; ?> - <?= $nama_dosen_penguji ?></td>
@@ -156,18 +147,13 @@ $halaman = "data_sidang";
                                                 <td>
                                                     <button type="button" class="btn btn-sm btn-success" data-toggle="modal" data-target="#modal-edit"
                                                         data-id_sidang="<?= $id_sidang; ?>"
-                                                        data-kode_akd="<?= $data['kode_akd']; ?>"
-                                                        data-kode_jurusan="<?= $data['kode_jurusan']; ?>"
                                                         data-kode_ruangan="<?= $data['kode_ruangan'] ?>"
                                                         data-mahasiswa="<?= $nim; ?>"
-                                                        data-pembimbing1="<?= $data['nik_pembimbing_1']; ?>"
-                                                        data-pembimbing2="<?= $data['nik_pembimbing_2']; ?>"
-                                                        data-penguji1="<?= $data['nik_penguji_1']; ?>"
-                                                        data-penguji2="<?= $data['nik_penguji_2']; ?>"
+                                                        data-pembimbing="<?= $data['nik_pembimbing']; ?>"
+                                                        data-penguji="<?= $data['nik_penguji']; ?>"
                                                         data-tanggal="<?= $data['tgl']; ?>"
                                                         data-jam_mulai="<?= $jam_mulai; ?>"
                                                         data-jam_selesai="<?= $jam_selesai; ?>"
-                                                        data-jenis_sidang="<?= $data['jenis_sidang']; ?>"
                                                         data-status="<?= $data['status']; ?>"
                                                         data-judul="<?= $data['judul']; ?>"
                                                         >
@@ -222,33 +208,16 @@ $halaman = "data_sidang";
                 <form action="proses_tambah.php" method="post">
                     <div class="modal-body">
                         <div class="form-group">
-                            <label>Kode Akademik</label>
-                            <select class="form-control" name="kode_akd" required>
-                                <option value="">-- Pilih Akademik --</option>
+                            <label>Mahasiswa</label>
+                            <select class="form-control" name="mahasiswa" required>
+                                <option value="">-- Pilih Mahasiswa--</option>
                                 <?php
-                                $query_akd = mysqli_query($db, "SELECT kode_akd, tahun, semester FROM tbl_akademik")or die(mysqli_error($db));
-                                $rv_akd = mysqli_num_rows($query_akd);
-                                if ($rv_akd > 0) {
-                                    while($data_akd = mysqli_fetch_array($query_akd)) {
+                                $query_mahasiswa = mysqli_query($db, "SELECT nim, nama FROM tbl_mahasiswa")or die(mysqli_error($db));
+                                $rv_mahasiswa = mysqli_num_rows($query_mahasiswa);
+                                if ($rv_mahasiswa > 0) {
+                                    while($data_mahasiswa = mysqli_fetch_array($query_mahasiswa)) {
                                         ?>
-                                        <option value="<?= $data_akd['kode_akd'] ?>"><?= $data_akd['tahun'] ?> - <?= $data_akd['semester'] == 'GL' ? 'Ganjil' : 'Genap' ?></option>
-                                        <?php
-                                    }
-                                }
-                                ?>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Jurusan</label>
-                            <select class="form-control" name="kode_jurusan" required>
-                                <option value="">-- Pilih Jurusan --</option>
-                                <?php
-                                $query_jrsn = mysqli_query($db, "SELECT kode_jurusan, nama_jurusan FROM tbl_jurusan")or die(mysqli_error($db));
-                                $rv_jrsn = mysqli_num_rows($query_jrsn);
-                                if ($rv_jrsn > 0) {
-                                    while($data_jrsn = mysqli_fetch_array($query_jrsn)) {
-                                        ?>
-                                        <option value="<?= $data_jrsn['kode_jurusan'] ?>"><?= $data_jrsn['nama_jurusan'] ?></option>
+                                        <option value="<?= $data_mahasiswa['nim'] ?>"><?= $data_mahasiswa['nama'] ?></option>
                                         <?php
                                     }
                                 }
@@ -273,16 +242,16 @@ $halaman = "data_sidang";
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>Mahasiswa</label>
-                            <select class="form-control" name="mahasiswa" required>
-                                <option value="">-- Pilih Mahasiswa--</option>
+                            <label>Dosen Pembimbing</label>
+                            <select class="form-control" name="pembimbing" required>
+                                <option value="">-- Pilih Dosen Pembimbing--</option>
                                 <?php
-                                $query_mahasiswa = mysqli_query($db, "SELECT nim, nama FROM tbl_mahasiswa")or die(mysqli_error($db));
-                                $rv_mahasiswa = mysqli_num_rows($query_mahasiswa);
-                                if ($rv_mahasiswa > 0) {
-                                    while($data_mahasiswa = mysqli_fetch_array($query_mahasiswa)) {
+                                $query_pembimbing = mysqli_query($db, "SELECT nik, nama FROM tbl_dosen")or die(mysqli_error($db));
+                                $rv_pembimbing = mysqli_num_rows($query_pembimbing);
+                                if ($rv_pembimbing > 0) {
+                                    while($data_pembimbing = mysqli_fetch_array($query_pembimbing)) {
                                         ?>
-                                        <option value="<?= $data_mahasiswa['nim'] ?>"><?= $data_mahasiswa['nama'] ?></option>
+                                        <option value="<?= $data_pembimbing['nik'] ?>"><?= $data_pembimbing['nama'] ?></option>
                                         <?php
                                     }
                                 }
@@ -290,67 +259,16 @@ $halaman = "data_sidang";
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>Dosen Pembimbing 1</label>
-                            <select class="form-control" name="pembimbing1" required>
-                                <option value="">-- Pilih Dosen Pembimbing 1--</option>
+                            <label>Dosen Penguji</label>
+                            <select class="form-control" name="penguji" required>
+                                <option value="">-- Pilih Dosen Penguji--</option>
                                 <?php
-                                $query_pembimbing1 = mysqli_query($db, "SELECT nik, nama FROM tbl_dosen")or die(mysqli_error($db));
-                                $rv_pembimbing1 = mysqli_num_rows($query_pembimbing1);
-                                if ($rv_pembimbing1 > 0) {
-                                    while($data_pembimbing1 = mysqli_fetch_array($query_pembimbing1)) {
-                                        ?>
-                                        <option value="<?= $data_pembimbing1['nik'] ?>"><?= $data_pembimbing1['nama'] ?></option>
-                                        <?php
-                                    }
-                                }
-                                ?>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Dosen Pembimbing 2</label>
-                            <select class="form-control" name="pembimbing2">
-                                <option value="">-- Pilih Dosen Pembimbing 2--</option>
-                                <?php
-                                $query_pembimbing2 = mysqli_query($db, "SELECT nik, nama FROM tbl_dosen")or die(mysqli_error($db));
-                                $rv_pembimbing2 = mysqli_num_rows($query_pembimbing2);
-                                if ($rv_pembimbing2 > 0) {
-                                    while($data_pembimbing2 = mysqli_fetch_array($query_pembimbing2)) {
-                                        ?>
-                                        <option value="<?= $data_pembimbing2['nik'] ?>"><?= $data_pembimbing2['nama'] ?></option>
-                                        <?php
-                                    }
-                                }
-                                ?>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Dosen Penguji 1</label>
-                            <select class="form-control" name="penguji1" required>
-                                <option value="">-- Pilih Dosen Penguji 1--</option>
-                                <?php
-                                $query_penguji1 = mysqli_query($db, "SELECT nik, nama FROM tbl_dosen")or die(mysqli_error($db));
-                                $rv_penguji1 = mysqli_num_rows($query_penguji1);
+                                $query_penguji = mysqli_query($db, "SELECT nik, nama FROM tbl_dosen")or die(mysqli_error($db));
+                                $rv_penguji1 = mysqli_num_rows($query_penguji);
                                 if ($rv_penguji1 > 0) {
-                                    while($data_penguji1 = mysqli_fetch_array($query_penguji1)) {
+                                    while($data_penguji = mysqli_fetch_array($query_penguji)) {
                                         ?>
-                                        <option value="<?= $data_penguji1['nik'] ?>"><?= $data_penguji1['nama'] ?></option>
-                                        <?php
-                                    }
-                                }
-                                ?>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Dosen Penguji 2</label>
-                            <select class="form-control" name="penguji2">
-                                <option value="">-- Pilih Dosen Penguji 2--</option>
-                                <?php
-                                $query_penguji2 = mysqli_query($db, "SELECT nik, nama FROM tbl_dosen")or die(mysqli_error($db));
-                                $rv_penguji2 = mysqli_num_rows($query_penguji2);
-                                if ($rv_penguji2 > 0) {
-                                    while($data_penguji2 = mysqli_fetch_array($query_penguji2)) {
-                                        ?>
-                                        <option value="<?= $data_penguji2['nik'] ?>"><?= $data_penguji2['nama'] ?></option>
+                                        <option value="<?= $data_penguji['nik'] ?>"><?= $data_penguji['nama'] ?></option>
                                         <?php
                                     }
                                 }
@@ -368,14 +286,6 @@ $halaman = "data_sidang";
                         <div class="form-group">
                             <label>Jam Selesai</label>
                             <input type="time" class="form-control" id="jam_selesai" name="jam_selesai" required>
-                        </div>
-                        <div class="form-group">
-                        <label>Jenis Sidang</label>
-                        <select class="form-control" name="sidang" required>
-                            <option value="">-- Pilih Jenis Sidang --</option>
-                            <option value="PKL">PKL</option>
-                            <option value="Sempro">Sempro</option>
-                        </select>
                         </div>
                         <div class="form-group">
                             <label for="exampleInputEmail1">Judul Sidang Mahasiswa</label>
@@ -407,33 +317,16 @@ $halaman = "data_sidang";
                     <div class="modal-body">
                         <input type="hidden" name="id_sidang" hidden>
                         <div class="form-group">
-                            <label>Kode Akademik</label>
-                            <select class="form-control" name="kode_akd" required>
-                                <option value="">-- Pilih Akademik --</option>
+                            <label>Mahasiswa</label>
+                            <select class="form-control" name="mahasiswa" required>
+                                <option value="">-- Pilih Mahasiswa--</option>
                                 <?php
-                                $query_akd = mysqli_query($db, "SELECT kode_akd, tahun, semester FROM tbl_akademik")or die(mysqli_error($db));
-                                $rv_akd = mysqli_num_rows($query_akd);
-                                if ($rv_akd > 0) {
-                                    while($data_akd = mysqli_fetch_array($query_akd)) {
+                                $query_mahasiswa = mysqli_query($db, "SELECT nim, nama FROM tbl_mahasiswa")or die(mysqli_error($db));
+                                $rv_mahasiswa = mysqli_num_rows($query_mahasiswa);
+                                if ($rv_mahasiswa > 0) {
+                                    while($data_mahasiswa = mysqli_fetch_array($query_mahasiswa)) {
                                         ?>
-                                        <option value="<?= $data_akd['kode_akd'] ?>"><?= $data_akd['tahun'] ?> - <?= $data_akd['semester'] == 'GL' ? 'Ganjil' : 'Genap' ?></option>
-                                        <?php
-                                    }
-                                }
-                                ?>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Jurusan</label>
-                            <select class="form-control" name="kode_jurusan" required>
-                                <option value="">-- Pilih Jurusan --</option>
-                                <?php
-                                $query_jrsn = mysqli_query($db, "SELECT kode_jurusan, nama_jurusan FROM tbl_jurusan")or die(mysqli_error($db));
-                                $rv_jrsn = mysqli_num_rows($query_jrsn);
-                                if ($rv_jrsn > 0) {
-                                    while($data_jrsn = mysqli_fetch_array($query_jrsn)) {
-                                        ?>
-                                        <option value="<?= $data_jrsn['kode_jurusan'] ?>"><?= $data_jrsn['nama_jurusan'] ?></option>
+                                        <option value="<?= $data_mahasiswa['nim'] ?>"><?= $data_mahasiswa['nama'] ?></option>
                                         <?php
                                     }
                                 }
@@ -458,16 +351,16 @@ $halaman = "data_sidang";
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>Mahasiswa</label>
-                            <select class="form-control" name="mahasiswa" required>
-                                <option value="">-- Pilih Mahasiswa--</option>
+                            <label>Dosen Pembimbing</label>
+                            <select class="form-control" name="pembimbing" required>
+                                <option value="">-- Pilih Dosen Pembimbing--</option>
                                 <?php
-                                $query_mahasiswa = mysqli_query($db, "SELECT nim, nama FROM tbl_mahasiswa")or die(mysqli_error($db));
-                                $rv_mahasiswa = mysqli_num_rows($query_mahasiswa);
-                                if ($rv_mahasiswa > 0) {
-                                    while($data_mahasiswa = mysqli_fetch_array($query_mahasiswa)) {
+                                $query_pembimbing = mysqli_query($db, "SELECT nik, nama FROM tbl_dosen")or die(mysqli_error($db));
+                                $rv_pembimbing = mysqli_num_rows($query_pembimbing);
+                                if ($rv_pembimbing > 0) {
+                                    while($data_pembimbing = mysqli_fetch_array($query_pembimbing)) {
                                         ?>
-                                        <option value="<?= $data_mahasiswa['nim'] ?>"><?= $data_mahasiswa['nama'] ?></option>
+                                        <option value="<?= $data_pembimbing['nik'] ?>"><?= $data_pembimbing['nama'] ?></option>
                                         <?php
                                     }
                                 }
@@ -475,67 +368,16 @@ $halaman = "data_sidang";
                             </select>
                         </div>
                         <div class="form-group">
-                            <label>Dosen Pembimbing 1</label>
-                            <select class="form-control" name="pembimbing1" required>
-                                <option value="">-- Pilih Dosen Pembimbing 1--</option>
+                            <label>Dosen Penguji</label>
+                            <select class="form-control" name="penguji" required>
+                                <option value="">-- Pilih Dosen Penguji--</option>
                                 <?php
-                                $query_pembimbing1 = mysqli_query($db, "SELECT nik, nama FROM tbl_dosen")or die(mysqli_error($db));
-                                $rv_pembimbing1 = mysqli_num_rows($query_pembimbing1);
-                                if ($rv_pembimbing1 > 0) {
-                                    while($data_pembimbing1 = mysqli_fetch_array($query_pembimbing1)) {
+                                $query_penguji = mysqli_query($db, "SELECT nik, nama FROM tbl_dosen")or die(mysqli_error($db));
+                                $rv_penguji = mysqli_num_rows($query_penguji);
+                                if ($rv_penguji > 0) {
+                                    while($data_penguji = mysqli_fetch_array($query_penguji)) {
                                         ?>
-                                        <option value="<?= $data_pembimbing1['nik'] ?>"><?= $data_pembimbing1['nama'] ?></option>
-                                        <?php
-                                    }
-                                }
-                                ?>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Dosen Pembimbing 2</label>
-                            <select class="form-control" name="pembimbing2" required>
-                                <option value="">-- Pilih Dosen Pembimbing 2--</option>
-                                <?php
-                                $query_pembimbing2 = mysqli_query($db, "SELECT nik, nama FROM tbl_dosen")or die(mysqli_error($db));
-                                $rv_pembimbing2 = mysqli_num_rows($query_pembimbing2);
-                                if ($rv_pembimbing2 > 0) {
-                                    while($data_pembimbing2 = mysqli_fetch_array($query_pembimbing2)) {
-                                        ?>
-                                        <option value="<?= $data_pembimbing2['nik'] ?>"><?= $data_pembimbing2['nama'] ?></option>
-                                        <?php
-                                    }
-                                }
-                                ?>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Dosen Penguji 1</label>
-                            <select class="form-control" name="penguji1" required>
-                                <option value="">-- Pilih Dosen Penguji 1--</option>
-                                <?php
-                                $query_penguji1 = mysqli_query($db, "SELECT nik, nama FROM tbl_dosen")or die(mysqli_error($db));
-                                $rv_penguji1 = mysqli_num_rows($query_penguji1);
-                                if ($rv_penguji1 > 0) {
-                                    while($data_penguji1 = mysqli_fetch_array($query_penguji1)) {
-                                        ?>
-                                        <option value="<?= $data_penguji1['nik'] ?>"><?= $data_penguji1['nama'] ?></option>
-                                        <?php
-                                    }
-                                }
-                                ?>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Dosen Penguji 2</label>
-                            <select class="form-control" name="penguji2" required>
-                                <option value="">-- Pilih Dosen Penguji 2--</option>
-                                <?php
-                                $query_penguji2 = mysqli_query($db, "SELECT nik, nama FROM tbl_dosen")or die(mysqli_error($db));
-                                $rv_penguji2 = mysqli_num_rows($query_penguji2);
-                                if ($rv_penguji2 > 0) {
-                                    while($data_penguji2 = mysqli_fetch_array($query_penguji2)) {
-                                        ?>
-                                        <option value="<?= $data_penguji2['nik'] ?>"><?= $data_penguji2['nama'] ?></option>
+                                        <option value="<?= $data_penguji['nik'] ?>"><?= $data_penguji['nama'] ?></option>
                                         <?php
                                     }
                                 }
@@ -553,14 +395,6 @@ $halaman = "data_sidang";
                         <div class="form-group">
                             <label>Jam Selesai</label>
                             <input type="time" class="form-control" id="jam_selesai" name="jam_selesai" step="1" required>
-                        </div>
-                        <div class="form-group">
-                        <label>Jenis Sidang</label>
-                        <select class="form-control" name="sidang" required>
-                            <option value="">-- Pilih Jenis Sidang --</option>
-                            <option value="PKL">PKL</option>
-                            <option value="Sempro">Sempro</option>
-                        </select>
                         </div>
                         <div class="form-group">
                         <label>Status</label>
@@ -627,36 +461,26 @@ $halaman = "data_sidang";
     <script>
         $('#modal-edit').on('show.bs.modal', function(e) {
             var id_sidang = $(e.relatedTarget).data('id_sidang');
-            var kode_akd = $(e.relatedTarget).data('kode_akd');
-            var kode_jurusan = $(e.relatedTarget).data('kode_jurusan');
             var kode_ruangan = $(e.relatedTarget).data('kode_ruangan');
             var mahasiswa = $(e.relatedTarget).data('mahasiswa');
-            var pembimbing1 = $(e.relatedTarget).data('pembimbing1');
-            var pembimbing2 = $(e.relatedTarget).data('pembimbing2');
-            var penguji1 = $(e.relatedTarget).data('penguji1');
-            var penguji2 = $(e.relatedTarget).data('penguji2');
+            var pembimbing = $(e.relatedTarget).data('pembimbing');
+            var penguji = $(e.relatedTarget).data('penguji');
             var tanggal = $(e.relatedTarget).data('tanggal');
             var jam_mulai = $(e.relatedTarget).data('jam_mulai');
             var jam_selesai = $(e.relatedTarget).data('jam_selesai');
-            var jenis_sidang = $(e.relatedTarget).data('jenis_sidang');
             var status = $(e.relatedTarget).data('status');
             var judul = $(e.relatedTarget).data('judul');
 
 
             var modal = $(e.currentTarget);
             modal.find('input[name="id_sidang"]').val(id_sidang);
-            modal.find('select[name="kode_akd"]').val(kode_akd);
-            modal.find('select[name="kode_jurusan"]').val(kode_jurusan);
             modal.find('select[name="kode_ruangan"]').val(kode_ruangan);
             modal.find('select[name="mahasiswa"]').val(mahasiswa);
-            modal.find('select[name="pembimbing1"]').val(pembimbing1);
-            modal.find('select[name="pembimbing2"]').val(pembimbing2);
-            modal.find('select[name="penguji1"]').val(penguji1);
-            modal.find('select[name="penguji2"]').val(penguji2);
+            modal.find('select[name="pembimbing"]').val(pembimbing);
+            modal.find('select[name="penguji"]').val(penguji);
             modal.find('input[name="tanggal"]').val(tanggal);
             modal.find('input[name="jam_mulai"]').val(jam_mulai);
             modal.find('input[name="jam_selesai"]').val(jam_selesai);
-            modal.find('select[name="sidang"]').val(jenis_sidang);
             modal.find('select[name="status"]').val(status);
             modal.find('input[name="judul"]').val(judul);
         });

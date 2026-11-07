@@ -86,10 +86,10 @@ if ($peran != 'M') {
             <div class="content">
                 <div class="container-fluid">
                     <div class="card mt-3">
-                        <div class="card-header bg-navy">
+                        <div class="card-header bg-teal">
                             <h3 class="card-title">Riwayat Menonton</h3>
                             <div class="card-tools">
-                                <span class="badge badge-success" style="font-size: 14px;">
+                                <span class="badge badge-info" style="font-size: 14px;">
                                     <i class="fas fa-check-circle mr-1"></i> Total Menonton: <?= $total_hadir; ?> Kali
                                 </span>
                             </div>
@@ -103,7 +103,6 @@ if ($peran != 'M') {
                                         <th>No</th>
                                         <th>Tanggal</th>
                                         <th>Jam</th>
-                                        <th>Jenis Sidang</th>
                                         <th>Mahasiswa</th>
                                         <th>Judul</th>
                                         <th>Ruang</th>
@@ -133,7 +132,6 @@ if ($peran != 'M') {
                                                 <td><?= $no++; ?></td>
                                                 <td><?= $hari[date_format(date_create($tanggal), 'w')] . date_format(date_create($tanggal), ', d F Y') ?></td>
                                                 <td><?= date_format(date_create($data['jam_mulai']), 'H:i'); ?> - <?= date_format(date_create($data['jam_selesai']), 'H:i'); ?></td>
-                                                <td><?= $data['jenis_sidang']; ?></td>
                                                 <td><?= $data['nama']; ?></td>
                                                 <td><?= $data['judul']; ?></td>
                                                 <td><?= $data['nama_ruangan']; ?></td>

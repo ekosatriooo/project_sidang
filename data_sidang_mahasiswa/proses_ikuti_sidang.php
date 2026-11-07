@@ -30,16 +30,15 @@ if (isset($_GET['id_sidang'])) {
             $tgl = $data_detail['tgl'];
             $jam_mulai = $data_detail['jam_mulai'];
             $jam_selesai = $data_detail['jam_selesai'];
-            $jenis = $data_detail['jenis_sidang'];
             $nama = $data_detail['nama_mhs'];
             $judul = mysqli_real_escape_string($db, $data_detail['judul']);
             $ruangan = $data_detail['nama_ruangan'];
             $status_kehadiran = "tidak_hadir";
 
             mysqli_query($db, "INSERT INTO tbl_presensi 
-            (id, nim, nama, judul, nama_ruangan, status_kehadiran, tgl, jam_mulai, jam_selesai, jenis_sidang, id_sidang) 
+            (id, nim, nama, judul, nama_ruangan, status_kehadiran, tgl, jam_mulai, jam_selesai, id_sidang) 
             VALUES 
-            (NULL, '$nim', '$nama', '$judul', '$ruangan', '$status_kehadiran', '$tgl', '$jam_mulai', '$jam_selesai', '$jenis', '$id_sidang')") 
+            (NULL, '$nim', '$nama', '$judul', '$ruangan', '$status_kehadiran', '$tgl', '$jam_mulai', '$jam_selesai', '$id_sidang')") 
             or die(mysqli_error($db));
         }
     }

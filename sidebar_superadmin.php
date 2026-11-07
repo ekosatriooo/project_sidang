@@ -52,10 +52,10 @@
       </a>
     </li>
     <li class="nav-item">
-      <a href="../data_jurusan_superadmin" class="nav-link <?php if ($halaman=='data_jurusan'){echo 'active';}?>">
-        <i class="nav-icon fas fa-landmark"></i>
+      <a href="../data_info_superadmin" class="nav-link <?php if ($halaman=='data_info'){echo 'active';}?>">
+        <i class="nav-icon fas fa-info-circle"></i>
         <p>
-          Jurusan
+          Info
         </p>
       </a>
     </li>

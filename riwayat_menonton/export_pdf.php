@@ -67,7 +67,6 @@ $pdf->Cell(10, 6, 'No', 1, 0, 'C');
 $pdf->Cell(30, 6, 'Tanggal', 1, 0, 'C');
 $pdf->Cell(20, 6, 'Jam', 1, 0, 'C');
 $pdf->Cell(60, 6, 'Mahasiswa Penyaji', 1, 0, 'C');
-$pdf->Cell(25, 6, 'Jenis Sidang', 1, 0, 'C');
 $pdf->Cell(20, 6, 'Ruang', 1, 0, 'C');
 $pdf->Cell(25, 6, 'Status', 1, 1, 'C');
 
@@ -91,7 +90,6 @@ if ($rv > 0) {
         $pdf->Cell(30, 6, $tanggal_format, 1, 0, 'C');
         $pdf->Cell(20, 6, $jam_format, 1, 0, 'C');
         $pdf->Cell(60, 6, $nama_penyaji, 1, 0, 'L');
-        $pdf->Cell(25, 6, $data['jenis_sidang'], 1, 0, 'C');
         $pdf->Cell(20, 6, $data['nama_ruangan'], 1, 0, 'C');
         $pdf->Cell(25, 6, $status, 1, 1, 'C'); 
     }

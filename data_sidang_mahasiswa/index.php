@@ -85,7 +85,7 @@ $halaman = "sidang";
             <div class="content">
                 <div class="container-fluid">
                     <div class="card">
-                        <div class="card-header bg-navy">
+                        <div class="card-header bg-teal">
                             <h3 class="card-title">Jadwal Sidang</h3>
                         </div>
                         <!-- /.card-header -->
@@ -96,7 +96,6 @@ $halaman = "sidang";
                                         <th>No</th>
                                         <th>Tanggal</th>
                                         <th>Jam</th>
-                                        <th>Jurusan</th>
                                         <th>Mahasiswa</th>
                                         <th>Pembimbing</th>
                                         <th>Penguji</th>
@@ -106,13 +105,12 @@ $halaman = "sidang";
                                 </thead>
                                 <tbody>
                                     <?php
-                                    $cek_query = mysqli_query($db, "SELECT s.*, j.nama_jurusan,
-                                    d1.nama AS nama_pm1, d2.nama AS nama_pg1,
+                                    $cek_query = mysqli_query($db, "SELECT s.*, 
+                                    dp.nama AS nama_pembimbing, dg.nama AS nama_penguji,
                                     m.nim, m.nama AS nama_mhs, r.nama_ruangan, r.kode_ruangan 
                                     FROM tbl_sidang s 
-                                    LEFT JOIN tbl_jurusan j ON s.kode_jurusan = j.kode_jurusan 
-                                    LEFT JOIN tbl_dosen d1 ON s.nik_pembimbing_1 = d1.nik
-                                    LEFT JOIN tbl_dosen d2 ON s.nik_penguji_1 = d2.nik
+                                    LEFT JOIN tbl_dosen dp ON s.nik_pembimbing = dp.nik
+                                    LEFT JOIN tbl_dosen dg ON s.nik_penguji = dg.nik
                                     LEFT JOIN tbl_mahasiswa m ON s.nim = m.nim 
                                     LEFT JOIN tbl_ruangan r ON s.kode_ruangan = r.kode_ruangan") or die(mysqli_error($db));
                                     $rv = mysqli_num_rows($cek_query);
@@ -122,11 +120,10 @@ $halaman = "sidang";
                                             $id_sidang = $data['id'];
                                             $nim = $data['nim'];
                                             $nama_mahasiswa = $data['nama_mhs'];
-                                            $nik_dosen_pembimbing = $data['nik_pembimbing_1']; 
-                                            $nik_dosen_penguji = $data['nik_penguji_1']; 
-                                            $nama_dosen_pembimbing = $data['nama_pm1'];
-                                            $nama_dosen_penguji = $data['nama_pg1'];
-                                            $jurusan = $data['nama_jurusan'];
+                                            $nik_dosen_pembimbing = $data['nik_pembimbing']; 
+                                            $nik_dosen_penguji = $data['nik_penguji']; 
+                                            $nama_dosen_pembimbing = $data['nama_pembimbing'];
+                                            $nama_dosen_penguji = $data['nama_penguji'];
                                             $nama_ruangan = $data['nama_ruangan'];
                                             $jam_mulai = $data['jam_mulai'];
                                             $jam_selesai = $data['jam_selesai'];
@@ -137,7 +134,6 @@ $halaman = "sidang";
                                                 <td><?= $no++; ?></td>
                                                 <td><?= $hari[date_format(date_create($tanggal), 'w')] . date_format(date_create($tanggal), ', d F Y') ?></td>
                                                 <td><?= date_format(date_create($jam_mulai), 'H:i'); ?>-<?= date_format(date_create($jam_selesai), 'H:i'); ?></td>
-                                                <td><?= $jurusan; ?></td>
                                                 <td><?= $nim; ?> - <?= $nama_mahasiswa ?></td>
                                                 <td><?= $nik_dosen_pembimbing; ?> - <?= $nama_dosen_pembimbing ?></td>
                                                 <td><?= $nik_dosen_penguji; ?> - <?= $nama_dosen_penguji ?></td>

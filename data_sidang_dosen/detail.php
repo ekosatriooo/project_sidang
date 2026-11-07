@@ -87,34 +87,22 @@ $halaman = "sidang_dosen";
                             <div class="card-body">
                                 <?php
                                 $id_sidang = $_GET['id_sidang'];
-                                $cek_query_detail = mysqli_query($db, "SELECT s.*, a.tahun, a.semester, j.nama_jurusan, 
-                                d1.nama AS nama_pm1, d2.nama AS nama_pm2,
-                                d3.nama AS nama_pg1, d4.nama AS nama_pg2,
+                                $cek_query_detail = mysqli_query($db, "SELECT s.*, 
+                                dp.nama AS nama_pembimbing, dg.nama AS nama_penguji,
                                 m.nim, m.nama AS nama_mhs, r.nama_ruangan, r.kode_ruangan 
                                 FROM tbl_sidang s 
-                                LEFT JOIN tbl_akademik a ON s.kode_akd = a.kode_akd 
-                                LEFT JOIN tbl_jurusan j ON s.kode_jurusan = j.kode_jurusan 
-                                LEFT JOIN tbl_dosen d1 ON s.nik_pembimbing_1 = d1.nik
-                                LEFT JOIN tbl_dosen d2 ON s.nik_pembimbing_2 = d2.nik
-                                LEFT JOIN tbl_dosen d3 ON s.nik_penguji_1 = d3.nik
-                                LEFT JOIN tbl_dosen d4 ON s.nik_penguji_2 = d4.nik
+                                LEFT JOIN tbl_dosen dp ON s.nik_pembimbing = dp.nik
+                                LEFT JOIN tbl_dosen dg ON s.nik_penguji = dg.nik
                                 LEFT JOIN tbl_mahasiswa m ON s.nim = m.nim 
                                 LEFT JOIN tbl_ruangan r ON s.kode_ruangan = r.kode_ruangan WHERE id = '$id_sidang'") or die(mysqli_error($db));
                                 $data_sidang = mysqli_fetch_array($cek_query_detail);
-                                $tahun = $data_sidang['tahun'];
-                                $semester = $data_sidang['semester'];
                                 $nama_ruangan = $data_sidang['nama_ruangan'];
-                                $jurusan = $data_sidang['nama_jurusan'];
                                 $nim = $data_sidang['nim'];
                                 $nama_mahasiswa = $data_sidang['nama_mhs'];
-                                $nik_dosen_pembimbing1 = $data_sidang['nik_pembimbing_1'];
-                                $nama_dosen_pembimbing1 = $data_sidang['nama_pm1'];
-                                $nik_dosen_pembimbing2 = $data_sidang['nik_pembimbing_2'];
-                                $nama_dosen_pembimbing2 = $data_sidang['nama_pm2'];
-                                $nik_dosen_penguji1 = $data_sidang['nik_penguji_1'];
-                                $nama_dosen_penguji1 = $data_sidang['nama_pg1'];
-                                $nik_dosen_penguji2 = $data_sidang['nik_penguji_2'];
-                                $nama_dosen_penguji2 = $data_sidang['nama_pg2'];
+                                $nik_dosen_pembimbing = $data_sidang['nik_pembimbing'];
+                                $nama_dosen_pembimbing = $data_sidang['nama_pembimbing'];
+                                $nik_dosen_penguji = $data_sidang['nik_penguji'];
+                                $nama_dosen_penguji = $data_sidang['nama_penguji'];
                                 $judul_sidang = $data_sidang['judul'];
                                 $jam_mulai = $data_sidang['jam_mulai'];
                                 $jam_selesai = $data_sidang['jam_selesai'];
@@ -125,9 +113,9 @@ $halaman = "sidang_dosen";
                                     <div class="col-md-6">
                                         <table class="table table-borderless table-sm m-0">
                                     <tr>
-                                        <td width="30%">Akademik</td>
-                                        <td width="5%">:</td>
-                                        <td class="font-weight-bold"><?= $tahun; ?>-<?= $semester == 'GL' ? 'Ganjil' : 'Genap'; ?></td>
+                                        <td>Nama Mahasiswa</td>
+                                        <td>:</td>
+                                        <td class="font-weight-bold"><?= $nama_mahasiswa; ?>-<?= $nim ?></td>
                                     </tr>
                                     <tr>
                                         <td>Ruang</td>
@@ -135,19 +123,14 @@ $halaman = "sidang_dosen";
                                         <td class="font-weight-bold"><?= $nama_ruangan; ?></td>
                                     </tr>
                                     <tr>
-                                        <td>Jurusan</td>
-                                        <td>:</td>
-                                        <td class="font-weight-bold"><?= $jurusan; ?></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Nama Mahasiswa</td>
-                                        <td>:</td>
-                                        <td class="font-weight-bold"><?= $nama_mahasiswa; ?>-<?= $nim ?></td>
-                                    </tr>
-                                    <tr>
                                         <td>Judul</td>
                                         <td>:</td>
                                         <td class="font-weight-bold"><?= $judul_sidang; ?></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Dosen Pembimbing</td>
+                                        <td>:</td>
+                                        <td class="font-weight-bold"><?= $nama_dosen_pembimbing; ?> - <?= $nik_dosen_pembimbing; ?></td>
                                     </tr>
                                 </table>
                                     </div>
@@ -164,24 +147,9 @@ $halaman = "sidang_dosen";
                                             <td class="font-weight-bold"><?= date_format(date_create($jam_mulai), 'H:i'); ?>-<?= date_format(date_create($jam_selesai), 'H:i'); ?></td>
                                         </tr>
                                         <tr>
-                                            <td>Dosen Pembimbing 1</td>
+                                            <td>Dosen Penguji</td>
                                             <td>:</td>
-                                            <td class="font-weight-bold"><?= $nama_dosen_pembimbing1; ?> - <?= $nik_dosen_pembimbing1; ?></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Dosen Pembimbing 2</td>
-                                            <td>:</td>
-                                            <td class="font-weight-bold"><?= $nama_dosen_pembimbing2; ?> - <?= $nik_dosen_pembimbing2; ?></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Dosen Penguji 1</td>
-                                            <td>:</td>
-                                            <td class="font-weight-bold"><?= $nama_dosen_penguji1; ?> - <?= $nik_dosen_penguji1; ?></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Dosen Penguji 2</td>
-                                            <td>:</td>
-                                            <td class="font-weight-bold"><?= $nama_dosen_penguji2; ?> - <?= $nik_dosen_penguji2; ?></td>
+                                            <td class="font-weight-bold"><?= $nama_dosen_penguji; ?> - <?= $nik_dosen_penguji; ?></td>
                                         </tr>
                                     </table>
                                 </div>

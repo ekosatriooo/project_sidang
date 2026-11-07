@@ -97,8 +97,6 @@ $halaman = "sidang_dosen";
                                         <th>No</th>
                                         <th>Tanggal</th>
                                         <th>Jam</th>
-                                        <th>Akademik</th>
-                                        <th>Jurusan</th>
                                         <th>Mahasiswa</th>
                                         <th>Pembimbing</th>
                                         <th>Penguji</th>
@@ -108,7 +106,7 @@ $halaman = "sidang_dosen";
                                 </thead>
                                 <tbody>
                                     <?php
-                                    $cek_query = mysqli_query($db, "SELECT * FROM tbl_sidang WHERE nik_penguji_1 = '$nik_login_dosen' OR nik_penguji_2 = '$nik_login_dosen' OR nik_pembimbing_1 = '$nik_login_dosen' OR nik_pembimbing_2 = '$nik_login_dosen'") or die(mysqli_error($db));
+                                    $cek_query = mysqli_query($db, "SELECT * FROM tbl_sidang WHERE nik_penguji = '$nik_login_dosen' OR nik_pembimbing = '$nik_login_dosen'") or die(mysqli_error($db));
                                     $rv = mysqli_num_rows($cek_query);
                                     $no = 1;
                                     if ($rv > 0) {
@@ -117,26 +115,15 @@ $halaman = "sidang_dosen";
                                             $tanggal = $data['tgl'];
                                             $jam_mulai = $data['jam_mulai'];
                                             $jam_selesai = $data['jam_selesai'];
-                                            $kode_akd     = $data['kode_akd'];
-                                            $kode_jurusan = $data['kode_jurusan'];
                                             $kode_ruangan = $data['kode_ruangan'];
                                             $nim_mahasiswa = $data['nim'];
-                                            $nik_pembimbing = $data['nik_pembimbing_1'];
-                                            $nik_penguji = $data['nik_penguji_1'];
+                                            $nik_pembimbing = $data['nik_pembimbing'];
+                                            $nik_penguji = $data['nik_penguji'];
                                             $hari = array("Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu");
-
-                                            $cek_query_akd = mysqli_query($db, "SELECT semester, tahun FROM tbl_akademik WHERE kode_akd = '$kode_akd'")or die(mysqli_error($db));
-                                            $data_akd = mysqli_fetch_array($cek_query_akd);
-                                            $semester = $data_akd['semester'];
-                                            $tahun = $data_akd['tahun'];
 
                                             $cek_query_mhs = mysqli_query($db, "SELECT nama FROM tbl_mahasiswa WHERE nim = '$nim_mahasiswa'")or die(mysqli_error($db));
                                             $data_mhs = mysqli_fetch_array($cek_query_mhs);
                                             $nama_mhs = $data_mhs['nama'];
-
-                                            $cek_query_jrsn = mysqli_query($db, "SELECT nama_jurusan FROM tbl_jurusan WHERE kode_jurusan = '$kode_jurusan'")or die(mysqli_error($db));
-                                            $data_jrsn = mysqli_fetch_array($cek_query_jrsn);
-                                            $nama_jrsn = $data_jrsn['nama_jurusan'];
 
                                             $cek_query_ruangan = mysqli_query($db, "SELECT nama_ruangan FROM tbl_ruangan WHERE kode_ruangan = '$kode_ruangan'")or die(mysqli_error($db));
                                             $data_ruangan = mysqli_fetch_array($cek_query_ruangan);
@@ -155,8 +142,6 @@ $halaman = "sidang_dosen";
                                                 <td><?= $no++; ?></td>
                                                 <td><?= $hari[date_format(date_create($tanggal), 'w')] . date_format(date_create($tanggal), ', d F Y') ?></td>
                                                 <td><?= date_format(date_create($jam_mulai), 'H:i'); ?>-<?= date_format(date_create($jam_selesai), 'H:i'); ?></td>
-                                                <td><?= $tahun; ?>-<?= $semester == 'GL' ? 'Ganjil' : 'Genap'; ?> </td>
-                                                <td><?= $nama_jrsn; ?></td>
                                                 <td><?= $nim_mahasiswa ?> - <?= $nama_mhs ?></td>
                                                 <td><?= $nik_pembimbing ?> - <?= $nama_pembimbing ?></td>
                                                 <td><?= $nik_penguji ?> - <?= $nama_penguji ?></td>

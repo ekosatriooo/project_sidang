@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.3
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:3306
--- Generation Time: Sep 29, 2026 at 08:00 AM
--- Server version: 8.0.30
--- PHP Version: 8.2.33
+-- Host: 127.0.0.1
+-- Generation Time: Nov 07, 2026 at 03:11 PM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `sidang`
+-- Database: `test_sidang`
 --
 
 -- --------------------------------------------------------
@@ -28,10 +28,10 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `tbl_akademik` (
-  `kode_akd` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `semester` enum('GN','GL') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `tahun` char(4) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `is_active` set('1','0') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL
+  `kode_akd` varchar(10) NOT NULL,
+  `semester` enum('GN','GL') NOT NULL,
+  `tahun` char(4) NOT NULL,
+  `is_active` set('1','0') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -51,12 +51,12 @@ INSERT INTO `tbl_akademik` (`kode_akd`, `semester`, `tahun`, `is_active`) VALUES
 --
 
 CREATE TABLE `tbl_dosen` (
-  `nik` varchar(16) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `nama` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `kontak` varchar(13) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `email` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `kelamin` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `img` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci
+  `nik` varchar(16) NOT NULL,
+  `nama` varchar(100) NOT NULL,
+  `kontak` varchar(13) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `kelamin` char(1) NOT NULL,
+  `img` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -74,21 +74,23 @@ INSERT INTO `tbl_dosen` (`nik`, `nama`, `kontak`, `email`, `kelamin`, `img`) VAL
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tbl_jurusan`
+-- Table structure for table `tbl_info`
 --
 
-CREATE TABLE `tbl_jurusan` (
-  `kode_jurusan` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `nama_jurusan` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL
+CREATE TABLE `tbl_info` (
+  `id` int(11) NOT NULL,
+  `nim` varchar(10) NOT NULL,
+  `nik_pembimbing` varchar(16) NOT NULL,
+  `jurusan` varchar(50) NOT NULL,
+  `kode_ruangan` varchar(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `tbl_jurusan`
+-- Dumping data for table `tbl_info`
 --
 
-INSERT INTO `tbl_jurusan` (`kode_jurusan`, `nama_jurusan`) VALUES
-('J-INF', 'Informatika'),
-('J-SI', 'Sistem Informasi');
+INSERT INTO `tbl_info` (`id`, `nim`, `nik_pembimbing`, `jurusan`, `kode_ruangan`) VALUES
+(1, '42423048', '000005', 'Informatika', 'A001');
 
 -- --------------------------------------------------------
 
@@ -97,12 +99,12 @@ INSERT INTO `tbl_jurusan` (`kode_jurusan`, `nama_jurusan`) VALUES
 --
 
 CREATE TABLE `tbl_mahasiswa` (
-  `nim` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `nama` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `kontak` varchar(13) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `email` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `kelamin` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `img` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci
+  `nim` varchar(10) NOT NULL,
+  `nama` varchar(100) NOT NULL,
+  `kontak` varchar(13) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `kelamin` char(1) NOT NULL,
+  `img` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -123,12 +125,12 @@ INSERT INTO `tbl_mahasiswa` (`nim`, `nama`, `kontak`, `email`, `kelamin`, `img`)
 --
 
 CREATE TABLE `tbl_pengguna` (
-  `id` int NOT NULL,
-  `username` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `sandi` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `peran` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `nama` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `pin` char(6) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL
+  `id` int(11) NOT NULL,
+  `username` varchar(20) NOT NULL,
+  `sandi` varchar(100) NOT NULL,
+  `peran` char(1) NOT NULL,
+  `nama` varchar(100) NOT NULL,
+  `pin` char(6) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -156,25 +158,25 @@ INSERT INTO `tbl_pengguna` (`id`, `username`, `sandi`, `peran`, `nama`, `pin`) V
 --
 
 CREATE TABLE `tbl_presensi` (
-  `id` int NOT NULL,
-  `nim` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `nama` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
-  `judul` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
-  `nama_ruangan` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
-  `status_kehadiran` enum('hadir','tidak_hadir') COLLATE utf8mb4_general_ci NOT NULL,
+  `id` int(11) NOT NULL,
+  `nim` varchar(10) NOT NULL,
+  `nama` varchar(100) NOT NULL,
+  `judul` varchar(100) NOT NULL,
+  `nama_ruangan` varchar(50) NOT NULL,
+  `status_kehadiran` enum('hadir','tidak_hadir') NOT NULL,
   `tgl` date NOT NULL,
   `jam_mulai` time NOT NULL,
   `jam_selesai` time NOT NULL,
-  `jenis_sidang` enum('PKL','sempro') COLLATE utf8mb4_general_ci NOT NULL,
-  `id_sidang` int NOT NULL
+  `id_sidang` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `tbl_presensi`
 --
 
-INSERT INTO `tbl_presensi` (`id`, `nim`, `nama`, `judul`, `nama_ruangan`, `status_kehadiran`, `tgl`, `jam_mulai`, `jam_selesai`, `jenis_sidang`, `id_sidang`) VALUES
-(95, '42423047', 'Ibnu Kholif', 'Prediksi Harga Sawit Menggunakan Linear Regresion', 'A204', 'tidak_hadir', '2026-09-29', '15:15:00', '16:00:00', 'sempro', 10);
+INSERT INTO `tbl_presensi` (`id`, `nim`, `nama`, `judul`, `nama_ruangan`, `status_kehadiran`, `tgl`, `jam_mulai`, `jam_selesai`, `id_sidang`) VALUES
+(101, '42423012', 'Eko Satrio', 'Deteksi Hoax Menggunakan KNN', 'A204', 'tidak_hadir', '2026-09-30', '11:00:00', '13:00:00', 8),
+(102, '42423048', 'Eko Satrio', 'Deteksi Hoax Menggunakan KNN', 'A204', 'tidak_hadir', '2026-09-30', '11:00:00', '13:00:00', 8);
 
 -- --------------------------------------------------------
 
@@ -183,10 +185,10 @@ INSERT INTO `tbl_presensi` (`id`, `nim`, `nama`, `judul`, `nama_ruangan`, `statu
 --
 
 CREATE TABLE `tbl_ruangan` (
-  `kode_ruangan` varchar(10) COLLATE utf8mb4_general_ci NOT NULL,
-  `gedung` enum('A','D') COLLATE utf8mb4_general_ci NOT NULL,
-  `nama_ruangan` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
-  `kuota` varchar(2) COLLATE utf8mb4_general_ci NOT NULL
+  `kode_ruangan` varchar(10) NOT NULL,
+  `gedung` enum('A','D') NOT NULL,
+  `nama_ruangan` varchar(50) NOT NULL,
+  `kuota` varchar(2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -194,7 +196,7 @@ CREATE TABLE `tbl_ruangan` (
 --
 
 INSERT INTO `tbl_ruangan` (`kode_ruangan`, `gedung`, `nama_ruangan`, `kuota`) VALUES
-('A001', 'A', 'A204', '50'),
+('A001', 'A', 'A204', '1'),
 ('D001', 'D', 'D201', '20');
 
 -- --------------------------------------------------------
@@ -204,30 +206,27 @@ INSERT INTO `tbl_ruangan` (`kode_ruangan`, `gedung`, `nama_ruangan`, `kuota`) VA
 --
 
 CREATE TABLE `tbl_sidang` (
-  `id` int NOT NULL,
-  `kode_akd` varchar(10) COLLATE utf8mb4_general_ci NOT NULL,
-  `kode_jurusan` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
-  `kode_ruangan` varchar(10) COLLATE utf8mb4_general_ci NOT NULL,
-  `nim` varchar(10) COLLATE utf8mb4_general_ci NOT NULL,
-  `jenis_sidang` enum('PKL','Sempro') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `id` int(11) NOT NULL,
+  `kode_ruangan` varchar(10) NOT NULL,
+  `nim` varchar(10) NOT NULL,
+  `jurusan` varchar(50) NOT NULL,
   `tgl` date NOT NULL,
-  `nik_pembimbing_1` varchar(16) COLLATE utf8mb4_general_ci NOT NULL,
-  `nik_pembimbing_2` varchar(16) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `nik_penguji_1` varchar(16) COLLATE utf8mb4_general_ci NOT NULL,
-  `nik_penguji_2` varchar(16) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `nik_pembimbing` varchar(16) NOT NULL,
+  `nik_penguji` varchar(16) NOT NULL,
   `jam_mulai` time NOT NULL,
   `jam_selesai` time NOT NULL,
-  `status` enum('dijadwalkan','berlangsung','selesai') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `judul` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL
+  `status` enum('dijadwalkan','berlangsung','selesai') DEFAULT NULL,
+  `judul` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `tbl_sidang`
 --
 
-INSERT INTO `tbl_sidang` (`id`, `kode_akd`, `kode_jurusan`, `kode_ruangan`, `nim`, `jenis_sidang`, `tgl`, `nik_pembimbing_1`, `nik_pembimbing_2`, `nik_penguji_1`, `nik_penguji_2`, `jam_mulai`, `jam_selesai`, `status`, `judul`) VALUES
-(8, 'AKD-002', 'J-INF', 'A001', '42423047', 'Sempro', '2026-09-30', '000001', '000004', '000002', '000003', '11:00:00', '13:00:00', 'dijadwalkan', 'Deteksi Hoax Menggunakan KNN'),
-(10, 'AKD-001', 'J-INF', 'A001', '42423051', 'Sempro', '2026-09-29', '000002', '000004', '000005', '000006', '15:15:00', '16:00:00', 'dijadwalkan', 'Prediksi Harga Sawit Menggunakan Linear Regresion');
+INSERT INTO `tbl_sidang` (`id`, `kode_ruangan`, `nim`, `jurusan`, `tgl`, `nik_pembimbing`, `nik_penguji`, `jam_mulai`, `jam_selesai`, `status`, `judul`) VALUES
+(8, 'A001', '42423047', '', '2026-09-30', '000001', '000002', '11:00:00', '13:00:00', 'dijadwalkan', 'Deteksi Hoax Menggunakan KNN'),
+(10, 'A001', '42423051', '', '2026-09-29', '000002', '000005', '15:15:00', '16:00:00', 'dijadwalkan', 'Prediksi Harga Sawit Menggunakan Linear Regresion'),
+(12, 'D001', '42423033', '', '2026-11-13', '000003', '000002', '11:00:00', '14:00:00', 'dijadwalkan', 'Sistem Rekapitulasi');
 
 --
 -- Indexes for dumped tables
@@ -244,6 +243,12 @@ ALTER TABLE `tbl_akademik`
 --
 ALTER TABLE `tbl_dosen`
   ADD PRIMARY KEY (`nik`);
+
+--
+-- Indexes for table `tbl_info`
+--
+ALTER TABLE `tbl_info`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `tbl_mahasiswa`
@@ -280,22 +285,28 @@ ALTER TABLE `tbl_sidang`
 --
 
 --
+-- AUTO_INCREMENT for table `tbl_info`
+--
+ALTER TABLE `tbl_info`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT for table `tbl_pengguna`
 --
 ALTER TABLE `tbl_pengguna`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
 
 --
 -- AUTO_INCREMENT for table `tbl_presensi`
 --
 ALTER TABLE `tbl_presensi`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=96;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=103;
 
 --
 -- AUTO_INCREMENT for table `tbl_sidang`
 --
 ALTER TABLE `tbl_sidang`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

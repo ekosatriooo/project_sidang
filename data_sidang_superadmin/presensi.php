@@ -87,34 +87,22 @@ $halaman = "data_sidang";
                             <div class="card-body">
                                 <?php
                                 $id_sidang = $_GET['id_sidang'];
-                                $cek_query_detail = mysqli_query($db, "SELECT s.*, a.tahun, a.semester, j.nama_jurusan, 
-                                d1.nama AS nama_pm1, d2.nama AS nama_pm2,
-                                d3.nama AS nama_pg1, d4.nama AS nama_pg2,
+                                $cek_query_detail = mysqli_query($db, "SELECT s.*,
+                                dp.nama AS nama_pembimbing, dg.nama AS nama_penguji,
                                 m.nim, m.nama AS nama_mhs, m.kelamin AS kelamin_mhs, m.img AS img_mhs, r.nama_ruangan, r.kode_ruangan 
                                 FROM tbl_sidang s 
-                                LEFT JOIN tbl_akademik a ON s.kode_akd = a.kode_akd 
-                                LEFT JOIN tbl_jurusan j ON s.kode_jurusan = j.kode_jurusan 
-                                LEFT JOIN tbl_dosen d1 ON s.nik_pembimbing_1 = d1.nik
-                                LEFT JOIN tbl_dosen d2 ON s.nik_pembimbing_2 = d2.nik
-                                LEFT JOIN tbl_dosen d3 ON s.nik_penguji_1 = d3.nik
-                                LEFT JOIN tbl_dosen d4 ON s.nik_penguji_2 = d4.nik
+                                LEFT JOIN tbl_dosen dp ON s.nik_pembimbing = dp.nik
+                                LEFT JOIN tbl_dosen dg ON s.nik_penguji = dg.nik
                                 LEFT JOIN tbl_mahasiswa m ON s.nim = m.nim 
                                 LEFT JOIN tbl_ruangan r ON s.kode_ruangan = r.kode_ruangan WHERE id = '$id_sidang'") or die(mysqli_error($db));
                                 $data_sidang = mysqli_fetch_array($cek_query_detail);
-                                $tahun = $data_sidang['tahun'];
-                                $semester = $data_sidang['semester'];
                                 $nama_ruangan = $data_sidang['nama_ruangan'];
-                                $jurusan = $data_sidang['nama_jurusan'];
                                 $nim = $data_sidang['nim'];
                                 $nama_mahasiswa = $data_sidang['nama_mhs'];
-                                $nik_dosen_pembimbing1 = $data_sidang['nik_pembimbing_1'];
-                                $nama_dosen_pembimbing1 = $data_sidang['nama_pm1'];
-                                $nik_dosen_pembimbing2 = $data_sidang['nik_pembimbing_2'];
-                                $nama_dosen_pembimbing2 = $data_sidang['nama_pm2'];
-                                $nik_dosen_penguji1 = $data_sidang['nik_penguji_1'];
-                                $nama_dosen_penguji1 = $data_sidang['nama_pg1'];
-                                $nik_dosen_penguji2 = $data_sidang['nik_penguji_2'];
-                                $nama_dosen_penguji2 = $data_sidang['nama_pg2'];
+                                $nik_dosen_pembimbing = $data_sidang['nik_pembimbing'];
+                                $nama_dosen_pembimbing = $data_sidang['nama_pembimbing'];
+                                $nik_dosen_penguji = $data_sidang['nik_penguji'];
+                                $nama_dosen_penguji = $data_sidang['nama_penguji'];
                                 $judul_sidang = $data_sidang['judul'];
                                 $jam_mulai = $data_sidang['jam_mulai'];
                                 $jam_selesai = $data_sidang['jam_selesai'];
@@ -178,19 +166,9 @@ $halaman = "data_sidang";
                                                 <td class="font-weight-bold"><?= $nama_ruangan; ?></td>
                                             </tr>
                                             <tr>
-                                                <td>Jurusan</td>
-                                                <td>:</td>
-                                                <td class="font-weight-bold"><?= $jurusan; ?></td>
-                                            </tr>
-                                            <tr>
-                                                <td width="30%">Dosen Penguji 1</td>
+                                                <td width="30%">Dosen Penguji</td>
                                                 <td width="5%">:</td>
-                                                <td class="font-weight-bold"><?= $nik_dosen_pembimbing1; ?> - <?= $nama_dosen_pembimbing1; ?></td>
-                                            </tr>
-                                            <tr>
-                                                <td width="30%">Dosen Penguji 2</td>
-                                                <td width="5%">:</td>
-                                                <td class="font-weight-bold"><?= $nik_dosen_pembimbing2; ?> - <?= $nama_dosen_pembimbing2; ?></td>
+                                                <td class="font-weight-bold"><?= $nik_dosen_pembimbing; ?> - <?= $nama_dosen_pembimbing; ?></td>
                                             </tr>
                                             <tr>
                                                 <td width="30%">Tanggal</td>
@@ -215,7 +193,7 @@ $halaman = "data_sidang";
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
-                            <a href="index.php" class="btn btn-sm btn-danger mb-3">Kembali</a>
+                            <a href="index.php" class="btn btn-sm btn-danger mb-3"><i class="fas fa-arrow-left"></i>Kembali</a>
                             <button type="button" class="btn btn-sm btn-success mb-3" data-toggle="modal" data-target="#modal-tambah">
                                 <i class="fas fa-plus"></i>Tambah Peserta
                             </button>
@@ -263,16 +241,28 @@ $halaman = "data_sidang";
                             <select class="form-control" name="nim" required>
                                 <option value="">-- Pilih Mahasiswa --</option>
                                 <?php
-                                $query_mhs = mysqli_query($db, "SELECT nim, nama FROM tbl_mahasiswa");
-                                $rv = mysqli_num_rows($query_mhs);
-                                if ($rv > 0) {
-                                    while($data_mhs = mysqli_fetch_array($query_mhs)) {
-                                        ?>
-                                        <option value="<?= $data_mhs['nim'] ?>"><?= $data_mhs['nim'] ?> - <?= $data_mhs['nama'] ?></option>
-                                        <?php
-                                    }
+                            $query_mhs = mysqli_query($db, "
+                            SELECT nim, nama 
+                            FROM tbl_mahasiswa 
+                            WHERE nim != '$nim' 
+                            AND nim NOT IN (
+                                SELECT nim FROM tbl_presensi WHERE id_sidang = '$id_sidang'
+                            )
+                        ");
+
+                            $rv = mysqli_num_rows($query_mhs);
+                            if ($rv > 0) {
+                                while($data_mhs = mysqli_fetch_array($query_mhs)) {
+                                    ?>
+                                    <option value="<?= $data_mhs['nim'] ?>"><?= $data_mhs['nim'] ?> - <?= $data_mhs['nama'] ?></option>
+                                    <?php
                                 }
+                            } else {
                                 ?>
+                                <option value="" disabled>Semua mahasiswa sudah terdaftar / Tidak ada data</option>
+                                <?php
+                            }
+                            ?>
                             </select>
                         </div>
                     </div>

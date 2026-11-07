@@ -29,7 +29,7 @@
     </li>
     <li class="nav-item">
       <a href="../riwayat_menonton" class="nav-link <?php if ($halaman=='riwayat_nonton'){echo 'active';}?>">
-        <i class="nav-icon fas fa-video"></i>
+        <i class="nav-icon fas fa-history"></i>
         <p>
           Riwayat Menonton
         </p>

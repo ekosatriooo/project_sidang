@@ -53,6 +53,7 @@ $halaman = "data_info";
                 </li>
             </ul>
         </nav>
+
         <!-- /.navbar -->
         <div class="preloader flex-column justify-content-center align-items-center">
           <img class="animation__shake" src="../asset_adminlte/dist/img/LogoUniv.png" alt="LogoUniv" height="70" width="70">
@@ -86,7 +87,7 @@ $halaman = "data_info";
                 <div class="container-fluid">
                     <div class="card">
                         <div class="card-header bg-teal">
-                            <h3 class="card-title">Data Jadwal Sidang</h3>
+                            <h3 class="card-title">Data Info Mahasiswa PKL</h3>
                         </div>
                         <!-- /.card-header -->
                         <div class="card-body">
@@ -103,7 +104,6 @@ $halaman = "data_info";
                                         <th>Mahasiswa</th>
                                         <th>Jurusan</th>
                                         <th>Pembimbing</th>
-                                        <th>Ruang</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
@@ -111,11 +111,10 @@ $halaman = "data_info";
                                     <?php
                                     $cek_query = mysqli_query($db, "SELECT i.*,
                                     dp.nama AS nama_pembimbing,
-                                    m.nim, m.nama AS nama_mhs, r.nama_ruangan, r.kode_ruangan 
+                                    m.nim, m.nama AS nama_mhs 
                                     FROM tbl_info i 
                                     LEFT JOIN tbl_dosen dp ON i.nik_pembimbing = dp.nik
-                                    LEFT JOIN tbl_mahasiswa m ON i.nim = m.nim 
-                                    LEFT JOIN tbl_ruangan r ON i.kode_ruangan = r.kode_ruangan") or die(mysqli_error($db));
+                                    LEFT JOIN tbl_mahasiswa m ON i.nim = m.nim") or die(mysqli_error($db));
                                     $rv = mysqli_num_rows($cek_query);
                                     $no = 1;
                                     if ($rv > 0) {
@@ -126,25 +125,22 @@ $halaman = "data_info";
                                             $nik_dosen_pembimbing = $data['nik_pembimbing'];
                                             $jurusan = $data['jurusan'];
                                             $nama_dosen_pembimbing = $data['nama_pembimbing'];
-                                            $nama_ruangan = $data['nama_ruangan'];
                                     ?>
                                             <tr>
                                                 <td><?= $no++; ?></td>
                                                 <td><?= $nim; ?> - <?= $nama_mahasiswa ?></td>
                                                 <td><?= $jurusan ?></td>
                                                 <td><?= $nik_dosen_pembimbing; ?> - <?= $nama_dosen_pembimbing ?></td>
-                                                <td><?= $nama_ruangan; ?></td>
                                                 <td>
                                                     <button type="button" class="btn btn-sm btn-success" data-toggle="modal" data-target="#modal-edit"
-                                                        data-id_sidang="<?= $id_info; ?>"
-                                                        data-kode_ruangan="<?= $data['kode_ruangan'] ?>"
+                                                        data-id_info="<?= $id_info; ?>"
                                                         data-mahasiswa="<?= $nim; ?>"
                                                         data-jurusan="<?= $data['jurusan']; ?>"
                                                         data-pembimbing="<?= $data['nik_pembimbing']; ?>"
                                                         >
                                                         <i class="fas fa-edit"></i>
                                                     </button>
-                                                    <a href="hapus.php?id_sidang=<?= $id_info; ?>" class="btn btn-sm btn-danger" onclick="return confirm('Apakah kamu yakin menghapus data ini?')"><i class="fas fa-trash"></i></a>
+                                                    <a href="hapus.php?id_info=<?= $id_info; ?>" class="btn btn-sm btn-danger" onclick="return confirm('Apakah kamu yakin menghapus data ini?')"><i class="fas fa-trash"></i></a>
                                                 </td>
                                             </tr>
                                     <?php
@@ -212,23 +208,6 @@ $halaman = "data_info";
                             <input type="text" class="form-control" id="judul" placeholder="Masukkan Jurusan" name="jurusan" required>
                         </div>
                         <div class="form-group">
-                            <label>Ruangan</label>
-                            <select class="form-control" name="kode_ruangan" required>
-                                <option value="">-- Pilih Ruangan --</option>
-                                <?php
-                                $query_ruangan = mysqli_query($db, "SELECT kode_ruangan, nama_ruangan FROM tbl_ruangan")or die(mysqli_error($db));
-                                $rv_ruangan = mysqli_num_rows($query_ruangan);
-                                if ($rv_ruangan > 0) {
-                                    while($data_ruangan = mysqli_fetch_array($query_ruangan)) {
-                                        ?>
-                                        <option value="<?= $data_ruangan['kode_ruangan'] ?>"><?= $data_ruangan['nama_ruangan'] ?></option>
-                                        <?php
-                                    }
-                                }
-                                ?>
-                            </select>
-                        </div>
-                        <div class="form-group">
                             <label>Dosen Pembimbing</label>
                             <select class="form-control" name="pembimbing" required>
                                 <option value="">-- Pilih Dosen Pembimbing--</option>
@@ -290,23 +269,6 @@ $halaman = "data_info";
                         <div class="form-group">
                             <label for="exampleInputEmail1">Jurusan</label>
                             <input type="text" class="form-control" id="judul" placeholder="Masukkan Jurusan" name="jurusan" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Ruangan</label>
-                            <select class="form-control" name="kode_ruangan" required>
-                                <option value="">-- Pilih Ruangan --</option>
-                                <?php
-                                $query_ruangan = mysqli_query($db, "SELECT kode_ruangan, nama_ruangan FROM tbl_ruangan")or die(mysqli_error($db));
-                                $rv_ruangan = mysqli_num_rows($query_ruangan);
-                                if ($rv_ruangan > 0) {
-                                    while($data_ruangan = mysqli_fetch_array($query_ruangan)) {
-                                        ?>
-                                        <option value="<?= $data_ruangan['kode_ruangan'] ?>"><?= $data_ruangan['nama_ruangan'] ?></option>
-                                        <?php
-                                    }
-                                }
-                                ?>
-                            </select>
                         </div>
                         <div class="form-group">
                             <label>Dosen Pembimbing</label>
@@ -376,16 +338,14 @@ $halaman = "data_info";
 
     <script>
         $('#modal-edit').on('show.bs.modal', function(e) {
-            var id_sidang = $(e.relatedTarget).data('id_sidang');
-            var kode_ruangan = $(e.relatedTarget).data('kode_ruangan');
+            var id_info = $(e.relatedTarget).data('id_info');
             var mahasiswa = $(e.relatedTarget).data('mahasiswa');
             var jurusan = $(e.relatedTarget).data('jurusan');
             var pembimbing = $(e.relatedTarget).data('pembimbing');
 
 
             var modal = $(e.currentTarget);
-            modal.find('input[name="id_sidang"]').val(id_sidang);
-            modal.find('select[name="kode_ruangan"]').val(kode_ruangan);
+            modal.find('input[name="id_info"]').val(id_info);
             modal.find('select[name="mahasiswa"]').val(mahasiswa);
             modal.find('select[name="pembimbing"]').val(pembimbing);
             modal.find('input[name="jurusan"]').val(jurusan);

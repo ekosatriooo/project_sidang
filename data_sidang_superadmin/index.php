@@ -209,20 +209,7 @@ $halaman = "data_sidang";
                     <div class="modal-body">
                         <div class="form-group">
                             <label>Mahasiswa</label>
-                            <select class="form-control" name="mahasiswa" id="tambah_mahasiswa" required>
-                                <option value="">-- Pilih Mahasiswa--</option>
-                                <?php
-                                $query_mahasiswa = mysqli_query($db, "SELECT nim, nama FROM tbl_mahasiswa")or die(mysqli_error($db));
-                                $rv_mahasiswa = mysqli_num_rows($query_mahasiswa);
-                                if ($rv_mahasiswa > 0) {
-                                    while($data_mahasiswa = mysqli_fetch_array($query_mahasiswa)) {
-                                        ?>
-                                        <option value="<?= $data_mahasiswa['nim'] ?>"><?= $data_mahasiswa['nim'] ?> - <?= $data_mahasiswa['nama'] ?></option>
-                                        <?php
-                                    }
-                                }
-                                ?>
-                            </select>
+                            <input type="text" class="form-control" name="mahasiswa" id="tambah_mahasiswa" placeholder="Masukkan NIM mahasiswa" required>
                         </div>
                         <div class="form-group">
                             <label>Jurusan</label>
@@ -230,7 +217,7 @@ $halaman = "data_sidang";
                         </div>
                         <div class="form-group">
                             <label>Ruangan</label>
-                            <select class="form-control" name="kode_ruangan" id="tambah_ruangan" style="pointer-events: none;" required>
+                            <select class="form-control" name="kode_ruangan" required>
                                 <option value="">-- Pilih Ruangan --</option>
                                 <?php
                                 $query_ruangan = mysqli_query($db, "SELECT kode_ruangan, nama_ruangan FROM tbl_ruangan")or die(mysqli_error($db));
@@ -322,21 +309,14 @@ $halaman = "data_sidang";
                         <input type="hidden" name="id_sidang" hidden>
                         <div class="form-group">
                             <label>Mahasiswa</label>
-                            <select class="form-control" name="mahasiswa" required>
-                                <option value="">-- Pilih Mahasiswa--</option>
-                                <?php
-                                $query_mahasiswa = mysqli_query($db, "SELECT nim, nama FROM tbl_mahasiswa")or die(mysqli_error($db));
-                                $rv_mahasiswa = mysqli_num_rows($query_mahasiswa);
-                                if ($rv_mahasiswa > 0) {
-                                    while($data_mahasiswa = mysqli_fetch_array($query_mahasiswa)) {
-                                        ?>
-                                        <option value="<?= $data_mahasiswa['nim'] ?>"><?= $data_mahasiswa['nama'] ?></option>
-                                        <?php
-                                    }
-                                }
-                                ?>
-                            </select>
+                            <input type="text" class="form-control" name="mahasiswa" id="edit_mahasiswa" placeholder="Masukkan NIM mahasiswa" required>
                         </div>
+
+                        <div class="form-group">
+                            <label>Jurusan</label>
+                            <input type="text" class="form-control" name="jurusan" id="edit_jurusan" placeholder="Otomatis terisi" readonly required>
+                        </div>
+                        
                         <div class="form-group">
                             <label>Ruangan</label>
                             <select class="form-control" name="kode_ruangan" required>
@@ -356,7 +336,7 @@ $halaman = "data_sidang";
                         </div>
                         <div class="form-group">
                             <label>Dosen Pembimbing</label>
-                            <select class="form-control" name="pembimbing" required>
+                            <select class="form-control" name="pembimbing" id="edit_pembimbing" style="pointer-events: none; background-color: #e9ecef;" required>
                                 <option value="">-- Pilih Dosen Pembimbing--</option>
                                 <?php
                                 $query_pembimbing = mysqli_query($db, "SELECT nik, nama FROM tbl_dosen")or die(mysqli_error($db));
@@ -464,9 +444,8 @@ $halaman = "data_sidang";
 
     <script>
         $(document).ready(function() {
-            $('#tambah_mahasiswa').on('change', function() {
-                var nim = $(this).val(); 
-                
+            
+            function fetchInfoMahasiswa(nim, elementJurusan, elementPembimbing) {
                 if(nim !== '') {
                     $.ajax({
                         url: 'get_info_mahasiswa.php',
@@ -475,13 +454,11 @@ $halaman = "data_sidang";
                         dataType: 'json',
                         success: function(response) {
                             if(response.status == 'success') {
-                                $('#tambah_jurusan').val(response.data.jurusan);
-                                $('#tambah_ruangan').val(response.data.kode_ruangan);
-                                $('#tambah_pembimbing').val(response.data.nik_pembimbing);
+                                $(elementJurusan).val(response.data.jurusan);
+                                $(elementPembimbing).val(response.data.nik_pembimbing);
                             } else {
-                                $('#tambah_jurusan').val('');
-                                $('#tambah_ruangan').val('');
-                                $('#tambah_pembimbing').val('');
+                                $(elementJurusan).val('');
+                                $(elementPembimbing).val('');
                                 alert('Data mahasiswa belum ada di tbl_info!');
                             }
                         },
@@ -490,37 +467,49 @@ $halaman = "data_sidang";
                         }
                     });
                 } else {
-                    $('#tambah_jurusan').val('');
-                    $('#tambah_ruangan').val('');
-                    $('#tambah_pembimbing').val('');
+                    $(elementJurusan).val('');
+                    $(elementPembimbing).val('');
+                }
+            }
+
+            $('#tambah_mahasiswa').on('change', function() {
+                fetchInfoMahasiswa($(this).val(), '#tambah_jurusan', '#tambah_pembimbing');
+            });
+
+            $('#edit_mahasiswa').on('change', function() {
+                fetchInfoMahasiswa($(this).val(), '#edit_jurusan', '#edit_pembimbing');
+            });
+
+            $('#modal-edit').on('show.bs.modal', function(e) {
+                var id_sidang = $(e.relatedTarget).data('id_sidang');
+                var kode_ruangan = $(e.relatedTarget).data('kode_ruangan');
+                var mahasiswa = $(e.relatedTarget).data('mahasiswa');
+                var pembimbing = $(e.relatedTarget).data('pembimbing');
+                var penguji = $(e.relatedTarget).data('penguji');
+                var tanggal = $(e.relatedTarget).data('tanggal');
+                var jam_mulai = $(e.relatedTarget).data('jam_mulai');
+                var jam_selesai = $(e.relatedTarget).data('jam_selesai');
+                var status = $(e.relatedTarget).data('status');
+                var judul = $(e.relatedTarget).data('judul');
+
+                var modal = $(e.currentTarget);
+                modal.find('input[name="id_sidang"]').val(id_sidang);
+                modal.find('select[name="kode_ruangan"]').val(kode_ruangan);
+                
+                modal.find('input[name="mahasiswa"]').val(mahasiswa);
+                
+                modal.find('select[name="pembimbing"]').val(pembimbing);
+                modal.find('select[name="penguji"]').val(penguji);
+                modal.find('input[name="tanggal"]').val(tanggal);
+                modal.find('input[name="jam_mulai"]').val(jam_mulai);
+                modal.find('input[name="jam_selesai"]').val(jam_selesai);
+                modal.find('select[name="status"]').val(status);
+                modal.find('input[name="judul"]').val(judul);
+
+                if(mahasiswa !== '') {
+                    fetchInfoMahasiswa(mahasiswa, '#edit_jurusan', '#edit_pembimbing');
                 }
             });
-        });
-
-        $('#modal-edit').on('show.bs.modal', function(e) {
-            var id_sidang = $(e.relatedTarget).data('id_sidang');
-            var kode_ruangan = $(e.relatedTarget).data('kode_ruangan');
-            var mahasiswa = $(e.relatedTarget).data('mahasiswa');
-            var pembimbing = $(e.relatedTarget).data('pembimbing');
-            var penguji = $(e.relatedTarget).data('penguji');
-            var tanggal = $(e.relatedTarget).data('tanggal');
-            var jam_mulai = $(e.relatedTarget).data('jam_mulai');
-            var jam_selesai = $(e.relatedTarget).data('jam_selesai');
-            var status = $(e.relatedTarget).data('status');
-            var judul = $(e.relatedTarget).data('judul');
-
-
-            var modal = $(e.currentTarget);
-            modal.find('input[name="id_sidang"]').val(id_sidang);
-            modal.find('select[name="kode_ruangan"]').val(kode_ruangan);
-            modal.find('select[name="mahasiswa"]').val(mahasiswa);
-            modal.find('select[name="pembimbing"]').val(pembimbing);
-            modal.find('select[name="penguji"]').val(penguji);
-            modal.find('input[name="tanggal"]').val(tanggal);
-            modal.find('input[name="jam_mulai"]').val(jam_mulai);
-            modal.find('input[name="jam_selesai"]').val(jam_selesai);
-            modal.find('select[name="status"]').val(status);
-            modal.find('input[name="judul"]').val(judul);
         });
     </script>
 </body>

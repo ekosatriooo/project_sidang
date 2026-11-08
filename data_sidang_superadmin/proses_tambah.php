@@ -2,14 +2,15 @@
 require_once '../database/koneksi.php';
 
 if(isset($_POST['btn-tambah'])) {
-    $kode_ruangan = mysqli_real_escape_string($db, $_POST['kode_ruangan']);
-    $nim = mysqli_real_escape_string($db, $_POST['mahasiswa']);
-    $nik_pembimbing = mysqli_real_escape_string($db, $_POST['pembimbing']);
-    $nik_penguji = mysqli_real_escape_string($db, $_POST['penguji']);
-    $tgl = mysqli_real_escape_string($db, $_POST['tanggal']);
-    $jam_mulai = mysqli_real_escape_string($db, $_POST['jam_mulai']);
-    $jam_selesai = mysqli_real_escape_string($db, $_POST['jam_selesai']);
-    $judul  = mysqli_real_escape_string($db, $_POST['judul']);
+    $kode_ruangan = trim(mysqli_real_escape_string($db, $_POST['kode_ruangan']));
+    $nim = trim(mysqli_real_escape_string($db, $_POST['mahasiswa']));
+    $jurusan = trim(mysqli_real_escape_string($db, $_POST['jurusan']));
+    $nik_pembimbing = trim(mysqli_real_escape_string($db, $_POST['pembimbing']));
+    $nik_penguji = trim(mysqli_real_escape_string($db, $_POST['penguji']));
+    $tgl = trim(mysqli_real_escape_string($db, $_POST['tanggal']));
+    $jam_mulai = trim(mysqli_real_escape_string($db, $_POST['jam_mulai']));
+    $jam_selesai = trim(mysqli_real_escape_string($db, $_POST['jam_selesai']));
+    $judul  = trim(mysqli_real_escape_string($db, $_POST['judul']));
     $status = "dijadwalkan";
 
     if ($nik_pembimbing == $nik_penguji) {
@@ -24,7 +25,7 @@ if(isset($_POST['btn-tambah'])) {
         echo '<script>alert ("Data sidang sudah terdaftar")</script>';
         echo '<script>window.location.href="index.php"</script>';
         } else {
-            $query_simpan = mysqli_query($db, "INSERT INTO tbl_sidang VALUES (null , '$kode_ruangan', '$nim', '$tgl', '$nik_pembimbing', '$nik_penguji', '$jam_mulai', '$jam_selesai', '$status', '$judul') ") or die(mysqli_error($db));
+            $query_simpan = mysqli_query($db, "INSERT INTO tbl_sidang VALUES (null , '$kode_ruangan', '$nim', '$jurusan', '$tgl', '$nik_pembimbing', '$nik_penguji', '$jam_mulai', '$jam_selesai', '$status', '$judul') ") or die(mysqli_error($db));
             echo '<script>alert ("Tambah data jadwal sidang berhasil")</script>';
             echo '<script>window.location.href="index.php"</script>';
     }

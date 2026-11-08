@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 07, 2026 at 03:11 PM
+-- Generation Time: Nov 08, 2026 at 01:39 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -81,16 +81,16 @@ CREATE TABLE `tbl_info` (
   `id` int(11) NOT NULL,
   `nim` varchar(10) NOT NULL,
   `nik_pembimbing` varchar(16) NOT NULL,
-  `jurusan` varchar(50) NOT NULL,
-  `kode_ruangan` varchar(10) NOT NULL
+  `jurusan` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `tbl_info`
 --
 
-INSERT INTO `tbl_info` (`id`, `nim`, `nik_pembimbing`, `jurusan`, `kode_ruangan`) VALUES
-(1, '42423048', '000005', 'Informatika', 'A001');
+INSERT INTO `tbl_info` (`id`, `nim`, `nik_pembimbing`, `jurusan`) VALUES
+(1, '42423033', '000005', 'Informatika'),
+(3, '42423051', '000002', 'Informatika');
 
 -- --------------------------------------------------------
 
@@ -225,8 +225,7 @@ CREATE TABLE `tbl_sidang` (
 
 INSERT INTO `tbl_sidang` (`id`, `kode_ruangan`, `nim`, `jurusan`, `tgl`, `nik_pembimbing`, `nik_penguji`, `jam_mulai`, `jam_selesai`, `status`, `judul`) VALUES
 (8, 'A001', '42423047', '', '2026-09-30', '000001', '000002', '11:00:00', '13:00:00', 'dijadwalkan', 'Deteksi Hoax Menggunakan KNN'),
-(10, 'A001', '42423051', '', '2026-09-29', '000002', '000005', '15:15:00', '16:00:00', 'dijadwalkan', 'Prediksi Harga Sawit Menggunakan Linear Regresion'),
-(12, 'D001', '42423033', '', '2026-11-13', '000003', '000002', '11:00:00', '14:00:00', 'dijadwalkan', 'Sistem Rekapitulasi');
+(13, 'A001', '42423051', 'Informatika', '2026-11-09', '000002', '000004', '15:30:00', '17:30:00', 'dijadwalkan', 'Sistem Rekapitulasi');
 
 --
 -- Indexes for dumped tables
@@ -288,7 +287,7 @@ ALTER TABLE `tbl_sidang`
 -- AUTO_INCREMENT for table `tbl_info`
 --
 ALTER TABLE `tbl_info`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `tbl_pengguna`
@@ -306,7 +305,7 @@ ALTER TABLE `tbl_presensi`
 -- AUTO_INCREMENT for table `tbl_sidang`
 --
 ALTER TABLE `tbl_sidang`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

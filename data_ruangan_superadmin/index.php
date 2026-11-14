@@ -110,7 +110,8 @@ $halaman = "data_ruangan";
                   $query_jurusan = mysqli_query($db, "SELECT * FROM tbl_ruangan") or die(mysqli_error($db));
                   $rv = mysqli_num_rows($query_jurusan);
                   $no = 1;
-                  while ($data = mysqli_fetch_array($query_jurusan)) {
+                  if ($rv > 0) {
+                    while ($data = mysqli_fetch_array($query_jurusan)) {
                     $kode_ruangan = $data['kode_ruangan'];
                     $nama_ruangan = $data['nama_ruangan'];
                     $gedung = $data['gedung'];
@@ -134,6 +135,7 @@ $halaman = "data_ruangan";
                       </td>
                     </tr>
                   <?php
+                  }
                   }
                   ?>
                 </tbody>
@@ -257,7 +259,7 @@ $halaman = "data_ruangan";
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">Import Data Jurusan</h4>
+          <h4 class="modal-title">Import Data Ruangan</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -265,10 +267,10 @@ $halaman = "data_ruangan";
         <form action="proses_import.php" method="post" enctype="multipart/form-data">
           <div class="modal-body">
             <label>Download Template</label>
-            <a href="template/template_jurusan.xls" class="btn btn-info btn-sm">Download</a>
+            <a href="template/template_ruangan.xls" class="btn btn-info btn-sm">Download</a>
             <div class="form-group">
               <label for="exampleInputEmail1">Upload File</label>
-              <input type="file" class="form-control" id="nama" placeholder="Masukkan Nama" name="file_jurusan" required>
+              <input type="file" class="form-control" id="nama" placeholder="Masukkan Nama" name="file_ruangan" required>
             </div>
           </div>
           <div class="modal-footer justify-content-between">

@@ -9,7 +9,7 @@ if (isset($nik)) { // ketika nim nya ada atau terisi
     $query_hapus_mhs = mysqli_query($db, "DELETE FROM tbl_dosen WHERE nik = '$nik'") or die(mysqli_error($db));
     $query_hapus_pengguna = mysqli_query($db, "DELETE FROM tbl_pengguna WHERE username = '$nik'") or die(mysqli_error($db));
     // tampilkan alert dan diarahkan ke index
-        echo '<script>alert ("Hapus data mahasiswa berhasil")</script>';
+        echo '<script>alert ("Hapus data dosen berhasil")</script>';
         echo '<script>window.location.href="index.php"</script>';
 }
 ?>

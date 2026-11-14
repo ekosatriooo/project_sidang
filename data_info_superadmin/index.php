@@ -305,7 +305,7 @@ $halaman = "data_info";
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h4 class="modal-title">Import Data Kelas Matkul</h4>
+          <h4 class="modal-title">Import Data Info</h4>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -313,10 +313,10 @@ $halaman = "data_info";
         <form action="proses_import.php" method="post" enctype="multipart/form-data">
           <div class="modal-body">
             <label>Download Template</label>
-            <a href="template/template_kelas_matkul.xls" class="btn btn-info btn-sm">Download</a>
+            <a href="template/template_info.xls" class="btn btn-info btn-sm">Download</a>
             <div class="form-group">
               <label for="exampleInputEmail1">Upload File</label>
-              <input type="file" class="form-control" id="nama" placeholder="Masukkan Nama" name="file_kelas_matkul" required>
+              <input type="file" class="form-control" id="nama" placeholder="Masukkan Nama" name="file_info" required>
             </div>
           </div>
           <div class="modal-footer justify-content-between">

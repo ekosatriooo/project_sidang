@@ -107,8 +107,8 @@ include '../library.php';
                         <label>Jenis Kelamin</label>
                         <select class="form-control" name="kelamin" required>
                           <option value="">-- Pilih Jenis Kelamin --</option>
-                          <option value="L">L</option>
-                          <option value="P">P</option>
+                          <option value="L">Laki-laki</option>
+                          <option value="P">Perempuan</option>
                         </select>
                     </div>
                 </div>

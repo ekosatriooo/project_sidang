@@ -419,10 +419,10 @@ $halaman = "data_sidang";
         <form action="proses_import.php" method="post" enctype="multipart/form-data">
           <div class="modal-body">
             <label>Download Template</label>
-            <a href="template/template_kelas_matkul.xls" class="btn btn-info btn-sm">Download</a>
+            <a href="template/template_sidang.xls" class="btn btn-info btn-sm">Download</a>
             <div class="form-group">
               <label for="exampleInputEmail1">Upload File</label>
-              <input type="file" class="form-control" id="nama" placeholder="Masukkan Nama" name="file_kelas_matkul" required>
+              <input type="file" class="form-control" id="nama" placeholder="Masukkan Nama" name="file_sidang" required>
             </div>
           </div>
           <div class="modal-footer justify-content-between">

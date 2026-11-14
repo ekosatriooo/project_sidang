@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 08, 2026 at 01:39 PM
+-- Generation Time: Nov 14, 2026 at 02:53 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -90,7 +90,8 @@ CREATE TABLE `tbl_info` (
 
 INSERT INTO `tbl_info` (`id`, `nim`, `nik_pembimbing`, `jurusan`) VALUES
 (1, '42423033', '000005', 'Informatika'),
-(3, '42423051', '000002', 'Informatika');
+(3, '42423051', '000002', 'Informatika'),
+(8, '42423012', '000006', 'Informatika');
 
 -- --------------------------------------------------------
 
@@ -197,6 +198,7 @@ CREATE TABLE `tbl_ruangan` (
 
 INSERT INTO `tbl_ruangan` (`kode_ruangan`, `gedung`, `nama_ruangan`, `kuota`) VALUES
 ('A001', 'A', 'A204', '1'),
+('A002', 'A', 'A208', '10'),
 ('D001', 'D', 'D201', '20');
 
 -- --------------------------------------------------------
@@ -224,8 +226,8 @@ CREATE TABLE `tbl_sidang` (
 --
 
 INSERT INTO `tbl_sidang` (`id`, `kode_ruangan`, `nim`, `jurusan`, `tgl`, `nik_pembimbing`, `nik_penguji`, `jam_mulai`, `jam_selesai`, `status`, `judul`) VALUES
-(8, 'A001', '42423047', '', '2026-09-30', '000001', '000002', '11:00:00', '13:00:00', 'dijadwalkan', 'Deteksi Hoax Menggunakan KNN'),
-(13, 'A001', '42423051', 'Informatika', '2026-11-09', '000002', '000004', '15:30:00', '17:30:00', 'dijadwalkan', 'Sistem Rekapitulasi');
+(14, 'A001', '42423051', 'Informatika', '2026-11-15', '000002', '000001', '07:00:00', '09:00:00', 'dijadwalkan', 'Sistem Rekapitulasi'),
+(15, 'A001', '42423033', 'Informatika', '2026-11-14', '000005', '000002', '20:00:00', '23:00:00', 'dijadwalkan', 'Sistem Sistem');
 
 --
 -- Indexes for dumped tables
@@ -287,13 +289,13 @@ ALTER TABLE `tbl_sidang`
 -- AUTO_INCREMENT for table `tbl_info`
 --
 ALTER TABLE `tbl_info`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `tbl_pengguna`
 --
 ALTER TABLE `tbl_pengguna`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=48;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
 
 --
 -- AUTO_INCREMENT for table `tbl_presensi`
@@ -305,7 +307,7 @@ ALTER TABLE `tbl_presensi`
 -- AUTO_INCREMENT for table `tbl_sidang`
 --
 ALTER TABLE `tbl_sidang`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

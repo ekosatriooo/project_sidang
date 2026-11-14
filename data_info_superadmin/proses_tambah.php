@@ -13,7 +13,7 @@ if (isset($_POST['btn-tambah'])) {
         echo '<script>window.location.href="index.php"</script>';
     } else {
         $query_simpan = mysqli_query($db, "INSERT INTO tbl_info VALUES (null, '$mahasiswa', '$pembimbing', '$jurusan') ") or die(mysqli_error($db));
-            echo '<script>alert ("Tambah data akademik berhasil")</script>';
+            echo '<script>alert ("Tambah data berhasil")</script>';
             echo '<script>window.location.href="index.php"</script>';
     }
 }
